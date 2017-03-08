@@ -18,11 +18,14 @@ namespace DreamBot.Network.Protocol.Handlers
         public void Handle(BotMessage message)
         {
             var msg = message.Message as GetPeerListReplyMessage;
-            var hello = new HelloMessage();
 
             foreach (var peer in msg.Peers)
             {
-                _messageManager.Send(hello, peer.BotId, 0);
+                if (_peerList.TryRegister(new PeerInfo(peer.BotId, peer.EndPoint)))
+                {
+                    var hello = new HelloMessage();
+                    _messageManager.Send(hello, peer.BotId);
+                }
             }
         }
     }

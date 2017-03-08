@@ -43,21 +43,27 @@ namespace DreamBot.Network.Comunication
 
         private void ReceiveAndProcessPendingMessages()
         {
-            var receivedCount = _receivedMessageQueue.Count;
-            for (var i = 0; i < receivedCount; i++)
-            {
-                var package = _receivedMessageQueue.Dequeue();
-                Events.Raise(PackageReceivedEventArgs, this, new PackageReceivedEventArgs<IPEndPoint>(package.EndPoint, package.Data));
+            lock (_receivedMessageQueue)
+            {                
+                var receivedCount = _receivedMessageQueue.Count;
+                for (var i = 0; i < receivedCount; i++)
+                {
+                    var package = _receivedMessageQueue.Dequeue();
+                    Events.Raise(PackageReceivedEventArgs, this, new PackageReceivedEventArgs<IPEndPoint>(package.EndPoint, package.Data));
+                }
             }
         }
 
         private void SendPendingMessages()
         {
-            var sendCount = _sendMessageQueue.Count;
-            for (var i = 0; i < sendCount; i++)
+            lock (_sendMessageQueue)
             {
-                var pkg = _sendMessageQueue.Dequeue();
-                _listener.Send(pkg);
+                var sendCount = _sendMessageQueue.Count;
+                for (var i = 0; i < sendCount; i++)
+                {
+                    var pkg = _sendMessageQueue.Dequeue();
+                    _listener.Send(pkg);
+                }
             }
         }
 
@@ -65,10 +71,12 @@ namespace DreamBot.Network.Comunication
         {
             lock (_requestsByIp)
             {
-                foreach (var requests in _requestsByIp)
+
+                var ips = new IPAddress[_requestsByIp.Count];
+                _requestsByIp.Keys.CopyTo(ips, 0);
+                foreach (var ip in ips)
                 {
-                    var ip = requests.Key;
-                    var num = requests.Value;
+                    var num = _requestsByIp[ip];
 
                     if(num > 10 && !IsBlocked(ip))
                     {
@@ -91,18 +99,15 @@ namespace DreamBot.Network.Comunication
 
         public void Receive(IPEndPoint endPoint, byte[] message)
         {
-            //if (!IsExpectedMessage(endPoint, message))
-            //{
-            //    Logger.Log(TraceEventType.Error,  "[X] <--- Unexpected {1,-22}", message.GetType().Name);
-            //    return;
-            //}
             var ip = endPoint.Address;
             if (IsBlocked(ip)) return;
             IncrementRequestByIp(ip);
 
-            var package = new Package(endPoint, message); 
-
-            _receivedMessageQueue.Enqueue(package);
+            var package = new Package(endPoint, message);
+            lock (_receivedMessageQueue)
+            {
+                _receivedMessageQueue.Enqueue(package);
+            }
         }
 
         private void IncrementRequestByIp(IPAddress ip)
@@ -129,14 +134,6 @@ namespace DreamBot.Network.Comunication
             _blackList.Add(ip);
         }
 
-        //private bool IsExpectedMessage(IPEndPoint endpoint, Message msg)
-        //{
-        //    // TODO: penalizar
-        //    var messageType = _messageManager.GetMessageType(msg.Header.MessageId);
-
-        //    return messageType == MessageType.Request
-        //           || (messageType == MessageType.Reply) && _waitingForReply.VerifyExpected(msg.Header.BotId, msg.Header.CorrelationId);
-        //}
 
         [Conditional("DEBUG")]
         internal void Dump()

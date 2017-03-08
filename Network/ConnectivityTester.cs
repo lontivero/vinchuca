@@ -15,14 +15,14 @@ namespace DreamBot
             "208.67.222.222"
         };
         private int _nextIp;
-        private readonly TimedWorker _worker;
+        private readonly ClientWorker _worker = ClientWorker.Instance;
         public EventHandler<EventArgs> OnConnectivityStatusChanged;
  
         public ConnectivityTester()
         {
-            _worker = new TimedWorker();
+//            _worker = new TimedWorker();
             _worker.QueueForever(TestInternetAccess, TimeSpan.FromSeconds(5));
-            _worker.Start();
+//            _worker.Start();
         }
 
         public bool IsConnected

@@ -59,10 +59,13 @@ namespace DreamBot.Workers
 
         private void Remove(ScheduledAction scheduledAction)
         {
-            var pos = _actions.BinarySearch(scheduledAction);
-            _actions.RemoveAt(pos);
+            var pos = _actions.BinarySearch(scheduledAction, ScheduledAction.Comparer);
             scheduledAction.Release();
-            if(pos==0)
+            if (pos >= 0)
+            {
+                _actions.RemoveAt(pos);
+            }
+            if (pos==0)
             {
                 _resetEvent.Set();
             }
@@ -82,7 +85,7 @@ namespace DreamBot.Workers
         {
             lock (_actions)
             {
-                var pos = _actions.BinarySearch(scheduledAction);
+                var pos = _actions.BinarySearch(scheduledAction, ScheduledAction.Comparer);
                 pos = pos >= 0 ? pos : ~pos;
                 _actions.Insert(pos, scheduledAction);
 

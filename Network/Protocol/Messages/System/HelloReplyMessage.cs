@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using DreamBot.Network.Protocol.Peers;

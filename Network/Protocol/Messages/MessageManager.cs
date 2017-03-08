@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using DreamBot.Network.Protocol.Handlers;
 using DreamBot.Network.Protocol.Peers;
+using DreamBot.Utils;
+using DreamBot.Workers;
 
 namespace DreamBot.Network.Protocol.Messages
 {
@@ -36,24 +38,48 @@ namespace DreamBot.Network.Protocol.Messages
 
         private void BotPackageReceivedEventArgs(object sender, PackageReceivedEventArgs<BotHeader> e)
         {
-            var message = DecodeMessage(e.Proto.MessageId, e.Payload);
-            LogMessaging(message, e.Proto.BotId, false);
+            var header = e.Proto;
+            var botId = header.BotId;
+            var meta = _messageIdMap[e.Proto.MessageId];
+            if (!IsExpectedMessage(header))
+            {
+                Logger.Warn(3, "[R] <--- Unexpected message from {0,-22}   {1}", meta.Type.Name, botId);
+                _peerManager.Punish(botId);
+            }
+            var message = DecodeMessage(header.MessageId, e.Payload, (BotHeader.Size + header.Padding), header.PayloadSize);
+            LogMessaging(message, botId, false);
 
-            var botMessage = new BotMessage {Header = e.Proto, Message = message};
-            ProcessMessage(botMessage);
+            var botMessage = new BotMessage { Header = header, Message = message };
+            if (!PoW.IsEnough(e.Payload, 0, header.PayloadSize + header.Padding + BotHeader.Size, meta.RequiredWork))
+            {
+                Logger.Warn(3, "[R] <--- Insufficient work for {0,-22}   {1}", meta.Type.Name, botId);
+                _peerManager.Ban(e.Proto.EndPoint);
+            }
+
+            meta.MessageHandler.Handle(botMessage);
         }
 
-        public void Register(short messageId, MessageType messageType, Type type, IMessageHandler messageHandler, bool encrypted)
+        private bool IsExpectedMessage(BotHeader header)
         {
-            var metadata = new MessageMetadata(messageId, messageType, type, messageHandler, encrypted);
+            var meta = _messageIdMap[header.MessageId];
+
+            if (meta.MessageType == MessageType.Request)
+            {
+                return true;
+            }
+            if (meta.MessageType == MessageType.Reply)
+            {
+                return _peerManager.WaitingForReply.VerifyExpected(header.EndPoint, header.CorrelationId);
+            }
+
+            return false;
+        }
+
+        public void Register(short messageId, MessageType messageType, Type type, IMessageHandler messageHandler, bool encrypted, int requiredWork)
+        {
+            var metadata = new MessageMetadata(messageId, messageType, type, messageHandler, encrypted, requiredWork);
             _messageIdMap.Add(messageId, metadata);
             _messageTypeMap.Add(type, metadata);
-        }
-
-        public void ProcessMessage(BotMessage message)
-        {
-            var metadata = _messageIdMap[message.Header.MessageId];
-            metadata.MessageHandler.Handle(message);
         }
 
         public byte[] EncodeMessage(Message message, BotIdentifier botIdentifier)
@@ -61,7 +87,7 @@ namespace DreamBot.Network.Protocol.Messages
             return message.Encode();
         }
 
-        public Message DecodeMessage(short messageId, byte[] data)
+        public Message DecodeMessage(short messageId, byte[] data, int offset, int count)
         {
             try
             {
@@ -69,7 +95,7 @@ namespace DreamBot.Network.Protocol.Messages
                 var type = messageMetadata.Type;
                 var message = (Message)Activator.CreateInstance(type);
 
-                using (var br = new BinaryReader(new MemoryStream(data)))
+                using (var br = new BinaryReader(new MemoryStream(data, offset, count)))
                 {
                     message.Decode(br);
                 }
@@ -81,12 +107,15 @@ namespace DreamBot.Network.Protocol.Messages
             }
         }
 
-        public void Send(Message message, BotIdentifier botId, ulong correlationId)
+        public void Send(Message message, BotIdentifier botId, ulong correlationId = 0, short ttl=0)
         {
-            var messageId = _messageTypeMap[message.GetType()].MessageId;
+            if (ttl < 0) return;
+
+            var meta = _messageTypeMap[message.GetType()];
             var payload = message.Encode();
             LogMessaging(message, botId, true);
-            _peerManager.Send(messageId, correlationId, 0, payload, botId);
+            ClientWorker.Instance.Queue(() =>
+                _peerManager.Send(meta.MessageId, correlationId, ttl, payload, botId, meta.RequiredWork));
         }
 
         [Conditional("DEBUG")]

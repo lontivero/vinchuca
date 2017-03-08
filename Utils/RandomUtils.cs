@@ -22,9 +22,7 @@ namespace DreamBot.Utils
 
         internal static short NextTtl()
         {
-            var buf = new byte[2];
-            Rand.NextBytes(buf);
-            return BitConverter.ToInt16(buf, 0);
+            return (short)Rand.Next(2, 6);
         }
     }
 }

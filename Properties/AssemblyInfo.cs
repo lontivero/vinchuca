@@ -20,4 +20,6 @@ using System.Runtime.InteropServices;
 [assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
 [assembly: SuppressIldasm]
 [assembly: Discardable]
+#if !DEBUG
 [assembly: Debuggable(false, false)]
+#endif

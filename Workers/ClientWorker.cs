@@ -8,8 +8,9 @@ namespace DreamBot.Workers
     {
         private readonly BackgroundWorker _backgroundWorker;
         private readonly TimedWorker _timedWorker;
+        public static readonly ClientWorker Instance = new ClientWorker();
 
-        public ClientWorker()
+        private ClientWorker()
         {
             _backgroundWorker = new BackgroundWorker();
             _timedWorker = new TimedWorker();

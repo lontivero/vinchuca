@@ -16,7 +16,7 @@ namespace DreamBot.Network.Protocol.Messages.System
             {
                 w.Write(peer.BotId.ToByteArray());
                 w.Write(peer.EndPoint.Address.GetAddressBytes());
-                w.Write(peer.EndPoint.Port);                
+                w.Write(peer.EndPoint.Port);
             }
         }
 

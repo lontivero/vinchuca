@@ -170,7 +170,7 @@ namespace DreamBot.Network.Protocol.Peers
         {
             Dumper.Dump(_peers.Values, new[] {
                 new Column<PeerInfo> { Title = "Bot ID", Width = -54, m= info => info.ToString() }, 
-                new Column<PeerInfo> { Title = "Seen",   Width = -26, m = info => info.LastSeen }, 
+                new Column<PeerInfo> { Title = "Seen",   Width = -26, m = info => info.LastSeen.ToLocalTime() }, 
                 new Column<PeerInfo> { Title = "Rep",    Width =   4, m = info => info.Reputation } 
             });
         }

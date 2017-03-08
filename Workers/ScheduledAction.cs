@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using DreamBot.System;
 using DreamBot.Utils;
 
@@ -7,6 +8,7 @@ namespace DreamBot.Workers
 {
     internal class ScheduledAction : IComparable<ScheduledAction>
     {
+        public static readonly IComparer<ScheduledAction> Comparer = new ScheduleActionsComparer();
         private static readonly Queue<ScheduledAction> Pool = new Queue<ScheduledAction>();
         public Action Action { get; private set; }
         public TimeSpan Interval { get; private set; }
@@ -43,6 +45,14 @@ namespace DreamBot.Workers
         public void Release()
         {
             Pool.Enqueue(this);
+        }
+    }
+
+    class ScheduleActionsComparer : IComparer<ScheduledAction>
+    {
+        public int Compare(ScheduledAction x, ScheduledAction y)
+        {
+            return x.CompareTo(y);
         }
     }
 }

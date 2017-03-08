@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using DreamBot.Network.Protocol.Messages;
 using DreamBot.Network.Protocol.Messages.System;
 using DreamBot.Network.Protocol.Peers;
@@ -20,7 +21,6 @@ namespace DreamBot.Network.Protocol.Handlers
         {
             var msg = botMessage.Message as HelloMessage;
             var endpoint = botMessage.Header.EndPoint;
-
             if (_peerList.TryRegister(new PeerInfo(botMessage.Header.BotId, endpoint)))
             {
                 var endpoints = _peerList.GetPeersEndPoint();
