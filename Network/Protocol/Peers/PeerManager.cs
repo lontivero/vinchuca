@@ -46,6 +46,7 @@ namespace DreamBot.Network.Protocol.Peers
         private void PackageReceivedEventArgs(object sender, PackageReceivedEventArgs<IPEndPoint> e)
         {
             var data = e.Payload;
+            var count = e.Count;
 
             //var now = new TimeSpan(DateTime.UtcNow.Ticks);
             //var minutes = (long)now.TotalMinutes;
@@ -65,7 +66,7 @@ namespace DreamBot.Network.Protocol.Peers
             botHeader.EndPoint = e.Proto;
             _peerList.UpdatePeer(botHeader.BotId);
 
-            var args = new PackageReceivedEventArgs<BotHeader>(botHeader, data);
+            var args = new PackageReceivedEventArgs<BotHeader>(botHeader, data, count);
             Events.Raise(BotPackageReceivedEventArgs, this, args);
         }
 
@@ -79,7 +80,7 @@ namespace DreamBot.Network.Protocol.Peers
             _communicationManager.BlockIp(endpoint.Address);
         }
 
-        private bool IsValidHeader(BotHeader botHeader)
+        private static bool IsValidHeader(BotHeader botHeader)
         {
             return !(botHeader.Padding < 2 || botHeader.Padding > 128
                     || botHeader.MessageId < 0 || botHeader.MessageId > 4
@@ -131,7 +132,7 @@ namespace DreamBot.Network.Protocol.Peers
             _communicationManager.Send(endPoint, message);
             if (correlationId == 0)
             {
-                WaitingForReply.Add(new Package(endPoint, message), header.CorrelationId);
+                WaitingForReply.Add(new Package(endPoint, message, message.Length), header.CorrelationId);
             }
         }
 

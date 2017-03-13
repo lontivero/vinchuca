@@ -50,7 +50,7 @@ namespace DreamBot.Network.Comunication
                 for (var i = 0; i < receivedCount; i++)
                 {
                     var package = _receivedMessageQueue.Dequeue();
-                    Events.Raise(PackageReceivedEventArgs, this, new PackageReceivedEventArgs<IPEndPoint>(package.EndPoint, package.Data));
+                    Events.Raise(PackageReceivedEventArgs, this, new PackageReceivedEventArgs<IPEndPoint>(package.EndPoint, package.Data, package.Count));
                 }
             }
         }
@@ -93,18 +93,18 @@ namespace DreamBot.Network.Comunication
         {
             lock (_sendMessageQueue)
             {
-                var package = new Package(endPoint, message); 
+                var package = new Package(endPoint, message, message.Length); 
                 _sendMessageQueue.Enqueue(package);
             }
         }
 
-        public void Receive(IPEndPoint endPoint, byte[] message)
+        public void Receive(IPEndPoint endPoint, byte[] message, int count)
         {
             var ip = endPoint.Address;
             if (IsBlocked(ip)) return;
             IncrementRequestByIp(ip);
 
-            var package = new Package(endPoint, message);
+            var package = new Package(endPoint, message, count);
             lock (_receivedMessageQueue)
             {
                 _receivedMessageQueue.Enqueue(package);

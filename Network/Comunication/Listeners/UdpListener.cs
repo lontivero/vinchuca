@@ -39,7 +39,8 @@ namespace DreamBot.Network.Listeners
         protected override void Notify(SocketAsyncEventArgs saea)
         {
             var endPoint = saea.RemoteEndPoint as IPEndPoint;
-            Events.Raise(UdpPacketReceived, this, new UdpPacketReceivedEventArgs(endPoint, saea.Buffer));
+            var received = saea.BytesTransferred;
+            Events.Raise(UdpPacketReceived, this, new UdpPacketReceivedEventArgs(endPoint, saea.Buffer, received));
         }
     }
 }

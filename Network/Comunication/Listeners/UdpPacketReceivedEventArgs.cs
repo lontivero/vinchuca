@@ -7,11 +7,13 @@ namespace DreamBot.Network.Listeners
     {
         private readonly IPEndPoint _endPoint;
         private readonly byte[] _data;
+        private readonly int _bytesReceived;
 
-        public UdpPacketReceivedEventArgs(IPEndPoint endPoint, byte[] data)
+        public UdpPacketReceivedEventArgs(IPEndPoint endPoint, byte[] data, int bytesReceived)
         {
             _endPoint = endPoint;
             _data = data;
+            _bytesReceived = bytesReceived;
         }
 
         public IPEndPoint EndPoint
@@ -22,6 +24,11 @@ namespace DreamBot.Network.Listeners
         public byte[] Data
         {
             get { return _data; }
+        }
+
+        public int BytesReceived
+        {
+            get { return _bytesReceived; }
         }
     }
 }

@@ -26,7 +26,7 @@ namespace DreamBot.Network.Comunication.Listeners
 
             var saea = SaeaPool.Take();
             saea.Completed += IOSendCompleted;
-            saea.SetBuffer(package.Data, 0, package.Data.Length);
+            saea.SetBuffer(package.Data, 0, package.Count);
             saea.RemoteEndPoint = package.EndPoint;
             var async = Listener.SendToAsync(saea);
 

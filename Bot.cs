@@ -228,7 +228,7 @@ namespace DreamBot
 
         private void EnqueueMessage(object sender, UdpPacketReceivedEventArgs e)
         {
-            _communicationManager.Receive(e.EndPoint, e.Data);
+            _communicationManager.Receive(e.EndPoint, e.Data, e.BytesReceived);
         }
 
         private void OnConnectivityStatusChanged(object sender, EventArgs eventArgs)

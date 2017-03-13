@@ -13,11 +13,13 @@ namespace DreamBot.Network.Protocol.Messages
     {
         public T Proto { get; set; }
         public byte[] Payload { get; set; }
+        public int Count { get; set; }
 
-        public PackageReceivedEventArgs(T proto, byte[] payload)
+        public PackageReceivedEventArgs(T proto, byte[] payload, int count)
         {
             Proto = proto;
             Payload = payload;
+            Count = count;
         }
     }
 

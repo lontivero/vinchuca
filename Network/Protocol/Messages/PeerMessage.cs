@@ -6,9 +6,11 @@ namespace DreamBot.Network.Protocol.Messages
     {
         public IPEndPoint EndPoint { get; private set; }
         public byte[] Data { get; private set; }
+        public int Count { get; private set; }
 
-        public Package(IPEndPoint endPoint, byte[] data)
+        public Package(IPEndPoint endPoint, byte[] data, int count)
         {
+            Count = count;
             EndPoint = endPoint;
             Data = data;
         }
