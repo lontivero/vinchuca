@@ -35,7 +35,8 @@ namespace DreamBot
             IndentSize = 2;
             var originalColor = Console.ForegroundColor;
             Console.ForegroundColor = GetEventColor(eventType, originalColor);
-            base.TraceEvent(eventCache, source, eventType, id, format, args);
+            Console.Write("{0} {1}: ", source, eventType);
+            Console.WriteLine(format, args);
             Console.ForegroundColor = originalColor;
         }
  
