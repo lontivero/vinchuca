@@ -51,7 +51,7 @@ namespace DreamBot.Network.Protocol.Peers
             var ip = endpoint.Address;
             var botId = peerInfo.BotId;
 
-            if (botId.Equals(Bot.BotId))
+            if (botId.Equals(BotIdentifier.Id))
             {
                 Logger.Verbose("failed attempt for auto-adding");
                 return false;
