@@ -76,10 +76,10 @@ namespace DreamBot.Network.Protocol.Messages
             return false;
         }
 
-        public void Register(short messageId, MessageType messageType, Type type, IMessageHandler messageHandler, bool encrypted, int requiredWork)
+        public void Register(MessageCode messageId, MessageType messageType, Type type, IMessageHandler messageHandler, bool encrypted, int requiredWork)
         {
             var metadata = new MessageMetadata(messageId, messageType, type, messageHandler, encrypted, requiredWork);
-            _messageIdMap.Add(messageId, metadata);
+            _messageIdMap.Add((short)messageId, metadata);
             _messageTypeMap.Add(type, metadata);
         }
 
@@ -116,7 +116,7 @@ namespace DreamBot.Network.Protocol.Messages
             var payload = message.Encode();
             LogMessaging(message, botId, true);
             ClientWorker.Instance.Queue(() =>
-                _peerManager.Send(meta.MessageId, correlationId, ttl, payload, botId, meta.RequiredWork));
+                _peerManager.Send((short)meta.MessageId, correlationId, ttl, payload, botId, meta.RequiredWork));
         }
 
         [Conditional("DEBUG")]

