@@ -14,6 +14,7 @@ namespace DreamBot.Network.Protocol.Peers
     {
         private readonly IWorkScheduler _worker;
         private readonly Dictionary<BotIdentifier, PeerInfo> _peers;
+        private static readonly Log Logger = new Log(new TraceSource("List-Manager", SourceLevels.Verbose));
 
         public EventHandler<BrokenBotDetectedEventArgs> BrokenBotDetected;
         public EventHandler<DesparateModeActivatedEventArgs> DesparadoModeActivated;
@@ -32,7 +33,7 @@ namespace DreamBot.Network.Protocol.Peers
 
         private void Check()
         {
-            Logger.Info(2, "Checking peer list");
+            Logger.Info("Checking peer list");
             if (!IsCritical) return;
 
             var bots = new List<PeerInfo>(_peers.Values).ConvertAll(pi => pi.BotId).ToArray();
@@ -52,13 +53,13 @@ namespace DreamBot.Network.Protocol.Peers
 
             if (botId.Equals(Bot.BotId))
             {
-                Logger.Verbose(2, "failed attempt for auto-adding");
+                Logger.Verbose("failed attempt for auto-adding");
                 return false;
             }
 
             if (endpoint.Port <= 30000 || endpoint.Port >= 50000)
             {
-                Logger.Verbose(2, "failed out-of-range port number ({0}). ", endpoint.Port);
+                Logger.Verbose("failed out-of-range port number ({0}). ", endpoint.Port);
                 return false;
             }
 #if !DEBUG
@@ -74,7 +75,7 @@ namespace DreamBot.Network.Protocol.Peers
 #endif
             if (_peers.ContainsKey(peerInfo.BotId))
             {
-                Logger.Verbose(2, "bot with same ID already exists. Touching it.");
+                Logger.Verbose("bot with same ID already exists. Touching it.");
                 var peer = _peers[botId];
                 peer.EndPoint = endpoint;
                 peer.Touch();
@@ -87,7 +88,7 @@ namespace DreamBot.Network.Protocol.Peers
             }
 
             _peers.Add(botId, peerInfo);
-            Logger.Verbose(2, "{0} added", peerInfo);
+            Logger.Verbose("{0} added", peerInfo);
             return true;
         }
 

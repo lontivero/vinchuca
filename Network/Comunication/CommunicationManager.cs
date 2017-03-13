@@ -18,6 +18,7 @@ namespace DreamBot.Network.Comunication
         private readonly Queue<Package> _sendMessageQueue;
         private readonly List<IPAddress> _blackList; 
         private readonly Dictionary<IPAddress, int> _requestsByIp;
+        private static readonly Log Logger = new Log(new TraceSource("Comm-Manager", SourceLevels.Verbose));
 
         public EventHandler<PackageReceivedEventArgs<IPEndPoint>> PackageReceivedEventArgs;
 
@@ -44,7 +45,7 @@ namespace DreamBot.Network.Comunication
         private void ReceiveAndProcessPendingMessages()
         {
             lock (_receivedMessageQueue)
-            {                
+            {
                 var receivedCount = _receivedMessageQueue.Count;
                 for (var i = 0; i < receivedCount; i++)
                 {
@@ -130,7 +131,7 @@ namespace DreamBot.Network.Comunication
 
         public void BlockIp(IPAddress ip)
         {
-            Logger.Verbose(1, "Blocking IP {0}", ip);
+            Logger.Verbose("Blocking IP {0}", ip);
             _blackList.Add(ip);
         }
 

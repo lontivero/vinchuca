@@ -26,6 +26,7 @@ namespace DreamBot.Network.Protocol.Messages
         private readonly PeerManager _peerManager;
         private readonly IDictionary<short, MessageMetadata> _messageIdMap;
         private readonly IDictionary<Type, MessageMetadata> _messageTypeMap;
+        private static readonly Log Logger = new Log(new TraceSource("Mesg-Manager", SourceLevels.Verbose));
 
         public MessageManager(PeerManager peerManager)
         {
@@ -43,7 +44,7 @@ namespace DreamBot.Network.Protocol.Messages
             var meta = _messageIdMap[e.Proto.MessageId];
             if (!IsExpectedMessage(header))
             {
-                Logger.Warn(3, "[R] <--- Unexpected message from {0,-22}   {1}", meta.Type.Name, botId);
+                Logger.Warn("[R] <--- Unexpected message from {0,-22}   {1}", meta.Type.Name, botId);
                 _peerManager.Punish(botId);
             }
             var message = DecodeMessage(header.MessageId, e.Payload, (BotHeader.Size + header.Padding), header.PayloadSize);
@@ -52,7 +53,7 @@ namespace DreamBot.Network.Protocol.Messages
             var botMessage = new BotMessage { Header = header, Message = message };
             if (!PoW.IsEnough(e.Payload, 0, header.PayloadSize + header.Padding + BotHeader.Size, meta.RequiredWork))
             {
-                Logger.Warn(3, "[R] <--- Insufficient work for {0,-22}   {1}", meta.Type.Name, botId);
+                Logger.Warn("[R] <--- Insufficient work for {0,-22}   {1}", meta.Type.Name, botId);
                 _peerManager.Ban(e.Proto.EndPoint);
             }
 
@@ -124,12 +125,12 @@ namespace DreamBot.Network.Protocol.Messages
             var messageType = m.GetType().Name;
             var bid = botId.ToString();
 
-            Logger.Verbose(4,  "[{0}] {1} {2,-24} {3,-5} {4} ",
-                                   sending ? "S" : "R",
-                                   sending ? "--->" : "<---",
-                                   messageType,
-                                   sending ? "to" : "from",
-                                   bid.Substring(0, Math.Min(12, bid.Length))
+            Logger.Verbose("[{0}] {1} {2,-24} {3,-5} {4} ",
+                            sending ? "S" : "R",
+                            sending ? "--->" : "<---",
+                            messageType,
+                            sending ? "to" : "from",
+                            bid.Substring(0, Math.Min(12, bid.Length))
                 );
         }
     }

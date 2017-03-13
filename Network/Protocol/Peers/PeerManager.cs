@@ -17,6 +17,7 @@ namespace DreamBot.Network.Protocol.Peers
         private readonly IWorkScheduler _worker;
         private readonly CommunicationManager _communicationManager;
         internal readonly ReplyWaitManager WaitingForReply;
+        private static readonly Log Logger = new Log(new TraceSource("Peer-Manager", SourceLevels.Verbose));
 
         public EventHandler<PackageReceivedEventArgs<BotHeader>> BotPackageReceivedEventArgs;
         private readonly PeerList _peerList;
@@ -37,7 +38,7 @@ namespace DreamBot.Network.Protocol.Peers
 
         private void BrokenBotDetected(object sender, BrokenBotDetectedEventArgs e)
         {
-            Logger.Verbose(3, "Broken Bot detected at {0}", e.PeerInfo);
+            Logger.Verbose("Broken Bot detected at {0}", e.PeerInfo);
             _communicationManager.BlockIp(e.PeerInfo.EndPoint.Address);
         }
 
@@ -93,7 +94,7 @@ namespace DreamBot.Network.Protocol.Peers
         {
             if (!_peerList.IsRegisteredBot(peerBotId) && messageId != 0)
             {
-                Logger.Verbose(3, "Cannot send message to unkown {0} bot", peerBotId);
+                Logger.Verbose("Cannot send message to unkown {0} bot", peerBotId);
                 return;
             }
             byte[] message;
@@ -125,7 +126,7 @@ namespace DreamBot.Network.Protocol.Peers
 
             var endPoint = _peerList[peerBotId];
 
-            Logger.Verbose(3, "{0}@{1} {2}", header.BotId, endPoint, header.CorrelationId);
+            Logger.Verbose("{0}@{1} {2}", header.BotId, endPoint, header.CorrelationId);
             _communicationManager.Send(endPoint, message);
             if (correlationId == 0)
             {
