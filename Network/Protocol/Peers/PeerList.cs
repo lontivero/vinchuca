@@ -26,8 +26,8 @@ namespace DreamBot.Network.Protocol.Peers
             _peers = new Dictionary<BotIdentifier, PeerInfo>();
             Load();
 
-            _worker.QueueForever(Check, TimeSpan.FromMinutes(1));
-            _worker.QueueForever(Purge, TimeSpan.FromSeconds(10));
+            _worker.QueueForever(Check, TimeSpan.FromMinutes(5));
+            _worker.QueueForever(Purge, TimeSpan.FromSeconds(15));
             _worker.QueueForever(Save, TimeSpan.FromMinutes(1));
         }
 
