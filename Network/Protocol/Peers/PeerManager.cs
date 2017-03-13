@@ -59,6 +59,7 @@ namespace DreamBot.Network.Protocol.Peers
             var botHeader = BotHeader.Decode(data);
             if(!IsValidHeader(botHeader))
             {
+                Logger.Warn("Invalid message received by bot {0} from {1}", botHeader.BotId, e.Proto);
                 _peerList.Punish(botHeader.BotId);
                 return;
             }
@@ -83,7 +84,7 @@ namespace DreamBot.Network.Protocol.Peers
         private static bool IsValidHeader(BotHeader botHeader)
         {
             return !(botHeader.Padding < 2 || botHeader.Padding > 128
-                    || botHeader.MessageId < 0 || botHeader.MessageId > 4
+                    || botHeader.MessageId < 0 
                     || botHeader.Ttl < 2 || botHeader.Ttl > 6);
         }
 

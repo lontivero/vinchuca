@@ -22,7 +22,7 @@ namespace DreamBot.Crypto
             if (!success)
             {
                 throw new InvalidMessageException(2, "No valid signature");
-            }            
+            }
         }
 
         public byte[] Sign(byte[] data, RSACryptoServiceProvider pk)

