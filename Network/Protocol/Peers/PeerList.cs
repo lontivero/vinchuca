@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Text;
 using DreamBot.Debugging;
@@ -29,7 +30,6 @@ namespace DreamBot.Network.Protocol.Peers
             _worker.QueueForever(Purge, TimeSpan.FromSeconds(10));
             _worker.QueueForever(Save, TimeSpan.FromMinutes(1));
         }
-
 
         private void Check()
         {
@@ -118,23 +118,31 @@ namespace DreamBot.Network.Protocol.Peers
             var sb = new StringBuilder();
             foreach (var peerInfo in _peers.Values)
             {
-                sb.AppendFormat("{0};", peerInfo);
+                sb.AppendLine(peerInfo.ToString());
             }
             var list = sb.ToString();
-            RegistryUtils.Write(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\list", list); 
+            File.WriteAllText("peerlist_"+ BotIdentifier.Id + ".txt", list);
+            //RegistryUtils.Write(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\list", list); 
         }
 
         public void Load()
         {
-            var text = RegistryUtils.Read(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\list");
-            var lines = text.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var line in lines)
+            //var text = RegistryUtils.Read(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\list");
+            //var lines = text.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+            try
             {
-                TryRegister(PeerInfo.Parse(line));
+                var lines = File.ReadAllLines("peerlist_" + BotIdentifier.Id + ".txt");
+
+                foreach (var line in lines)
+                {
+                    TryRegister(PeerInfo.Parse(line));
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                // ignored
             }
         }
-
 
         public void Purge()
         {
