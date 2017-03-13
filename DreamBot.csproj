@@ -56,8 +56,10 @@
     <Compile Include="Actions\WebInject\HttpClient.cs" />
     <Compile Include="Network\DnsEndPoint.cs" />
     <Compile Include="Network\Protocol\Handlers\Command\DosAttackHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\System\PingPongMessageHandler.cs" />
     <Compile Include="Network\Protocol\Messages\Command\GetSystemInfo.cs" />
     <Compile Include="Network\Protocol\Messages\Command\DosAttackMessage.cs" />
+    <Compile Include="Network\Protocol\Messages\System\PingPongMessage.cs" />
     <Compile Include="Network\Sockets.cs" />
     <Compile Include="Network\Comunication\TCP\TcpClient.cs" />
     <Compile Include="Network\Comunication\TCP\ClientEventArgs.cs" />
