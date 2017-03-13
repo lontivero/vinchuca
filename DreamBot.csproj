@@ -53,6 +53,9 @@
     <Compile Include="Actions\Socks5\SocksRequest.cs" />
     <Compile Include="Actions\Socks5\SocksTunnel.cs" />
     <Compile Include="Actions\WebInject\HttpsProxyServer.cs" />
+    <Compile Include="Crypto\Aes.cs" />
+    <Compile Include="Crypto\BigInteger.cs" />
+    <Compile Include="Crypto\DiffieHellmanKeyExchange.cs" />
     <Compile Include="Network\Comunication\TCP\TcpTunnel.cs" />
     <Compile Include="Actions\WebInject\HttpClient.cs" />
     <Compile Include="Network\DnsEndPoint.cs" />

@@ -99,6 +99,8 @@ namespace DreamBot.Network.Protocol.Peers
                 Logger.Verbose("Cannot send message to unkown {0} bot", peerBotId);
                 return;
             }
+            var peerInfo = _peerList[peerBotId];
+
             byte[] message;
             BotHeader header;
             do
@@ -126,7 +128,7 @@ namespace DreamBot.Network.Protocol.Peers
             //var xor = new Mod2(BitConverter.GetBytes(minutes));
             //xor.Encrypt(message);
 
-            var endPoint = _peerList[peerBotId];
+            var endPoint = peerInfo.EndPoint;
 
             Logger.Verbose("{0}@{1} {2}", header.BotId, endPoint, header.CorrelationId);
             _communicationManager.Send(endPoint, message);

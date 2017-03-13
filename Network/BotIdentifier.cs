@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
+using DreamBot.Crypto;
 using DreamBot.System;
 
 namespace DreamBot.Network
@@ -13,6 +14,8 @@ namespace DreamBot.Network
  
         private readonly byte[] _internal;
         public static BotIdentifier Id;
+        public static byte[] PrivateKey { get; private set; }
+        public static byte[] PublicKey { get; private set; }
 
         public BotIdentifier(byte[] data)
         {
@@ -27,6 +30,8 @@ namespace DreamBot.Network
             var md5 = MD5.Create();
             var hash = md5.ComputeHash(bytes);
             Id = new BotIdentifier(hash);
+            PrivateKey = DHKeyExchange.GetPrivateKey();
+            PublicKey = DHKeyExchange.GetPublicKey(PrivateKey);
         }
 
         public int GetPort()

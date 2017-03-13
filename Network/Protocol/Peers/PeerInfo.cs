@@ -16,7 +16,9 @@ namespace DreamBot.Network.Protocol.Peers
         public IPEndPoint EndPoint { get; set; }
         public DateTime LastSeen { get; set; }
         public int Reputation { get; private set; }
-
+        public byte[] EncryptionKey { get; internal set; }
+        public byte[] PublicKey { get; set; }
+        public bool Handshaked { get; set; }
         private TimeSpan InactiveFor
         {
             get { return DateTimeProvider.UtcNow - LastSeen; }

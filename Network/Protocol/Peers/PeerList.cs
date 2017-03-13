@@ -199,9 +199,23 @@ namespace DreamBot.Network.Protocol.Peers
             return _peers.ContainsKey(botId);
         }
 
-        public IPEndPoint this[BotIdentifier botId]
+        public PeerInfo this[BotIdentifier botId]
         {
-            get { return _peers[botId].EndPoint; }
+            get { return _peers[botId]; }
+        }
+
+        public bool TryGet(IPEndPoint endpoint, out PeerInfo peerInfo)
+        {
+            foreach (var pi in _peers.Values)
+            {
+                if (Equals(pi.EndPoint, endpoint))
+                {
+                    peerInfo = pi;
+                    return true;
+                }
+            }
+            peerInfo = null;
+            return false;
         }
     }
 

@@ -11,11 +11,14 @@ namespace DreamBot.Network.Protocol.Messages.System
         public short BotVersion { get; set; }
         public short CfgVersion { get; set; }
         public PeerInfo[] Peers { get; set; }
+        public byte[] PublicKey { get; set; }
 
         public override void EncodePayload(BinaryWriter w)
         {
             w.Write(BotVersion);
             w.Write(CfgVersion);
+            w.Write((short)PublicKey.Length);
+            w.Write(PublicKey);
             w.Write(Peers.Length);
             foreach (var peer in Peers)
             {
@@ -29,6 +32,8 @@ namespace DreamBot.Network.Protocol.Messages.System
         {
             BotVersion = br.ReadInt16();
             CfgVersion = br.ReadInt16();
+            var lenpk = br.ReadInt16();
+            PublicKey = br.ReadBytes(lenpk);
             var len = br.ReadInt32();
             var peers = new List<PeerInfo>(len);
             for (int i = 0; i < len; i++)
