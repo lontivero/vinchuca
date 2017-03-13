@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using System.Security.Cryptography;
 using DreamBot.Crypto;
 using DreamBot.Network.Comunication;
 using DreamBot.Network.Protocol.Messages;
-using DreamBot.System;
 using DreamBot.Utils;
 using DreamBot.Workers;
 
@@ -48,13 +46,11 @@ namespace DreamBot.Network.Protocol.Peers
             var data = e.Payload;
             var count = e.Count;
 
-            //var now = new TimeSpan(DateTime.UtcNow.Ticks);
-            //var minutes = (long)now.TotalMinutes;
-            //var xor = new Mod2(BitConverter.GetBytes(minutes));
-            //xor.Decrypt(data);
-
-            var rc4 = new Rc4(_botId.ToByteArray());
-            rc4.Decrypt(data);
+            PeerInfo peerInfo; 
+            if (_peerList.TryGet(e.Proto, out peerInfo) && peerInfo.EncryptionKey != null)
+            {
+                data = Aes.Decrypt(data, 0, count, peerInfo.EncryptionKey);
+            }
 
             var botHeader = BotHeader.Decode(data);
             if(!IsValidHeader(botHeader))
@@ -121,13 +117,10 @@ namespace DreamBot.Network.Protocol.Peers
                 message = BufferUtils.Concat(preambule, payload);
             } while (!PoW.IsEnough(message, 0, message.Length, metadata.RequiredWork));
 
-            var rc4 = new Rc4(peerBotId.ToByteArray());
-            rc4.Encrypt(message);
-
-            //var now = new TimeSpan(DateTime.UtcNow.Ticks);
-            //var minutes = (long)now.TotalMinutes;
-            //var xor = new Mod2(BitConverter.GetBytes(minutes));
-            //xor.Encrypt(message);
+            if (metadata.Encrypted)
+            {
+                message = Aes.Encrypt(message, 0, message.Length, peerInfo.EncryptionKey);
+            }
 
             var endPoint = peerInfo.EndPoint;
 
