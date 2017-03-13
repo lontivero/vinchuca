@@ -118,7 +118,7 @@ namespace DreamBot.Network.Protocol.Messages
             var payload = message.Encode();
             LogMessaging(message, botId, true);
             ClientWorker.Instance.Queue(() =>
-                _peerManager.Send((short)meta.MessageId, correlationId, ttl, payload, botId, meta.RequiredWork));
+                _peerManager.Send(meta, correlationId, ttl, payload, botId));
         }
 
         [Conditional("DEBUG")]

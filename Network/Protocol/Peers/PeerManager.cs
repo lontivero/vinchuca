@@ -93,9 +93,9 @@ namespace DreamBot.Network.Protocol.Peers
             WaitingForReply.PurgeTimeouts();
         }
 
-        public void Send(short messageId, ulong correlationId, short ttl, byte[] payload, BotIdentifier peerBotId, int requiredWork)
+        internal void Send(MessageMetadata metadata, ulong correlationId, short ttl, byte[] payload, BotIdentifier peerBotId)
         {
-            if (!_peerList.IsRegisteredBot(peerBotId) && messageId != 0)
+            if (!_peerList.IsRegisteredBot(peerBotId) && metadata.MessageId != MessageCode.Hello)
             {
                 Logger.Verbose("Cannot send message to unkown {0} bot", peerBotId);
                 return;
@@ -111,7 +111,7 @@ namespace DreamBot.Network.Protocol.Peers
                 {
                     CorrelationId = correlationId == 0 ? RandomUtils.NextCorrelationId() : correlationId,
                     BotId = _botId,
-                    MessageId = messageId,
+                    MessageId = (short)metadata.MessageId,
                     PayloadSize = (short) payload.Length,
                     Padding = (short) padding.Length,
                     Ttl = ttl == 0 ? RandomUtils.NextTtl() : ttl
@@ -119,7 +119,7 @@ namespace DreamBot.Network.Protocol.Peers
 
                 var preambule = BufferUtils.Concat(header.Encode(), padding);
                 message = BufferUtils.Concat(preambule, payload);
-            } while (!PoW.IsEnough(message, 0, message.Length, requiredWork));
+            } while (!PoW.IsEnough(message, 0, message.Length, metadata.RequiredWork));
 
             var rc4 = new Rc4(peerBotId.ToByteArray());
             rc4.Encrypt(message);
