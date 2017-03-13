@@ -10,7 +10,7 @@ using DreamBot.Workers;
 
 namespace DreamBot.Network.Comunication
 {
-    public class ComunicationManager : IMessageSender
+    public class CommunicationManager : IMessageSender
     {
         private readonly IMessageListener _listener;
         private readonly IWorkScheduler _worker;
@@ -21,7 +21,7 @@ namespace DreamBot.Network.Comunication
 
         public EventHandler<PackageReceivedEventArgs<IPEndPoint>> PackageReceivedEventArgs;
 
-        public ComunicationManager(IMessageListener listener, IWorkScheduler worker)
+        public CommunicationManager(IMessageListener listener, IWorkScheduler worker)
         {
             _listener = listener;
             _worker = worker;

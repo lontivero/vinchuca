@@ -73,7 +73,7 @@
     <Compile Include="DGA\Dga.cs" />
     <Compile Include="DreamBotApp.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Network\Comunication\ComunicationManager.cs" />
+    <Compile Include="Network\Comunication\CommunicationManager.cs" />
     <Compile Include="Network\ConnectivityTester.cs" />
     <Compile Include="Network\Comunication\Listeners\ListenerBase.cs" />
     <Compile Include="Network\Comunication\Listeners\NewConnectionEventArgs.cs" />

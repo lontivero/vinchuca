@@ -85,7 +85,7 @@ namespace DreamBot
             }
         }
 
-        private readonly ComunicationManager _comunicationManager;
+        private readonly CommunicationManager _communicationManager;
         private readonly IMessageListener _listener;
         private readonly IWorkScheduler _worker;
         private readonly PeerList _peerList;
@@ -110,8 +110,8 @@ namespace DreamBot
             _listener = new MessageListener(port);
             _listener.UdpPacketReceived += EnqueueMessage;
 
-            _comunicationManager = new ComunicationManager(_listener, _worker);
-            var peersManager = new PeerManager(_comunicationManager, _peerList, _worker, BotId);
+            _communicationManager = new CommunicationManager(_listener, _worker);
+            var peersManager = new PeerManager(_communicationManager, _peerList, _worker, BotId);
             _messagesManager = new MessageManager(peersManager);
 
             // Peer-to-Peer system messages
@@ -166,7 +166,7 @@ namespace DreamBot
 
         private void EnqueueMessage(object sender, UdpPacketReceivedEventArgs e)
         {
-            _comunicationManager.Receive(e.EndPoint, e.Data);
+            _communicationManager.Receive(e.EndPoint, e.Data);
         }
 
         private void OnConnectivityStatusChanged(object sender, EventArgs eventArgs)
