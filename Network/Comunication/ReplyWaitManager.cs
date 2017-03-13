@@ -33,7 +33,11 @@ namespace DreamBot.Network.Comunication
             {
                 if (_internal.ContainsKey(correlationId))
                 {
-                    return Equals(_internal[correlationId].Package.EndPoint, endPoint);
+                    if (Equals(_internal[correlationId].Package.EndPoint, endPoint))
+                    {
+                        _internal.Remove(correlationId);
+                        return true;
+                    }
                 }
             }
             return false;
