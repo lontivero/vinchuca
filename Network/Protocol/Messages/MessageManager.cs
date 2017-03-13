@@ -133,5 +133,13 @@ namespace DreamBot.Network.Protocol.Messages
                             bid.Substring(0, Math.Min(12, bid.Length))
                 );
         }
+
+        public void Broadcast(Message msg, short ttl)
+        {
+            foreach (var botId in _peerManager.GetBotIdentifiers())
+            {
+                Send(msg, botId, 0, ttl--);
+            }
+        }
     }
 }

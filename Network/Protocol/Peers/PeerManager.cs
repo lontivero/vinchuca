@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Security.Cryptography;
@@ -131,6 +132,15 @@ namespace DreamBot.Network.Protocol.Peers
             if (correlationId == 0)
             {
                 WaitingForReply.Add(new Package(endPoint, message), header.CorrelationId);
+            }
+        }
+
+        internal IEnumerable<BotIdentifier> GetBotIdentifiers()
+        {
+            foreach (var peer in _peerList)
+            {
+                if (!peer.IsLazyBot && !peer.IsUnknownBot)
+                    yield return peer.BotId;
             }
         }
     }

