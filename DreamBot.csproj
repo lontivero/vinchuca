@@ -35,7 +35,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <StartupObject>DreamBot.DreamBotApp</StartupObject>
+    <StartupObject>DreamBot.Bot</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -71,7 +71,7 @@
     <Compile Include="Crypto\Signature.cs" />
     <Compile Include="Debugging\Dumper.cs" />
     <Compile Include="DGA\Dga.cs" />
-    <Compile Include="DreamBotApp.cs" />
+    <Compile Include="Bot.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Network\Comunication\CommunicationManager.cs" />
     <Compile Include="Network\ConnectivityTester.cs" />

