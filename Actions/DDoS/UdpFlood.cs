@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace DreamBot.Actions.DDoS
+namespace Vinchuca.Actions.DDoS
 {
     class UdpFlood : Attack
     {

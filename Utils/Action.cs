@@ -1,4 +1,4 @@
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     public delegate void Action();
     public delegate TResult Func<out TResult>();

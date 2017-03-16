@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace DreamBot
+namespace Vinchuca
 {
     public class ColorConsoleTraceListener : ConsoleTraceListener
     {

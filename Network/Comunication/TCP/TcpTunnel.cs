@@ -1,4 +1,4 @@
-namespace DreamBot.Network.Comunication.TCP
+namespace Vinchuca.Network.Comunication.TCP
 {
     class TcpTunnel
     {

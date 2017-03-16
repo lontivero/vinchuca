@@ -1,7 +1,7 @@
-DreamBot
+Vinchuca
 ======
 
-DreamBot is a resilent peer-to-peer botnet agent developed in .NET for educational purposes only. It is released with some missing features and without control panel in order to prevent misuses. However, it includes several interesting features
+Vinchuca is a resilent peer-to-peer botnet agent developed in .NET for educational purposes only. It is released with some missing features and without control panel in order to prevent misuses. However, it includes several interesting features
 
 Goals
 -----
@@ -20,7 +20,7 @@ Features
 * **Https traffic tampering** it can sniff http traffic creating a fake on-the-fly certificate. 
 * **Internet connection detector** it stops if no internet access
 * **Peer-to-Peer protocol** the best part!!!
-* **Encrypted protocol communication (RC4)**
+* **Encrypted protocol communication with Diffie-Hellman key exchange handshake**
 * **Signed protocol messages** to verify botmaster sign.
 * **English-like Domain Generator Algorithm** for backup channel
 * **DDoS** 
@@ -30,14 +30,15 @@ Features
 * **WebInject** (no ready but easy thanks to Http/s traffic tampering)
 * **USB spreading**
 * **Windows Firewall open**
+* **Integrated windows backdoor**
 
 
 Development
 -----------
-DreamBot was developed in vacations and is dead since then. Anyway, you are welcome to contribute code. You can send code both as a patch or a GitHub pull request. 
+Vinchuca is only developed during vacations. Anyway, you are welcome to contribute code. You can send code both as a patch or a GitHub pull request. 
 
 Build Status
 ------------
 
-[![Build status](https://ci.appveyor.com/api/projects/status/dadcbt26mrlri8cg)](https://ci.appveyor.com/project/lontivero/dreambot)
+[![Build status](https://ci.appveyor.com/api/projects/status/dadcbt26mrlri8cg)](https://ci.appveyor.com/project/lontivero/vinchuca)
 

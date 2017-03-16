@@ -1,6 +1,6 @@
 using System;
 
-namespace DreamBot.Network
+namespace Vinchuca.Network
 {
     internal class InvalidMessageException : Exception
     {

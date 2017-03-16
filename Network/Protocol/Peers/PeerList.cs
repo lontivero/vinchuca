@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
-using DreamBot.Debugging;
-using DreamBot.Utils;
-using DreamBot.Workers;
+using Vinchuca.Debugging;
+using Vinchuca.Utils;
+using Vinchuca.Workers;
 
-namespace DreamBot.Network.Protocol.Peers
+namespace Vinchuca.Network.Protocol.Peers
 {
     public class PeerList : IEnumerable<PeerInfo>
     {

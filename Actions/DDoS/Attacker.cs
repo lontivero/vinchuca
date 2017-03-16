@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace DreamBot.Actions.DDoS
+namespace Vinchuca.Actions.DDoS
 {
     class Attacker
     {

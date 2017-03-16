@@ -1,6 +1,6 @@
 using System;
 
-namespace DreamBot.Network.Protocol.Messages
+namespace Vinchuca.Network.Protocol.Messages
 {
     public class InvalidMessage : Message
     {

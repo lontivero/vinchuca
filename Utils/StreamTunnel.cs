@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     internal class TunnelingContext
     {

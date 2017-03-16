@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DreamBot.Crypto
+namespace Vinchuca.Crypto
 {
     public class BigInteger
     {

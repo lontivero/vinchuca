@@ -1,4 +1,4 @@
-namespace DreamBot.Network.Protocol.Messages.System
+namespace Vinchuca.Network.Protocol.Messages.System
 {
     public class PingMessage : Message
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using DreamBot.System;
+using Vinchuca.System;
 
-namespace DreamBot.DGA
+namespace Vinchuca.DGA
 {
     internal class Dga
     {

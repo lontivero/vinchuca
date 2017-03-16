@@ -1,8 +1,8 @@
 using System;
 using System.Net;
-using DreamBot.System;
+using Vinchuca.System;
 
-namespace DreamBot.Network.Protocol.Peers
+namespace Vinchuca.Network.Protocol.Peers
 {
     public class PeerInfo
     {

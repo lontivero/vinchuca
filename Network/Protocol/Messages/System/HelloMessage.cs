@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using DreamBot.Crypto;
+using Vinchuca.Crypto;
 
-namespace DreamBot.Network.Protocol.Messages.System
+namespace Vinchuca.Network.Protocol.Messages.System
 {
     public class HelloMessage : Message
     {

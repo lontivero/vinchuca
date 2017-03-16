@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace DreamBot.Network.Comunication
+namespace Vinchuca.Network.Comunication
 {
     public interface IMessageSender
     {

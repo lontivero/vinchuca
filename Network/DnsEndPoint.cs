@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 
-namespace DreamBot.Network
+namespace Vinchuca.Network
 {
 	public class DnsEndPoint : EndPoint
 	{

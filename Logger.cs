@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace DreamBot
+namespace Vinchuca
 {
     [Remove]
     public class Log

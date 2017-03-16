@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using DreamBot.Network.Protocol.Peers;
+using Vinchuca.Network.Protocol.Peers;
 
-namespace DreamBot.Network.Protocol.Messages.System
+namespace Vinchuca.Network.Protocol.Messages.System
 {
     public class HelloReplyMessage : Message
     {

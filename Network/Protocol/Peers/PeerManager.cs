@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using DreamBot.Crypto;
-using DreamBot.Network.Comunication;
-using DreamBot.Network.Protocol.Messages;
-using DreamBot.Utils;
-using DreamBot.Workers;
+using Vinchuca.Crypto;
+using Vinchuca.Network.Comunication;
+using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Utils;
+using Vinchuca.Workers;
 
-namespace DreamBot.Network.Protocol.Peers
+namespace Vinchuca.Network.Protocol.Peers
 {
     public class PeerManager
     {

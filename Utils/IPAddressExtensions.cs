@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     public static class IPAddressUtils
     {

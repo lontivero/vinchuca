@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Net;
-using DreamBot.Network.Protocol.Messages;
-using DreamBot.System;
+using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.System;
 
-namespace DreamBot.Network.Comunication
+namespace Vinchuca.Network.Comunication
 {
     class ReplyWaitManager 
     {

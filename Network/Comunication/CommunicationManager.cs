@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using DreamBot.Debugging;
-using DreamBot.Network.Comunication.Listeners;
-using DreamBot.Network.Protocol.Messages;
-using DreamBot.Utils;
-using DreamBot.Workers;
+using Vinchuca.Debugging;
+using Vinchuca.Network.Comunication.Listeners;
+using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Utils;
+using Vinchuca.Workers;
 
-namespace DreamBot.Network.Comunication
+namespace Vinchuca.Network.Comunication
 {
     public class CommunicationManager : IMessageSender
     {

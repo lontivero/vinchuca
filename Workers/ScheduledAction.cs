@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
-using DreamBot.System;
-using DreamBot.Utils;
+using Vinchuca.System;
+using Vinchuca.Utils;
 
-namespace DreamBot.Workers
+namespace Vinchuca.Workers
 {
     internal class ScheduledAction : IComparable<ScheduledAction>
     {

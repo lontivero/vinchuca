@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DreamBot.Network.Comunication.TCP
+namespace Vinchuca.Network.Comunication.TCP
 {
     public class DataEventArgs : EventArgs
     {

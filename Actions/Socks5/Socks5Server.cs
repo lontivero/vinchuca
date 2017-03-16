@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using DreamBot.Network.Comunication.Listeners;
-using DreamBot.Network.Comunication.TCP;
-using DreamBot.Network.Listeners;
+using Vinchuca.Network.Comunication.Listeners;
+using Vinchuca.Network.Comunication.TCP;
+using Vinchuca.Network.Listeners;
 
-namespace DreamBot.Actions.Socks5
+namespace Vinchuca.Actions.Socks5
 {
     public class Socks5Server
     {

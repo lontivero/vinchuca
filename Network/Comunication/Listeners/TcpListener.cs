@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Sockets;
-using DreamBot.Network.Listeners;
-using DreamBot.Utils;
+using Vinchuca.Network.Listeners;
+using Vinchuca.Utils;
 
-namespace DreamBot.Network.Comunication.Listeners
+namespace Vinchuca.Network.Comunication.Listeners
 {
     public class TcpListener : ListenerBase
     {

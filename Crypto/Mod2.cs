@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace DreamBot.Crypto
+namespace Vinchuca.Crypto
 {
     class Mod2 : Cipher
     {

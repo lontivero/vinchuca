@@ -4,10 +4,10 @@ using System.Net.NetworkInformation;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using DreamBot.Network;
-using DreamBot.Utils;
+using Vinchuca.Network;
+using Vinchuca.Utils;
 
-namespace DreamBot.System
+namespace Vinchuca.System
 {
 
     static class SystemInfo

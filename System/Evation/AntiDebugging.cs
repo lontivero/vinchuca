@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using DreamBot.Workers;
+using Vinchuca.Workers;
 
-namespace DreamBot.System.Evation
+namespace Vinchuca.System.Evation
 {
     static class AntiDebugging
     {

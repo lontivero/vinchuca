@@ -1,6 +1,6 @@
-using DreamBot.Network.Protocol.Messages;
+using Vinchuca.Network.Protocol.Messages;
 
-namespace DreamBot.Network.Protocol.Handlers
+namespace Vinchuca.Network.Protocol.Handlers
 {
     public interface IMessageHandler
     {

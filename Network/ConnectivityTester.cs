@@ -1,8 +1,8 @@
 using System;
 using System.Net.NetworkInformation;
-using DreamBot.Workers;
+using Vinchuca.Workers;
 
-namespace DreamBot
+namespace Vinchuca
 {
     internal class ConnectivityTester
     {

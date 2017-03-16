@@ -1,7 +1,7 @@
 ﻿using System;
-using DreamBot.Actions.Socks5;
+using Vinchuca.Actions.Socks5;
 
-namespace DreamBot.Network.Comunication.TCP
+namespace Vinchuca.Network.Comunication.TCP
 {
     public class ClientEventArgs : EventArgs
     {

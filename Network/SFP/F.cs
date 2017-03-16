@@ -1,4 +1,4 @@
-﻿namespace DreamBot.Network.SFP
+﻿namespace Vinchuca.Network.SFP
 {
     class F
     {

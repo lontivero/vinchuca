@@ -1,7 +1,7 @@
-﻿using DreamBot.Network.Protocol.Messages;
-using DreamBot.Network.Protocol.Peers;
+﻿using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Network.Protocol.Peers;
 
-namespace DreamBot.Network.Protocol.Handlers
+namespace Vinchuca.Network.Protocol.Handlers
 {
     public class InvalidMessageHandler : IMessageHandler
     {

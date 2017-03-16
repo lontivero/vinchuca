@@ -1,7 +1,7 @@
 using System.Threading;
-using DreamBot.Utils;
+using Vinchuca.Utils;
 
-namespace DreamBot.Workers
+namespace Vinchuca.Workers
 {
     internal class BackgroundWorker : IWorker
     {

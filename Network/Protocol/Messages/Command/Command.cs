@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using DreamBot.Crypto;
+using Vinchuca.Crypto;
 
-namespace DreamBot.Network.Protocol.Messages.Command
+namespace Vinchuca.Network.Protocol.Messages.Command
 {
     class CommandMessage : Message
     {

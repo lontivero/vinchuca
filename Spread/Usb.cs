@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using DreamBot.Workers;
+using Vinchuca.Workers;
 
-namespace DreamBot.Spread
+namespace Vinchuca.Spread
 {
     class Usb
     {

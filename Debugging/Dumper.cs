@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using DreamBot.Utils;
+using Vinchuca.Utils;
 
-namespace DreamBot.Debugging
+namespace Vinchuca.Debugging
 {
     internal class Column<T>
     {

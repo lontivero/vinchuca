@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace DreamBot.Network.Listeners
+namespace Vinchuca.Network.Listeners
 {
     public class UdpPacketReceivedEventArgs : EventArgs
     {

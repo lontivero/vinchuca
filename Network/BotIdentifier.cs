@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
-using DreamBot.Crypto;
-using DreamBot.System;
+using Vinchuca.Crypto;
+using Vinchuca.System;
 
-namespace DreamBot.Network
+namespace Vinchuca.Network
 {
     public class BotIdentifier
     {

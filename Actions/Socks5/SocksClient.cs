@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
-using DreamBot.Network.Comunication.TCP;
-using DreamBot.Utils;
+using Vinchuca.Network.Comunication.TCP;
+using Vinchuca.Utils;
 
-namespace DreamBot.Actions.Socks5
+namespace Vinchuca.Actions.Socks5
 {
     public class SocksClient
     {

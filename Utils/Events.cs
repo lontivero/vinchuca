@@ -1,6 +1,6 @@
 using System;
 
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     internal static class Events
     {

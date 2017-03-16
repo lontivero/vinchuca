@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DreamBot.Network.Protocol.Peers
+namespace Vinchuca.Network.Protocol.Peers
 {
     public class DesparateModeActivatedEventArgs : EventArgs
     {

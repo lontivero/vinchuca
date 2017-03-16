@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace DreamBot.Crypto
+namespace Vinchuca.Crypto
 {
     static class DHKeyExchange
     {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace DreamBot.System
+namespace Vinchuca.System
 {
     static class NativeMethods
     {

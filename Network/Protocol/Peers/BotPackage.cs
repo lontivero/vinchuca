@@ -1,6 +1,6 @@
-﻿using DreamBot.Network.Protocol.Messages;
+﻿using Vinchuca.Network.Protocol.Messages;
 
-namespace DreamBot.Network.Protocol.Peers
+namespace Vinchuca.Network.Protocol.Peers
 {
     class BotPackage
     {

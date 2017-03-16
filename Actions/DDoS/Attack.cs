@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace DreamBot.Actions.DDoS
+namespace Vinchuca.Actions.DDoS
 {
     abstract class Attack
     {

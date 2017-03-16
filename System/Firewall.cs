@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace DreamBot.System
+namespace Vinchuca.System
 {
     static class Firewall
     {
@@ -16,7 +16,7 @@ namespace DreamBot.System
             };
 
             action.Start();
-            action.WaitForExit();
+            action.WaitForExit(5 * 1000);
         }
     }
 }

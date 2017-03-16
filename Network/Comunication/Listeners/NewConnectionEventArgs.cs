@@ -1,7 +1,7 @@
 using System;
 using System.Net.Sockets;
 
-namespace DreamBot.Network.Listeners
+namespace Vinchuca.Network.Listeners
 {
     internal class NewConnectionEventArgs : EventArgs
     {

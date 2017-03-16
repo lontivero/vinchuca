@@ -2,7 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 
-namespace DreamBot.Crypto
+namespace Vinchuca.Crypto
 {
     static class RsaUtils
     {

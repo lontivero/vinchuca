@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography;
-using DreamBot.Network;
-using DreamBot.Utils;
+using Vinchuca.Network;
+using Vinchuca.Utils;
 
-namespace DreamBot.Crypto
+namespace Vinchuca.Crypto
 {
     class Signature
     {

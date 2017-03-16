@@ -1,7 +1,7 @@
-﻿using DreamBot.System;
+﻿using Vinchuca.System;
 using Microsoft.Win32;
 
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     public class RegistryUtils
     {
@@ -55,5 +55,15 @@ namespace DreamBot.Utils
                 return "" + regKey.GetValue(kval);
             }
         }
+
+        public static string[] ListSubKeys(string key)
+        {
+            string kval;
+            using (var regKey = OpenKey(key, false, out kval))
+            {
+                return regKey.GetSubKeyNames();
+            }
+        }
+
     }
 }

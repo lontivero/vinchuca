@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     internal class BlockingPool<T>
     {

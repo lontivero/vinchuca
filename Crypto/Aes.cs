@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DreamBot.Crypto
+namespace Vinchuca.Crypto
 {
     class Aes
     {

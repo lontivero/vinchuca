@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using DreamBot.Network.Protocol.Handlers;
-using DreamBot.Network.Protocol.Peers;
-using DreamBot.Utils;
-using DreamBot.Workers;
+using Vinchuca.Network.Protocol.Handlers;
+using Vinchuca.Network.Protocol.Peers;
+using Vinchuca.Utils;
+using Vinchuca.Workers;
 
-namespace DreamBot.Network.Protocol.Messages
+namespace Vinchuca.Network.Protocol.Messages
 {
     public class PackageReceivedEventArgs<T> : EventArgs
     {

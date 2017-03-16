@@ -1,7 +1,7 @@
 ﻿using System;
-using DreamBot.Utils;
+using Vinchuca.Utils;
 
-namespace DreamBot.System
+namespace Vinchuca.System
 {
     public static class DateTimeProvider
     {

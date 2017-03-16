@@ -1,9 +1,9 @@
 using System;
 using System.Net.Sockets;
-using DreamBot.Network.Listeners;
-using DreamBot.Network.Protocol.Messages;
+using Vinchuca.Network.Listeners;
+using Vinchuca.Network.Protocol.Messages;
 
-namespace DreamBot.Network.Comunication.Listeners
+namespace Vinchuca.Network.Comunication.Listeners
 {
     public interface IMessageListener
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     static class Guard
     {

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 
-namespace DreamBot.System.Evation
+namespace Vinchuca.System.Evation
 {
     internal class SandboxDetection
     {

@@ -1,7 +1,7 @@
 using System.Net.Sockets;
-using DreamBot.Utils;
+using Vinchuca.Utils;
 
-namespace DreamBot.Network
+namespace Vinchuca.Network
 {
     public static class Sockets
     {

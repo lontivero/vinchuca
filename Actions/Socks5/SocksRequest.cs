@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Text;
 
-namespace DreamBot.Actions.Socks5
+namespace Vinchuca.Actions.Socks5
 {
     public class SocksRequest
     {

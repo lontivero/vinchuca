@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     static class PoW
     {

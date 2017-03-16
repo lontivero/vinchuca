@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace DreamBot.Crypto
+namespace Vinchuca.Crypto
 {
     public class Rc4 : Cipher
     {

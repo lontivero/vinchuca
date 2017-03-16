@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using DreamBot.Network.Comunication.TCP;
+using Vinchuca.Network.Comunication.TCP;
 
-namespace DreamBot.Actions.Socks5
+namespace Vinchuca.Actions.Socks5
 {
     class Socks5
     {

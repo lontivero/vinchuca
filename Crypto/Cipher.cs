@@ -1,4 +1,4 @@
-namespace DreamBot.Crypto
+namespace Vinchuca.Crypto
 {
     public abstract class Cipher
     {

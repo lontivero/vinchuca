@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using DreamBot.Network;
-using DreamBot.Network.Comunication.TCP;
-using TcpClient = DreamBot.Network.Comunication.TCP.TcpClient;
+using Vinchuca.Network;
+using Vinchuca.Network.Comunication.TCP;
+using TcpClient = Vinchuca.Network.Comunication.TCP.TcpClient;
 
-namespace DreamBot.Actions.Socks5
+namespace Vinchuca.Actions.Socks5
 {
     class SocksTunnel
     {

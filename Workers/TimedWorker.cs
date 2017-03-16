@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using DreamBot.System;
-using DreamBot.Utils;
+using Vinchuca.System;
+using Vinchuca.Utils;
 
-namespace DreamBot.Workers
+namespace Vinchuca.Workers
 {
     public class TimedWorker: IWorkScheduler
     {

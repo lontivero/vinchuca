@@ -1,10 +1,10 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using DreamBot.Network.Comunication.Listeners;
-using DreamBot.Utils;
+using Vinchuca.Network.Comunication.Listeners;
+using Vinchuca.Utils;
 
-namespace DreamBot.Network.Listeners
+namespace Vinchuca.Network.Listeners
 {
     public class UdpListener : ListenerBase
     {

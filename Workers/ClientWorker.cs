@@ -1,8 +1,8 @@
 ﻿
 using System;
-using DreamBot.Utils;
+using Vinchuca.Utils;
 
-namespace DreamBot.Workers
+namespace Vinchuca.Workers
 {
     class ClientWorker : IWorker, IWorkScheduler
     {

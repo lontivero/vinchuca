@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using DreamBot.Utils;
+using Vinchuca.Utils;
 
-namespace DreamBot.Network.Comunication.TCP
+namespace Vinchuca.Network.Comunication.TCP
 {
     public class TcpClient
     {

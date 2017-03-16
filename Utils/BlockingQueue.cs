@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace DreamBot.Utils
+namespace Vinchuca.Utils
 {
     class Cell<T>
     {
