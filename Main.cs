@@ -54,13 +54,13 @@ namespace Vinchuca
             switch (key)
             {
                 case ConsoleKey.L:
-                    //agent.PeerList.Dump();
+                    agent.PeerList.Dump();
                     break;
                 case ConsoleKey.Help:
                     //Help();
                     break;
                 case ConsoleKey.C:
-                    //_peerList.Clear();
+                    //agent.PeerList.Clear();
                     break;
             }
         }
