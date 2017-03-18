@@ -19,7 +19,7 @@ namespace Vinchuca.Network.Protocol.Peers
         public byte[] EncryptionKey { get; internal set; }
         public byte[] PublicKey { get; set; }
         public bool Handshaked { get; set; }
-        private TimeSpan InactiveFor
+        internal TimeSpan InactiveFor
         {
             get { return DateTimeProvider.UtcNow - LastSeen; }
         }

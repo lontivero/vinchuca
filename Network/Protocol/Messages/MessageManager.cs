@@ -23,7 +23,12 @@ namespace Vinchuca.Network.Protocol.Messages
         }
     }
 
-    public class MessageManager
+    public interface IMessageSender
+    {
+        void Send(Message message, BotIdentifier botId, ulong correlationId = 0, short ttl=0);
+    }
+
+    public class MessageManager : IMessageSender
     {
         private readonly PeerManager _peerManager;
         private readonly IDictionary<short, MessageMetadata> _messageIdMap;

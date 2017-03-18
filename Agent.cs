@@ -20,7 +20,6 @@ namespace Vinchuca
 {
     public class Agent
     {
-        private static Agent _bot;
         private readonly CommunicationManager _communicationManager;
         private readonly IMessageListener _listener;
         private readonly IWorkScheduler _worker;
@@ -31,6 +30,11 @@ namespace Vinchuca
         private readonly HttpsProxyServer _https;
 
         private static readonly Log Logger = new Log(new TraceSource("BOT", SourceLevels.Verbose));
+
+        public PeerList PeerList
+        {
+            get { return _peerList; }
+        }
 
         public Agent(int port, BotIdentifier id)
         {
@@ -48,8 +52,9 @@ namespace Vinchuca
             _listener.UdpPacketReceived += EnqueueMessage;
 
             _communicationManager = new CommunicationManager(_listener, _worker);
-            var peersManager = new PeerManager(_communicationManager, _peerList, _worker, BotIdentifier.Id);
+            var peersManager = new PeerManager(_communicationManager, _peerList, _worker);
             _messagesManager = new MessageManager(peersManager);
+            peersManager.MessageSender = _messagesManager;
 
             RegisterMessageHandlers(peersManager);
 

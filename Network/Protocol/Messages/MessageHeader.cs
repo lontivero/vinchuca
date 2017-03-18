@@ -12,6 +12,12 @@ namespace Vinchuca.Network.Protocol.Messages
         public short Ttl { get; set; }
         public ulong CorrelationId { get; set; }
         public BotIdentifier BotId { get; set; }
+        public IPEndPoint EndPoint { get; set; }
+
+        public BotHeader()
+        {
+            BotId = BotIdentifier.Id;
+        }
 
         public byte[] Encode()
         {
@@ -42,7 +48,5 @@ namespace Vinchuca.Network.Protocol.Messages
                 };
             }
         }
-
-        public IPEndPoint EndPoint { get; set; }
     }
 }

