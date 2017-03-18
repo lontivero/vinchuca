@@ -18,6 +18,8 @@ namespace Vinchuca.Network.Protocol.Peers
         public int Reputation { get; private set; }
         public byte[] EncryptionKey { get; internal set; }
         public byte[] PublicKey { get; set; }
+        public short BotVersion { get; set; }
+        public short CfgVersion { get; set; }
         public bool Handshaked { get; set; }
         internal TimeSpan InactiveFor
         {

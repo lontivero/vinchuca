@@ -24,6 +24,8 @@ namespace Vinchuca.Network.Protocol.Handlers
             var peerInfo = _peerList[botMessage.Header.BotId];
 
             peerInfo.Handshaked = true;
+            peerInfo.BotVersion = msg.BotVersion;
+            peerInfo.CfgVersion = msg.CfgVersion;
 
             //ClientWorker.Instance.QueueOneTime(() =>
             //    _messageManager.Send(new PingMessage(), botMessage.Header.BotId), TimeSpan.FromMinutes(1));
