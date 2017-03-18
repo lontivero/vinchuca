@@ -12,14 +12,16 @@ namespace Vinchuca.Network.Protocol.Messages
 
     public enum MessageCode : short
     {
-        Hello = 0,
-        HelloReply = 1,
-        GetPeerList = 2,
-        GetPeerListReply = 3,
-        Ping = 4,
-        Pong = 5,
-        DDos = 6,
-        Backdoor = 7,
+        Syn = 0,
+        AckSyn = 1,
+        Ack = 2,
+        GetPeerList = 3,
+        GetPeerListReply = 4,
+        Ping = 5,
+        Pong = 6,
+        DDos = 7,
+        Backdoor = 8,
+        MaxValid = Backdoor,
         Unknown = 255
     }
 
@@ -47,17 +49,15 @@ namespace Vinchuca.Network.Protocol.Messages
         public MessageCode MessageId { get; private set; }
         public Type Type { get; private set; }
         public IMessageHandler MessageHandler { get; private set; }
-        public bool Encrypted { get; private set; }
         public MessageType MessageType { get; private set; }
         public int RequiredWork { get; set; }
 
-        public MessageMetadata(MessageCode messageId, MessageType messageType, Type type, IMessageHandler messageHandler, bool encrypted, int requiredWork)
+        public MessageMetadata(MessageCode messageId, MessageType messageType, Type type, IMessageHandler messageHandler, int requiredWork)
         {
             MessageId = messageId;
             Type = type;
             MessageType = messageType;
             MessageHandler = messageHandler;
-            Encrypted = encrypted;
             RequiredWork = requiredWork;
         }
     }

