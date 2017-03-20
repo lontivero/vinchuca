@@ -11,7 +11,7 @@ namespace Vinchuca
         public Log(TraceSource source)
         {
             _source = source;
-            _source.Listeners.Add(Ctl);
+//            _source.Listeners.Add(Ctl);
         }
         public void Info(string format, params object[] p)
         {

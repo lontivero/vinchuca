@@ -99,6 +99,7 @@
     <Compile Include="Network\Protocol\Peers\PeerList.cs" />
     <Compile Include="Network\SFP\F.cs" />
     <Compile Include="RemoveAttribute.cs" />
+    <Compile Include="REPL\CommandReader.cs" />
     <Compile Include="Spread\PrivilegeScalation.cs" />
     <Compile Include="System\CommandExecutor.cs" />
     <Compile Include="System\DateTimeProvider.cs" />

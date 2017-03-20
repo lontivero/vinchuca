@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Vinchuca.Network;
 using Vinchuca.Network.Protocol.Peers;
+using Vinchuca.REPL;
+using Vinchuca.Utils;
 
 namespace Vinchuca
 {
@@ -41,12 +43,15 @@ namespace Vinchuca
             agent = new Agent(listenPort, id);
             agent.Run();
             agent.Bootstrap(peers);
-            var c = Console.ReadKey(true);
-            while(c.Key != ConsoleKey.Spacebar)
-            {
-                Debug(c.Key);
-                c = Console.ReadKey(true);
-            }
+
+            var repl = new CommandLineReader();
+            repl.Run();
+            //var c = Console.ReadKey(true);
+            //while(c.Key != ConsoleKey.Spacebar)
+            //{
+            //    Debug(c.Key);
+            //    c = Console.ReadKey(true);
+            //}
         }
 
         private static void Debug(ConsoleKey key)
