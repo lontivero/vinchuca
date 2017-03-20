@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\Backdoor\Backdoor.cs" />
@@ -125,6 +126,15 @@
     <Compile Include="System\Firewall.cs" />
     <Compile Include="System\NativeMethods.cs" />
     <Compile Include="System\SystemInfo.cs" />
+    <Compile Include="Upnp\CreatePortMappingMessage.cs" />
+    <Compile Include="Upnp\Extensions.cs" />
+    <Compile Include="Upnp\IPAddressesProvider.cs" />
+    <Compile Include="Upnp\Mapping.cs" />
+    <Compile Include="Upnp\MappingException.cs" />
+    <Compile Include="Upnp\Messages.cs" />
+    <Compile Include="Upnp\SoapClient.cs" />
+    <Compile Include="Upnp\UpnpNatDevice.cs" />
+    <Compile Include="Upnp\UpnpSearcher.cs" />
     <Compile Include="Utils\Action.cs" />
     <Compile Include="Utils\BufferUtils.cs" />
     <Compile Include="Utils\IPAddressExtensions.cs" />
