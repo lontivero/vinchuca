@@ -4,7 +4,70 @@ using System.ComponentModel;
 
 namespace Vinchuca.REPL
 {
-    class CommandLine
+    public class CommandLineReader
+    {
+        private readonly CommandHistory _history;
+        private readonly CommandLine _commandLine;
+        private readonly CommandCompletion _completion;
+        public event EventHandler<CommandEventArgs> NewCommand;
+
+        public CommandLineReader()
+        {
+            _commandLine = new CommandLine();
+            _commandLine.SetPrompt("$");
+            _history = new CommandHistory(_commandLine);
+            _completion = new CommandCompletion(_commandLine);
+            Clear();
+        }
+
+        public void Clear()
+        {
+            Console.Clear();
+            Console.WriteLine(@"____   ____.__              .__                          ");
+            Console.WriteLine(@"\   \ /   /|__| ____   ____ |  |__  __ __  ____ _____    ");
+            Console.WriteLine(@" \   Y   / |  |/    \_/ ___\|  |  \|  |  \/ ___\\__  \   ");
+            Console.WriteLine(@"  \     /  |  |   |  \  \___|   Y  \  |  |  \___ / __ \_ ");
+            Console.WriteLine(@"   \___/   |__|___|  /\___  >___|  /____/ \___  >____  / ");
+            Console.WriteLine(@"                   \/     \/     \/           \/     \/  ");
+            Console.WriteLine(@"Management, debugging and control console 0.0.1");
+            Console.WriteLine();
+        }
+
+        public void Run()
+        {
+            Console.Write("$ ");
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                _commandLine.Handle(key);
+                _history.Handle(key);
+                _completion.Handle(key);
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    var cmdLine = _commandLine.Input;
+                    Console.SetCursorPosition(0, Console.CursorTop + 1);
+                    _commandLine.Reset();
+                    Console.SetCursorPosition(0, Console.CursorTop);
+                    if (NewCommand != null)
+                        NewCommand(this, new CommandEventArgs(cmdLine));
+                    Console.WriteLine();
+                    _commandLine.Prompt();
+                }
+            }
+        }
+    }
+
+    public class CommandEventArgs : EventArgs
+    {
+        public CommandEventArgs(string str)
+        {
+            Command = str;
+        }
+
+        public string Command { get; set; }
+    }
+
+    internal class CommandLine
     {
         private string _input = string.Empty;
         private int _pos;
@@ -77,6 +140,12 @@ namespace Vinchuca.REPL
             Input = string.Empty;
         }
 
+        public void Prompt()
+        {
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write("$ ");
+        }
+
         public bool Handle(ConsoleKeyInfo key)
         {
             switch (key.Key)
@@ -107,8 +176,6 @@ namespace Vinchuca.REPL
                     Position = 0;
                     break;
                 case ConsoleKey.Enter:
-                    Console.SetCursorPosition(0, Console.CursorTop + 1);
-                    Console.Write(_prompt + " ");
                     break;
                 case ConsoleKey.End:
                     Position = Input.Length;
@@ -131,49 +198,11 @@ namespace Vinchuca.REPL
     }
 
 
-    public class CommandLineReader
-    {
-        private readonly CommandHistory _history;
-        private readonly CommandLine _commandLine;
-        private readonly CommandCompletion _completion;
-
-        public CommandLineReader()
-        {
-            _commandLine = new CommandLine();
-            _commandLine.SetPrompt("$");
-            _history = new CommandHistory(_commandLine);
-            _completion = new CommandCompletion(_commandLine);
-            Console.WriteLine(@"____   ____.__              .__                          ");
-            Console.WriteLine(@"\   \ /   /|__| ____   ____ |  |__  __ __  ____ _____    ");
-            Console.WriteLine(@" \   Y   / |  |/    \_/ ___\|  |  \|  |  \/ ___\\__  \   ");
-            Console.WriteLine(@"  \     /  |  |   |  \  \___|   Y  \  |  |  \___ / __ \_ ");
-            Console.WriteLine(@"   \___/   |__|___|  /\___  >___|  /____/ \___  >____  / ");
-            Console.WriteLine(@"                   \/     \/     \/           \/     \/  ");
-            Console.WriteLine(@"Management, debugging and control console 0.0.1");
-            Console.WriteLine();
-        }
-
-        public void Run()
-        {
-            Console.Write("$ ");
-            while (true)
-            {
-                var key = Console.ReadKey(true);
-                _commandLine.Handle(key);
-                _history.Handle(key);
-                _completion.Handle(key);
-                if (key.Key == ConsoleKey.Enter)
-                {
-                    _commandLine.Reset();
-                }
-            }
-        }
-    }
-
     internal class CommandCompletion
     {
         private readonly List<string> _words;
         private readonly CommandLine _cmdLine;
+        private static readonly char[] Separators = new[] {' ', ':', '=', '@'};
 
         public CommandCompletion(CommandLine cmdLine)
         {
@@ -189,25 +218,28 @@ namespace Vinchuca.REPL
                     int ios;
                     do
                     {
-                        ios = _cmdLine.Input.LastIndexOf(" ");
+                        ios = _cmdLine.Input.LastIndexOfAny(Separators);
                     } while (ios > _cmdLine.Position);
                     var partialWord = ios < 0
                         ? _cmdLine.Input.Substring(0, _cmdLine.Position)
                         : _cmdLine.Input.Substring(ios + 1, _cmdLine.Position - ios - 1);
-
+                    var sep = ios < 0
+                        ? ""
+                        : _cmdLine.Input[ios].ToString();
                     foreach (var word in _words)
                     {
                         if (word.StartsWith(partialWord, StringComparison.OrdinalIgnoreCase))
                         {
-                            var prev = ios < 0 ? "" : _cmdLine.Input.Substring(0, ios) + " ";
+                            var prev = ios < 0 ? "" : _cmdLine.Input.Substring(0, ios) + sep;
                             var newInput = string.Format("{0}{1}", prev, word);
                             _cmdLine.SetInput(newInput);
+                            break;
                         }
                     }
                     break;
 
                 case ConsoleKey.Enter:
-                    var words = _cmdLine.Input.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                    var words = _cmdLine.Input.Split(Separators, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var word in words)
                     {
                         if (!_words.Contains(word))

