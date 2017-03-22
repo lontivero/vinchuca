@@ -36,6 +36,11 @@ namespace Vinchuca
             get { return _peerList; }
         }
 
+        public MessageManager MessagesManager
+        {
+            get { return _messagesManager; }
+        }
+
         public Agent(int port, BotIdentifier id)
         {
             BotIdentifier.Id = id;

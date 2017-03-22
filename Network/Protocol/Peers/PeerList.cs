@@ -218,6 +218,11 @@ namespace Vinchuca.Network.Protocol.Peers
             peerInfo = null;
             return false;
         }
+
+        public void Clear()
+        {
+            _peers.Clear();
+        }
     }
 
     public class BrokenBotDetectedEventArgs : EventArgs
