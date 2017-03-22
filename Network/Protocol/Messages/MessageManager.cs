@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using Vinchuca.Network.Protocol.Handlers;
 using Vinchuca.Network.Protocol.Peers;
 using Vinchuca.Utils;
