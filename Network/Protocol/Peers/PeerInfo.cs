@@ -12,7 +12,7 @@ namespace Vinchuca.Network.Protocol.Peers
             EndPoint = endpoint;
             LastSeen = DateTimeProvider.UtcNow;
         }
-        public BotIdentifier BotId { get; private set; }
+        public BotIdentifier BotId { get; internal set; }
         public IPEndPoint EndPoint { get; set; }
         public DateTime LastSeen { get; set; }
         public int Reputation { get; private set; }
