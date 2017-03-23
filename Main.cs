@@ -4,7 +4,6 @@ using Mono.Options;
 using Vinchuca.Network;
 using Vinchuca.Network.Protocol.Peers;
 using Vinchuca.REPL;
-using Vinchuca.Utils;
 
 namespace Vinchuca
 {

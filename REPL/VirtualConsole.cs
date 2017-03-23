@@ -117,7 +117,7 @@ namespace Vinchuca.REPL
 
         private void ScrollUp()
         {
-            Array.Copy(_buffer, Console.BufferWidth, _buffer, 0, _buffer.Length - Console.BufferWidth);
+            Buffer.BlockCopy(_buffer, sizeof(char)*Console.BufferWidth, _buffer, 0, sizeof(char)*(_buffer.Length - Console.BufferWidth));
             Array.Clear(_buffer, _buffer.Length - Console.BufferWidth, Console.BufferWidth);
             _bufferPos -= Console.BufferWidth;
             Redraw();
