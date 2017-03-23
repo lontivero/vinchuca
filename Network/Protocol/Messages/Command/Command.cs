@@ -1,31 +1,34 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Security.Cryptography;
 using Vinchuca.Crypto;
-using Vinchuca.REPL;
 
 namespace Vinchuca.Network.Protocol.Messages.Command
 {
     class CommandMessage : Message
     {
         public Guid Nonce { get; set; }
+        private byte[] _signedPayload;
 
         public override byte[] Encode()
         {
-            var payload = base.Encode();
-            var signer = new Signature();
-            var signedPayload = signer.Sign(payload, GetPrivateKey());
-            return signedPayload;
+            if (_signedPayload == null)
+            {
+                var payload = base.Encode();
+                var signer = new Signature();
+                _signedPayload = signer.Sign(payload, GetPrivateKey());
+                return _signedPayload;
+            }
+            return _signedPayload;
         }
 
         public override void Decode(BinaryReader br)
         {
             base.Decode(br);
             br.BaseStream.Seek(0, SeekOrigin.Begin);
-            var signedPayload = br.ReadBytes(4 * 1024);
+            _signedPayload = br.ReadBytes(4 * 1024);
             var signer = new Signature();
-            signer.Verify(signedPayload);
+            signer.Verify(_signedPayload);
         }
 
         //public void test()
