@@ -1,9 +1,14 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Vinchuca.Actions.DDoS
 {
     class Attacker
     {
+        public static readonly Dictionary<ulong, Attacker> Attackers = new Dictionary<ulong, Attacker>();
+        public static readonly Log Logger = new Log(new TraceSource("DDoS-Attacker", SourceLevels.Verbose));
+
         private readonly BackgroundWorker[] _threads;
 
         public Attacker(int threadCount, Attack attack)

