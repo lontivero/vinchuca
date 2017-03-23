@@ -89,6 +89,12 @@ namespace Vinchuca.Network.Protocol.Peers
 
             _peers.Add(botId, peerInfo);
             Logger.Verbose("{0} added", peerInfo);
+
+            var unknown = BotIdentifier.Unknown;
+            if (!Equals(botId, unknown) && IsRegisteredBot(unknown) && Equals(this[unknown].EndPoint, peerInfo.EndPoint))
+            {
+                _peers.Remove(unknown);
+            }
             return true;
         }
 

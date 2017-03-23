@@ -91,7 +91,7 @@ namespace Vinchuca.Network.Protocol.Peers
 
         internal void Send(MessageMetadata metadata, ulong correlationId, short ttl, byte[] payload, BotIdentifier peerBotId)
         {
-            if (!_peerList.IsRegisteredBot(peerBotId) && metadata.MessageId != MessageCode.Syn)
+            if (!_peerList.IsRegisteredBot(peerBotId) && (metadata.MessageId != MessageCode.Syn || metadata.MessageId != MessageCode.AckSyn))
             {
                 Logger.Verbose("Cannot send message to unkown {0} bot", peerBotId);
                 return;
