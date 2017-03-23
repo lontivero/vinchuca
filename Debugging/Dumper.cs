@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Vinchuca.REPL;
 using Vinchuca.Utils;
 
 namespace Vinchuca.Debugging
@@ -15,7 +16,7 @@ namespace Vinchuca.Debugging
     internal static class Dumper
     {
         [Conditional("DEBUG")]
-        internal static void Dump<T>(IEnumerable<T> enumerable, IEnumerable<Column<T>> columns)
+        internal static void Dump<T>(VirtualConsole console, IEnumerable<T> enumerable, IEnumerable<Column<T>> columns)
         {
             var sep = "+";
             var fmt = "|";
@@ -29,9 +30,9 @@ namespace Vinchuca.Debugging
                 i++;
             }
 
-            Console.WriteLine(sep);
-            Console.WriteLine(fmt, tit.ToArray());
-            Console.WriteLine(sep);
+            console.WriteLine(sep);
+            console.WriteLine(string.Format(fmt, tit.ToArray()));
+            console.WriteLine(sep);
             foreach (var item in enumerable)
             {
                 var l = new List<object>();
@@ -39,9 +40,9 @@ namespace Vinchuca.Debugging
                 {
                     l.Add(column.m(item));
                 }
-                Console.WriteLine(fmt, l.ToArray());
+                console.WriteLine(string.Format(fmt, l.ToArray()));
             }
-            Console.WriteLine(sep);
+            console.WriteLine(sep);
         }
     }
 }

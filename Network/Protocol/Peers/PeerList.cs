@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Vinchuca.Debugging;
+using Vinchuca.REPL;
 using Vinchuca.Utils;
 using Vinchuca.Workers;
 
@@ -181,9 +182,9 @@ namespace Vinchuca.Network.Protocol.Peers
         }
 
         [Conditional("DEBUG")]
-        internal void Dump()
+        internal void Dump(VirtualConsole console)
         {
-            Dumper.Dump(_peers.Values, new[] {
+            Dumper.Dump(console, _peers.Values, new[] {
                 new Column<PeerInfo> { Title = "Bot ID",    Width = -54, m= info => info.ToString() }, 
                 new Column<PeerInfo> { Title = "Seen",      Width = -26, m = info => info.LastSeen.ToLocalTime() }, 
                 new Column<PeerInfo> { Title = "Rep",       Width =   4, m = info => info.Reputation },

@@ -5,6 +5,7 @@ using System.Net;
 using Vinchuca.Debugging;
 using Vinchuca.Network.Comunication.Listeners;
 using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.REPL;
 using Vinchuca.Utils;
 using Vinchuca.Workers;
 
@@ -137,12 +138,11 @@ namespace Vinchuca.Network.Comunication
 
 
         [Conditional("DEBUG")]
-        internal void Dump()
+        internal void Dump(VirtualConsole console)
         {
-            Dumper.Dump(_blackList, new[] {
+            Dumper.Dump(console,  _blackList, new[] {
                 new Column<IPAddress> {Title = "IP Address", Width = -40, m = info => info.ToString()}
             });
         }
-
     }
 }
