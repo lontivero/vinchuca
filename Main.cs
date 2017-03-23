@@ -71,28 +71,6 @@ namespace Vinchuca
             repl.NewCommand += (sender, eventArgs) => 
                 suite.Run(eventArgs.Command.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries));
             repl.Run();
-            //var c = Console.ReadKey(true);
-            //while(c.Key != ConsoleKey.Spacebar)
-            //{
-            //    Debug(c.Key);
-            //    c = Console.ReadKey(true);
-            //}
-        }
-
-        private static void Debug(ConsoleKey key)
-        {
-            switch (key)
-            {
-                case ConsoleKey.L:
-                    agent.PeerList.Dump();
-                    break;
-                case ConsoleKey.Help:
-                    //Help();
-                    break;
-                case ConsoleKey.C:
-                    //agent.PeerList.Clear();
-                    break;
-            }
         }
     }
 }
