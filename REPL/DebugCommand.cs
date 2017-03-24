@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mono.Options;
+using Vinchuca.Debugging;
+using Vinchuca.Network.Protocol.Peers;
 
 namespace Vinchuca.REPL
 {
@@ -44,7 +46,12 @@ namespace Vinchuca.REPL
                 var cmd = extra[0];
                 if (cmd == "get-peer-list")
                 {
-                    _agent.PeerList.Dump(_repl.Console);
+                    Dumper.Dump(_repl.Console, _agent.PeerList, new[] {
+                        new Column<PeerInfo> { Title = "Bot ID",    Width = -54, m= info => info.ToString() },
+                        new Column<PeerInfo> { Title = "Seen",      Width = -26, m = info => info.LastSeen.ToLocalTime() },
+                        new Column<PeerInfo> { Title = "Rep",       Width =   4, m = info => info.Reputation },
+                        new Column<PeerInfo> { Title = "SharedKey", Width =  10, m = info => Convert.ToBase64String(info.EncryptionKey).Substring(0, 8) }
+                    });
                 }
                 else if(cmd == "clear-peer-list")
                 {

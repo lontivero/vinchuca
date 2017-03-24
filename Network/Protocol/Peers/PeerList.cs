@@ -181,17 +181,6 @@ namespace Vinchuca.Network.Protocol.Peers
             return all;
         }
 
-        [Conditional("DEBUG")]
-        internal void Dump(VirtualConsole console)
-        {
-            Dumper.Dump(console, _peers.Values, new[] {
-                new Column<PeerInfo> { Title = "Bot ID",    Width = -54, m= info => info.ToString() }, 
-                new Column<PeerInfo> { Title = "Seen",      Width = -26, m = info => info.LastSeen.ToLocalTime() }, 
-                new Column<PeerInfo> { Title = "Rep",       Width =   4, m = info => info.Reputation },
-                new Column<PeerInfo> { Title = "SharedKey", Width =  10, m = info => Convert.ToBase64String(info.EncryptionKey).Substring(0, 8) }
-            });
-        }
-
         public IEnumerator<PeerInfo> GetEnumerator()
         {
             return _peers.Values.GetEnumerator();

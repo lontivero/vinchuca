@@ -18,21 +18,17 @@ namespace Vinchuca.Debugging
         [Conditional("DEBUG")]
         internal static void Dump<T>(VirtualConsole console, IEnumerable<T> enumerable, IEnumerable<Column<T>> columns)
         {
-            var sep = "+";
-            var fmt = "|";
+            var fmt = "";
             var tit = new List<object>();
             var i = 0;
             foreach (var column in columns)
             {
-                sep += new string('-', Math.Abs(column.Width)) + "+";
-                fmt += "{" + i + "," + column.Width + "}|";
+                fmt += "{" + i + "," + column.Width + "}";
                 tit.Add(column.Title);
                 i++;
             }
 
-            console.WriteLine(sep);
             console.WriteLine(string.Format(fmt, tit.ToArray()));
-            console.WriteLine(sep);
             foreach (var item in enumerable)
             {
                 var l = new List<object>();
@@ -42,7 +38,6 @@ namespace Vinchuca.Debugging
                 }
                 console.WriteLine(string.Format(fmt, l.ToArray()));
             }
-            console.WriteLine(sep);
         }
     }
 }
