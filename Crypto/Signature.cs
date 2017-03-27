@@ -18,7 +18,7 @@ namespace Vinchuca.Crypto
             Buffer.BlockCopy(buffer, 0, payload, 0, payloadLen);
             Buffer.BlockCopy(buffer, payloadLen, signature, 0, signatureLen);
 
-            var success = PubRsa.VerifyData(payload, CryptoConfig.MapNameToOID("SHA512"), signature);
+            var success = PubRsa.VerifyData(payload, CryptoConfig.MapNameToOID("SHA1"), signature);
             if (!success)
             {
                 throw new InvalidMessageException(2, "No valid signature");
@@ -27,7 +27,7 @@ namespace Vinchuca.Crypto
 
         public byte[] Sign(byte[] data, RSACryptoServiceProvider pk)
         {
-            var signature = pk.SignData(data, 0, data.Length, CryptoConfig.MapNameToOID("SHA512"));
+            var signature = pk.SignData(data, 0, data.Length, CryptoConfig.MapNameToOID("SHA1"));
             return BufferUtils.Concat(data, signature);
         }
     }
