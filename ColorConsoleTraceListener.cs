@@ -23,7 +23,11 @@ namespace Vinchuca
 
         public ColorConsoleTraceListener(int identLevel)
         {
+#if CONTROLLER
             _console = new VirtualConsole(22, Console.WindowHeight);
+#else
+            _console = new VirtualConsole(0, Console.WindowHeight);
+#endif
             _il = identLevel;
         }
  

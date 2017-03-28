@@ -65,7 +65,14 @@ namespace Vinchuca.Network.Protocol.Messages
                 _peerManager.Ban(e.Proto.EndPoint);
             }
 
-            meta.MessageHandler.Handle(botMessage);
+            try
+            {
+                meta.MessageHandler.Handle(botMessage);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex.ToString());
+            }
         }
 
         private bool IsExpectedMessage(BotHeader header)
@@ -150,7 +157,7 @@ namespace Vinchuca.Network.Protocol.Messages
         {
             foreach (var botId in _peerManager.GetBotIdentifiers())
             {
-                Send(msg, botId, 0, ttl--);
+                Send(msg, botId, 0, --ttl);
             }
         }
     }

