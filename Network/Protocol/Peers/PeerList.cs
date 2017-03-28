@@ -5,8 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
-using Vinchuca.Debugging;
-using Vinchuca.REPL;
 using Vinchuca.Utils;
 using Vinchuca.Workers;
 
@@ -122,13 +120,20 @@ namespace Vinchuca.Network.Protocol.Peers
 
         public void Save()
         {
-            var sb = new StringBuilder();
-            foreach (var peerInfo in _peers.Values)
+            try
             {
-                sb.AppendLine(peerInfo.ToString());
+                var sb = new StringBuilder();
+                foreach (var peerInfo in _peers.Values)
+                {
+                    sb.AppendLine(peerInfo.ToString());
+                }
+                var list = sb.ToString();
+                File.WriteAllText("peerlist_" + BotIdentifier.Id + ".txt", list);
             }
-            var list = sb.ToString();
-            File.WriteAllText("peerlist_"+ BotIdentifier.Id + ".txt", list);
+            catch
+            {
+                // ignore if something wrong happened
+            }
             //RegistryUtils.Write(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\list", list); 
         }
 
