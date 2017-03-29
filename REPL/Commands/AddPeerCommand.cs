@@ -42,8 +42,8 @@ namespace REPL.Commands
                 }
                 if (extra.Count == 0)
                 {
-                    _repl.Console.WriteLine("commands: Missing required argument `endpoint`.");
-                    _repl.Console.WriteLine("commands: Use `help add-node` for details.");
+                    Console.WriteLine("commands: Missing required argument `endpoint`.");
+                    Console.WriteLine("commands: Use `help add-node` for details.");
                     return 1;
                 }
                 foreach (var endpoint in extra)

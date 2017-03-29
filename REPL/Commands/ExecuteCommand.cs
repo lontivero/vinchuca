@@ -36,8 +36,8 @@ namespace REPL.Commands
                 }
                 if (extra.Count == 0)
                 {
-                    _repl.Console.WriteLine("commands: Missing required argument `command`.");
-                    _repl.Console.WriteLine("commands: Use `help execute` for details.");
+                    Console.WriteLine("commands: Missing required argument `command`.");
+                    Console.WriteLine("commands: Use `help execute` for details.");
                     return 1;
                 }
                 ///

@@ -40,14 +40,14 @@ namespace REPL.Commands
                 }
                 if (extra.Count == 0)
                 {
-                    _repl.Console.WriteLine("commands: Missing required argument `command`.");
-                    _repl.Console.WriteLine("commands: Use `help debug` for details.");
+                    Console.WriteLine("commands: Missing required argument `command`.");
+                    Console.WriteLine("commands: Use `help debug` for details.");
                     return 1;
                 }
                 var cmd = extra[0];
                 if (cmd == "get-peer-list")
                 {
-                    Dumper.Dump(_repl.Console, _agent.PeerList, new[] {
+                    Dumper.Dump(_agent.PeerList, new[] {
                         new Column<PeerInfo> { Title = "Bot ID",    Width = -54, m= info => info.ToString() },
                         new Column<PeerInfo> { Title = "Seen",      Width = -26, m = info => info.LastSeen.ToLocalTime() },
                         new Column<PeerInfo> { Title = "Rep",       Width =   4, m = info => info.Reputation },

@@ -8,22 +8,16 @@ namespace REPL
         private readonly CommandLine _commandLine;
         private readonly CommandCompletion _completion;
         public event EventHandler<CommandEventArgs> NewCommand;
-        private readonly VirtualConsole _virtualConsole;
 
-        public CommandLineReader(VirtualConsole console)
+        public CommandLineReader()
         {
-            _virtualConsole = console;
-            _commandLine = new CommandLine(_virtualConsole);
+            _commandLine = new CommandLine();
             _commandLine.SetPrompt("$");
             _history = new CommandHistory(_commandLine);
             _completion = new CommandCompletion(_commandLine);
             Clear();
         }
 
-        public VirtualConsole Console
-        {
-            get { return _virtualConsole; }
-        }
 
         public void AddAutocompletionWords(params string[] words)
         {
@@ -35,15 +29,15 @@ namespace REPL
 
         public void Clear()
         {
-            _virtualConsole.Clear();
-            _virtualConsole.WriteLine(@"____   ____.__              .__                          ");
-            _virtualConsole.WriteLine(@"\   \ /   /|__| ____   ____ |  |__  __ __  ____ _____    ");
-            _virtualConsole.WriteLine(@" \   Y   / |  |/    \_/ ___\|  |  \|  |  \/ ___\\__  \   ");
-            _virtualConsole.WriteLine(@"  \     /  |  |   |  \  \___|   Y  \  |  |  \___ / __ \_ ");
-            _virtualConsole.WriteLine(@"   \___/   |__|___|  /\___  >___|  /____/ \___  >____  / ");
-            _virtualConsole.WriteLine(@"                   \/     \/     \/           \/     \/  ");
-            _virtualConsole.WriteLine(@"Management, debugging and control console 0.0.1");
-            _virtualConsole.WriteLine();
+            Console.Clear();
+            Console.WriteLine(@"____   ____.__              .__                          ");
+            Console.WriteLine(@"\   \ /   /|__| ____   ____ |  |__  __ __  ____ _____    ");
+            Console.WriteLine(@" \   Y   / |  |/    \_/ ___\|  |  \|  |  \/ ___\\__  \   ");
+            Console.WriteLine(@"  \     /  |  |   |  \  \___|   Y  \  |  |  \___ / __ \_ ");
+            Console.WriteLine(@"   \___/   |__|___|  /\___  >___|  /____/ \___  >____  / ");
+            Console.WriteLine(@"                   \/     \/     \/           \/     \/  ");
+            Console.WriteLine(@"Management, debugging and control console 0.0.1");
+            Console.WriteLine();
         }
 
         public void Run()
@@ -51,21 +45,21 @@ namespace REPL
             _commandLine.Prompt();
             while (true)
             {
-                _virtualConsole.ShowCursor();
-                var key = _virtualConsole.ReadKey(true);
-                _virtualConsole.HideCursor();
+                Console.CursorVisible = true;
+                var key = Console.ReadKey(true);
+                Console.CursorVisible = false;
                 _commandLine.Handle(key);
                 _history.Handle(key);
                 _completion.Handle(key);
                 if (key.Key == ConsoleKey.Enter)
                 {
                     var cmdLine = _commandLine.Input;
-                    _virtualConsole.CursorTop++;
-                    _virtualConsole.CursorLeft=0;
-                    _virtualConsole.CursorLeft = 0;
+                    Console.CursorTop++;
+                    Console.CursorLeft=0;
+                    Console.CursorLeft = 0;
                     if (NewCommand != null)
                         NewCommand(this, new CommandEventArgs(cmdLine));
-                    _virtualConsole.Write("\n");
+                    Console.WriteLine();
                     _commandLine.Prompt();
                 }
             }

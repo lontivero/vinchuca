@@ -14,7 +14,7 @@ namespace REPL.Debugging
     internal static class Dumper
     {
         [Conditional("DEBUG")]
-        internal static void Dump<T>(VirtualConsole console, IEnumerable<T> enumerable, IEnumerable<Column<T>> columns)
+        internal static void Dump<T>(IEnumerable<T> enumerable, IEnumerable<Column<T>> columns)
         {
             var fmt = "";
             var tit = new List<object>();
@@ -26,7 +26,7 @@ namespace REPL.Debugging
                 i++;
             }
 
-            console.WriteLine(string.Format(fmt, tit.ToArray()));
+            Console.WriteLine(fmt, tit.ToArray());
             foreach (var item in enumerable)
             {
                 var l = new List<object>();
@@ -34,7 +34,7 @@ namespace REPL.Debugging
                 {
                     l.Add(column.m(item));
                 }
-                console.WriteLine(string.Format(fmt, l.ToArray()));
+                Console.WriteLine(fmt, l.ToArray());
             }
         }
     }

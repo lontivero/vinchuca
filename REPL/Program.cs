@@ -10,12 +10,11 @@ namespace REPL
     {
         static void Main(string[] args)
         {
-            var console = new VirtualConsole(0, Console.WindowHeight);
-            var repl = new CommandLineReader(console);
+            var repl = new CommandLineReader();
             var agent = new Agent(33333, BotIdentifier.Id);
             agent.Run();
 
-            var suite = new CommandSet("vicha", null, console, console) {
+            var suite = new CommandSet("vicha") {
                 "usage: COMMAND [OPTIONS]+.",
                 "Available commands are:",
                 "",

@@ -8,11 +8,9 @@ namespace REPL
         private int _pos;
         private int _cursorPos = Console.CursorLeft;
         private string _prompt;
-        private VirtualConsole _virtualConsole;
 
-        public CommandLine(VirtualConsole virtualConsole)
+        public CommandLine()
         {
-            _virtualConsole = virtualConsole;
         }
 
         public int Padding
@@ -26,7 +24,7 @@ namespace REPL
             set
             {
                 _cursorPos = value + Padding;
-                _virtualConsole.CursorLeft = _cursorPos;
+                Console.CursorLeft = _cursorPos;
             }
         }
 
@@ -57,9 +55,9 @@ namespace REPL
                         _pos = _input.Length;
 
                     CursorPosition = 0;
-                    _virtualConsole.Write(new string(' ', Console.BufferWidth-Padding-2));
+                    Console.Write(new string(' ', Console.BufferWidth-Padding-2));
                     CursorPosition = 0;
-                    _virtualConsole.Write(Input);
+                    Console.Write(Input);
                     CursorPosition = Position;
                 }
             }
@@ -83,8 +81,8 @@ namespace REPL
 
         public void Prompt()
         {
-            _virtualConsole.CursorLeft=0;
-            _virtualConsole.Write("> ");
+            Console.CursorLeft=0;
+            Console.Write("> ");
             Reset();
             CursorPosition = 0;
         }

