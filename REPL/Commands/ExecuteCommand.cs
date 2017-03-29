@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mono.Options;
+using Vinchuca;
 
-namespace Vinchuca.REPL
+namespace REPL.Commands
 {
     class ExecuteCommand : Command
     {

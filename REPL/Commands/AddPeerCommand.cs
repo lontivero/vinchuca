@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Net;
 using Mono.Options;
+using Vinchuca;
 using Vinchuca.Network;
 using Vinchuca.Network.Protocol.Messages.System;
 using Vinchuca.Network.Protocol.Peers;
 
-namespace Vinchuca.REPL
+namespace REPL.Commands
 {
     class AddNodeCommand : Command
     {

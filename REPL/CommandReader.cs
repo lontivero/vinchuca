@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vinchuca.REPL
+namespace REPL
 {
     public class CommandLineReader
     {
@@ -48,10 +48,12 @@ namespace Vinchuca.REPL
 
         public void Run()
         {
-            _virtualConsole.Write("> ");
+            _commandLine.Prompt();
             while (true)
             {
+                _virtualConsole.ShowCursor();
                 var key = _virtualConsole.ReadKey(true);
+                _virtualConsole.HideCursor();
                 _commandLine.Handle(key);
                 _history.Handle(key);
                 _completion.Handle(key);
@@ -60,7 +62,6 @@ namespace Vinchuca.REPL
                     var cmdLine = _commandLine.Input;
                     _virtualConsole.CursorTop++;
                     _virtualConsole.CursorLeft=0;
-                    _commandLine.Reset();
                     _virtualConsole.CursorLeft = 0;
                     if (NewCommand != null)
                         NewCommand(this, new CommandEventArgs(cmdLine));

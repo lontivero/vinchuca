@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mono.Options;
-using Vinchuca.Debugging;
+using REPL.Debugging;
+using Vinchuca;
 using Vinchuca.Network.Protocol.Peers;
 
-namespace Vinchuca.REPL
+namespace REPL.Commands
 {
     class DebugCommand : Command
     {

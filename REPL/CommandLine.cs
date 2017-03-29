@@ -1,6 +1,6 @@
 using System;
 
-namespace Vinchuca.REPL
+namespace REPL
 {
     internal class CommandLine
     {
@@ -85,6 +85,8 @@ namespace Vinchuca.REPL
         {
             _virtualConsole.CursorLeft=0;
             _virtualConsole.Write("> ");
+            Reset();
+            CursorPosition = 0;
         }
 
         public bool Handle(ConsoleKeyInfo key)

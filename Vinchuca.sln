@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VinchucaAgent", "VinchucaAgent.csproj", "{2292594A-DEAA-4E38-B794-ACAF9400448A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent", "Agent\Agent.csproj", "{2292594A-DEAA-4E38-B794-ACAF9400448A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REPL", "REPL\REPL.csproj", "{15794DCD-C99D-4433-9AF7-C697520EBC3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2292594A-DEAA-4E38-B794-ACAF9400448A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2292594A-DEAA-4E38-B794-ACAF9400448A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2292594A-DEAA-4E38-B794-ACAF9400448A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15794DCD-C99D-4433-9AF7-C697520EBC3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15794DCD-C99D-4433-9AF7-C697520EBC3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15794DCD-C99D-4433-9AF7-C697520EBC3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15794DCD-C99D-4433-9AF7-C697520EBC3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

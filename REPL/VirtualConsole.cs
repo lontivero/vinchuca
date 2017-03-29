@@ -1,44 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Vinchuca.REPL
+namespace REPL
 {
-    class ConsolesManager
-    {
-        public static readonly ConsolesManager Instance = new ConsolesManager();
-        private List<VirtualConsole> _consoles = new List<VirtualConsole>();
-        private int _focus = 0;
-
-        private ConsolesManager()
-        {
-        }
-
-        public void Register(VirtualConsole console)
-        {
-            _consoles.Add(console);
-        }
-
-        public void RestoreFocus()
-        {
-            var consoleFocus = _consoles[_focus];
-            consoleFocus.SetCursorPosition(consoleFocus.CursorLeft, consoleFocus.CursorTop);
-        }
-
-        public void SetFocus(VirtualConsole console)
-        {
-            var i = 0;
-            foreach (var virtualConsole in _consoles)
-            {
-                if (virtualConsole == console)
-                {
-                    _focus = i;
-                    return;
-                }
-                i++;
-            }
-        }
-    }
-
     public class VirtualConsole
     {
         private readonly int _top;
@@ -49,9 +13,8 @@ namespace Vinchuca.REPL
         public VirtualConsole(int top, int bottom)
         {
             _top = top;
-            _buffer = new char[(bottom - top) * Console.BufferWidth];
+            _buffer = new char[(bottom - top -1) * Console.BufferWidth];
             _bufferPos = 0;
-            ConsolesManager.Instance.Register(this);
         }
 
         public int CursorTop
@@ -76,9 +39,9 @@ namespace Vinchuca.REPL
 
         public void Write(string str)
         {
-            str = str.Replace("\r", "");
             foreach (var c in str)
             {
+                if (c == '\r') continue;
                 if (c == '\n')
                 {
                     _bufferPos = ((_bufferPos / Console.BufferWidth) + 1) * Console.BufferWidth;
@@ -103,11 +66,8 @@ namespace Vinchuca.REPL
         {
             lock (_sync)
             {
-                Console.CursorVisible = false;
                 Console.SetCursorPosition(0, _top);
                 Console.Write(_buffer);
-                ConsolesManager.Instance.RestoreFocus();
-                Console.CursorVisible = true;
             }
         }
 
@@ -140,6 +100,10 @@ namespace Vinchuca.REPL
         public void ShowCursor()
         {
             Console.CursorVisible = true;
+        }
+        public void HideCursor()
+        {
+            Console.CursorVisible = false;
         }
     }
 }

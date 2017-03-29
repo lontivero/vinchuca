@@ -5,10 +5,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using Mono.Options;
+using Vinchuca;
 using Vinchuca.Network;
 using Vinchuca.Network.Protocol.Messages.Command;
 
-namespace Vinchuca.REPL
+namespace REPL.Commands
 {
     class BackdoorCommand : Command
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Vinchuca.REPL
+namespace REPL
 {
     internal class CommandHistory
     {

