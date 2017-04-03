@@ -23,7 +23,6 @@ namespace Vinchuca.Network.Protocol.Peers
         {
             _worker = worker;
             _peers = new Dictionary<BotIdentifier, PeerInfo>();
-            Load();
 
             _worker.QueueForever(Check, TimeSpan.FromMinutes(5));
             _worker.QueueForever(Purge, TimeSpan.FromSeconds(15));

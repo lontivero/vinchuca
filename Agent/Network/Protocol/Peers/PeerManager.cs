@@ -27,7 +27,7 @@ namespace Vinchuca.Network.Protocol.Peers
             _communicationManager.PackageReceivedEventArgs += PackageReceivedEventArgs;
             _worker = worker;
             _peerList = peerList;
-            WaitingForReply = new ReplyWaitManager(_communicationManager);
+            WaitingForReply = new ReplyWaitManager(_communicationManager, peerList);
 
             _worker.QueueForever(Ping, TimeSpan.FromMinutes(5));
             _worker.QueueForever(PurgeTimeouts, TimeSpan.FromMinutes(15));

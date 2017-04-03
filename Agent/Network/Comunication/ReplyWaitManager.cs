@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using Vinchuca.Network.Protocol.Messages;
+using Vinchuca.Network.Protocol.Peers;
 using Vinchuca.System;
 
 namespace Vinchuca.Network.Comunication
@@ -9,13 +10,15 @@ namespace Vinchuca.Network.Comunication
     class ReplyWaitManager 
     {
         private readonly IMessageSender _messageSender;
+        private readonly PeerList _peerList;
         private readonly Dictionary<ulong, ReplyWait> _internal = new Dictionary<ulong, ReplyWait>();
         private static readonly Log Logger = new Log(new TraceSource("Retry-Mgr", SourceLevels.Verbose));
         private static readonly object LockObject = new object();
 
-        public ReplyWaitManager(IMessageSender messageSender)
+        public ReplyWaitManager(IMessageSender messageSender, PeerList peerList)
         {
             _messageSender = messageSender;
+            _peerList = peerList;
         }
 
         public void Add(Package package, ulong correlationId)
@@ -63,6 +66,11 @@ namespace Vinchuca.Network.Comunication
                     if (replyWait.Attempts++ >= 3)
                     {
                         _internal.Remove(replyWait.CorrelationId);
+                        PeerInfo peerInfo;
+                        if (_peerList.TryGet(replyWait.Package.EndPoint, out peerInfo))
+                        {
+                            _peerList.Punish(peerInfo.BotId);
+                        }
                     }
                     else
                     {
