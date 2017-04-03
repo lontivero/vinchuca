@@ -46,14 +46,13 @@ namespace Vinchuca.Utils
             return network1.Equals(network2);
         }
 
-        public static bool BehingNAT()
+        public static bool BehingNAT(IPAddress ip)
         {
-            var ip = GetLocalIPAddress();
-
             return !Equals(ip, IPAddress.None) && 
                 ( IsInRange(ip, "10.0.0.0/8")
                 || IsInRange(ip, "172.16.0.0/12")
-                || IsInRange(ip, "192.168.0.0/16"));
+                || IsInRange(ip, "192.168.0.0/16")
+                || IPAddress.IsLoopback(ip) );
         }
 
         public static IPAddress GetLocalIPAddress()

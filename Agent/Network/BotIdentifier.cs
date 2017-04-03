@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using Vinchuca.Crypto;
@@ -16,6 +17,7 @@ namespace Vinchuca.Network
         public static BotIdentifier Id;
         public static byte[] PrivateKey { get; private set; }
         public static byte[] PublicKey { get; private set; }
+        public static IPEndPoint EndPoint { get; set; }
 
         public BotIdentifier(byte[] data)
         {

