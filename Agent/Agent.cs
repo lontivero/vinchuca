@@ -53,6 +53,7 @@ namespace Vinchuca
             _worker = ClientWorker.Instance;
             _worker.QueueForever(AntiDebugging.CheckDebugger, TimeSpan.FromSeconds(1));
             _worker.QueueForever(AntiDebugging.CheckDebugging, TimeSpan.FromSeconds(0.3));
+            _worker.QueueForever(SandboxDetection.CheckSandboxed, TimeSpan.FromSeconds(1));
 
             _peerList = new PeerList(_worker);
             _peerList.DesparadoModeActivated += DesperateModeActivated;

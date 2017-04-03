@@ -1,4 +1,5 @@
-﻿using Vinchuca.System;
+﻿using System.Collections.Generic;
+using Vinchuca.System;
 using Microsoft.Win32;
 
 namespace Vinchuca.Utils
@@ -47,13 +48,19 @@ namespace Vinchuca.Utils
             }
         }
 
+        private static readonly Dictionary<string, string> RegEntries = new Dictionary<string, string>();
         public static string Read(string key)
         {
-            string kval;
-            using (var regKey = OpenKey(key, false, out kval))
+            if (!RegEntries.ContainsKey(key))
             {
-                return "" + regKey.GetValue(kval);
+                string kval;
+                using (var regKey = OpenKey(key, false, out kval))
+                {
+                    var value = (string)regKey.GetValue(kval) ?? string.Empty;
+                    RegEntries.Add(key, value);
+                }
             }
+            return RegEntries[key];
         }
 
         public static string[] ListSubKeys(string key)
