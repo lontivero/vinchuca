@@ -19,9 +19,10 @@ namespace Vinchuca.Network.Protocol.Messages
         GetPeerListReply = 4,
         Ping = 5,
         Pong = 6,
-        DDoSStart = 7,
-        DDoSStop = 8,
-        Backdoor = 9,
+        ShareFile = 7,
+        DDoSStart = 8,
+        DDoSStop = 9,
+        Backdoor = 10,
         MaxValid = Backdoor,
         Unknown = 255
     }

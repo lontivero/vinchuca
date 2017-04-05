@@ -153,7 +153,7 @@ namespace Vinchuca.Network.Protocol.Messages
                 );
         }
 
-        public void Broadcast(Message msg, short ttl)
+        public void Broadcast(Message msg, short ttl=6)
         {
             foreach (var botId in _peerManager.GetBotIdentifiers())
             {

@@ -53,7 +53,7 @@ namespace Vinchuca.Network.Protocol.Peers
 
         public static PeerInfo Parse(string line)
         {
-            var parts = line.Split(new[] {'@', ':'});
+            var parts = line.Split('@', ':');
             var id = BotIdentifier.Parse(parts[0]);
             var ip = IPAddress.Parse(parts[1]);
             var port = int.Parse(parts[2]);

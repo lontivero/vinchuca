@@ -61,6 +61,13 @@ namespace REPL.Commands
                 {
                     _agent.PeerList.Clear();
                 }
+                else if (cmd == "version")
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Agent version      : {0}", _agent.Version);
+                    Console.WriteLine("Config file version: {0}", _agent.ConfigVersion);
+                    Console.WriteLine();
+                }
                 return 0;
             }
             catch (Exception e)

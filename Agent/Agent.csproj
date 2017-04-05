@@ -63,6 +63,7 @@
     <Compile Include="Network\DnsEndPoint.cs" />
     <Compile Include="Network\Protocol\Handlers\Command\BackdoorHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\Command\DosAttackHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\System\ShareFileMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\HelloAckMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\PingPongMessageHandler.cs" />
     <Compile Include="Network\Protocol\Messages\Command\BackdoorMessage.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Network\Protocol\Peers\DesparateModeActivatedEventArgs.cs" />
     <Compile Include="Network\Protocol\Peers\PeerList.cs" />
     <Compile Include="Network\SFP\F.cs" />
+    <Compile Include="Network\Protocol\Messages\System\ShareFileMessage.cs" />
     <Compile Include="Spread\PrivilegeScalation.cs" />
     <Compile Include="System\CommandExecutor.cs" />
     <Compile Include="System\DateTimeProvider.cs" />
@@ -115,7 +117,7 @@
     <Compile Include="Network\Protocol\Handlers\System\HelloSynMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\GetPeerListReplyMessageHandler.cs" />
     <Compile Include="Network\Protocol\Handlers\System\GetPeerListMessageHandler.cs" />
-    <Compile Include="Network\Protocol\Handlers\System\MessageHandler.cs" />
+    <Compile Include="Network\Protocol\Handlers\MessageHandler.cs" />
     <Compile Include="Network\Protocol\Messages\Command\Command.cs" />
     <Compile Include="Network\Protocol\Messages\MessageHeader.cs" />
     <Compile Include="Network\Protocol\Messages\PeerMessage.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="Utils\RandomUtils.cs" />
     <Compile Include="Utils\RegistryUtils.cs" />
     <Compile Include="Utils\StreamTunnel.cs" />
+    <Compile Include="VersionManager.cs" />
     <Compile Include="Workers\BackgroundWorker.cs" />
     <Compile Include="Utils\BlockingPool.cs" />
     <Compile Include="Utils\BlockingQueue.cs" />
